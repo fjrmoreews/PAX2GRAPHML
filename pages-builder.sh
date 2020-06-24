@@ -34,7 +34,7 @@ then
 	git checkout $branch_name
 	git pull origin $branch_name --allow-unrelated-histories
 	#git stash apply
-	#git checkout stash -- . # force git stash to overwrite added files
+	git checkout stash -- . || echo "$?" 
         echo "step 2.2"
 else
         echo "step 3"
@@ -49,9 +49,10 @@ then
 	ls | grep -v _build | xargs rm -r
 	mv _build/* . && rm -rf _build
 	git add .
-        
-	git commit -m "new pages version $(date)"
-	git push origin gh-pages
+        echo "step 4.2" 
+
+	git commit -m "new pages version $(date)" || echo "$?"
+	git push origin gh-pages || echo "$?"
         echo "step 5"
 
 	# github.com recognizes gh-pages branch and create pages
