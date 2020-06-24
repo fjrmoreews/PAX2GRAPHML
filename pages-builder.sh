@@ -49,6 +49,7 @@ if [ -d "$buildDirectory" ]
 then
 
         echo "step 4"
+        ls | grep -v _build | xargs rm -r
 	mv _build/* . && rm -rf _build
 	git add .
         echo "step 4.2" 
