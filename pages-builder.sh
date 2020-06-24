@@ -4,7 +4,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 buildDirectory=_build
-SOURCEDIR=/home/fmoreews/git/pax2graphml_src
+SOURCEDIR=/home/fmoreews/git/pax2graphml_src/docs
 # get a clean master branch assuming
 git checkout master
 git pull origin master
