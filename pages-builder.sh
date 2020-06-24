@@ -17,6 +17,11 @@ echo "step 1"
 #sphinx-build -b html . "$buildDirectory"
 
 cp -r  $SOURCEDIR/* ./ 
+dat=`date "+%D" `
+
+sed -ri "1s#(.*)#\#auto-build ${dat}\\n\1#" conf.py
+
+
 
 # create or use orphaned gh-pages branch
 branch_name=gh-pages
