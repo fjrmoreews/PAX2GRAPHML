@@ -15,7 +15,9 @@ git fetch --all
 echo "step 1"
 # build html docs from sphinx files
 CDIR=$PWD
-cd $SOURCEDIR && sphinx-build -b html . "$buildDirectory"
+
+cd $SOURCEDIR/.. && bash build-doc.sh 
+#sphinx-build -b html . "$buildDirectory"
 cd $CDIR
 cp -r  $SOURCEDIR/* ./ 
 dat=`date "+%D" `
