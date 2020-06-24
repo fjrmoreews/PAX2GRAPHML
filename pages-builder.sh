@@ -27,7 +27,7 @@ then
 
 	git stash
 	git checkout $branch_name
-	git pull origin $branch_name
+	git pull origin $branch_name --allow-unrelated-histories
 	#git stash apply
 	git checkout stash -- . # force git stash to overwrite added files
 else
