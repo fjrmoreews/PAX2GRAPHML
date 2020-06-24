@@ -1,0 +1,84 @@
+.. pax2graphml documentation master file, created by
+   sphinx-quickstart on Thu Jun 18 11:19:16 2020.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+PAX2GRAPHML python package documentation
+===========================================
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
+
+
+
+
+
+pax2graphml.pax_import
+========================
+.. automodule:: pax_import
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:
+
+pax2graphml.extract
+=====================
+.. automodule:: extract
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:
+
+pax2graphml.properties
+========================
+.. automodule:: properties
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:
+
+
+pax2graphml.graph_explore
+==========================
+.. automodule:: graph_explore
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:
+
+
+pax2graphml.utils
+===================
+.. automodule:: utils
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
