@@ -19,7 +19,7 @@ echo "step 1"
 cp -r  $SOURCEDIR/* ./ 
 dat=`date "+%D" `
 echo "" > build.log
-sed -ri "1s#(.*)#\#auto-build ${dat}\\n\1#" build.og 
+sed -ri "1s#(.*)#\#auto-build ${dat}\\n\1#" build.log 
 
 
 
