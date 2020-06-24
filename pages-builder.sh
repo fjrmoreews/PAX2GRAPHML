@@ -18,8 +18,8 @@ echo "step 1"
 
 cp -r  $SOURCEDIR/* ./ 
 dat=`date "+%D" `
-
-sed -ri "1s#(.*)#\#auto-build ${dat}\\n\1#" conf.py
+echo "" > build.log
+sed -ri "1s#(.*)#\#auto-build ${dat}\\n\1#" build.og 
 
 
 
