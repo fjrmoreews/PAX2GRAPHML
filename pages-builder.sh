@@ -34,7 +34,7 @@ then
 	git checkout $branch_name
 	git pull origin $branch_name --allow-unrelated-histories
 	#git stash apply
-	git checkout stash -- . || echo "$?" 
+	git checkout stash -- . || echo "warning:$?" 
         echo "step 2.2"
 else
         echo "step 3"
@@ -51,8 +51,8 @@ then
 	git add .
         echo "step 4.2" 
 
-	git commit -m "new pages version $(date)" || echo "$?"
-	git push origin gh-pages || echo "$?"
+	git commit -m "new pages version $(date)" || echo "warning:$?"
+	git push origin gh-pages || echo "warning:$?"
         echo "step 5"
 
 	# github.com recognizes gh-pages branch and create pages
