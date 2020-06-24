@@ -42,3 +42,6 @@ then
 else
 	echo "directory $buildDirectory does not exists"
 fi
+
+git checkout master
+
