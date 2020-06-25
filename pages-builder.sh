@@ -55,10 +55,17 @@ function listexport {
   ls | grep -v _build
 }
 
+function extractpage {
+ mv _build/html tmphtml
+ rm -f build.log conf.py index.rst Makefile 
+ rm -rf _static _templates _build
+ ls -l 
+ mv tmphtml/* ./
+ ls -Rl ./
+}
 function adddoc {
         echo "adddoc"
-        ls | grep -v _build | xargs rm -r
-	mv _build/* . && rm -rf _build
+        
 	git add .
          
 	git commit -m "new pages version $(date)" || echo "warning:$?"
@@ -74,6 +81,7 @@ docbuild
 if [ -d "_build" ]
 then
   listexport
+  extractpage
   #adddoc
 else
 	echo "directory _build does not exists"
