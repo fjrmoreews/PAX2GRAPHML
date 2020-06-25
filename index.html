@@ -1,0 +1,1208 @@
+
+<!DOCTYPE html>
+
+<html lang="1.0">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAX2GRAPHML python package documentation &#8212; pax2graphml 1. documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="pax2graphml-python-package-documentation">
+<h1>PAX2GRAPHML python package documentation<a class="headerlink" href="#pax2graphml-python-package-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+<div class="section" id="module-pax_import">
+<span id="pax2graphml-pax-import"></span><h1>pax2graphml.pax_import<a class="headerlink" href="#module-pax_import" title="Permalink to this headline">¶</a></h1>
+<p>This module contains function to maniplate BIOPAX and GRAPHML files.</p>
+<dl class="py function">
+<dt id="pax_import.annotationDict">
+<code class="sig-prename descclassname">pax_import.</code><code class="sig-name descname">annotationDict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">aliasfile</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pax_import.html#annotationDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pax_import.annotationDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary from an annotation json file:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>aliasfile</strong> -- annotation json file</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>annotation dictionary</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pax_import.generateInfluenceGraph">
+<code class="sig-prename descclassname">pax_import.</code><code class="sig-name descname">generateInfluenceGraph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inputGraph</span></em>, <em class="sig-param"><span class="n">outputGraph</span></em>, <em class="sig-param"><span class="n">outputDisplay</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pax_import.html#generateInfluenceGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pax_import.generateInfluenceGraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pax_import.generateInfluenceSubGraph">
+<code class="sig-prename descclassname">pax_import.</code><code class="sig-name descname">generateInfluenceSubGraph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inputGraph</span></em>, <em class="sig-param"><span class="n">outputGraph</span></em>, <em class="sig-param"><span class="n">outputDisplay</span></em>, <em class="sig-param"><span class="n">minNode</span></em>, <em class="sig-param"><span class="n">maxNode</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pax_import.html#generateInfluenceSubGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pax_import.generateInfluenceSubGraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pax_import.generateNameAliases">
+<code class="sig-prename descclassname">pax_import.</code><code class="sig-name descname">generateNameAliases</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">biopaxfile</span></em>, <em class="sig-param"><span class="n">outputfile</span><span class="o">=</span><span class="default_value">'entities_aliases.json'</span></em>, <em class="sig-param"><span class="n">opt</span><span class="o">=</span><span class="default_value">'--uri-ids'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pax_import.html#generateNameAliases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pax_import.generateNameAliases" title="Permalink to this definition">¶</a></dt>
+<dd><p>#generate a json file with annottaions extracted from a BIOPAX file. The process use PAXTOOLS :</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>biopaxfile</strong> -- input BIOPAX files</p></li>
+<li><p><strong>outputfile</strong> -- output json file</p></li>
+<li><p><strong>opt</strong> -- ouput generation options</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>void</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pax_import.initiateQuantityNode">
+<code class="sig-prename descclassname">pax_import.</code><code class="sig-name descname">initiateQuantityNode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pax_import.html#initiateQuantityNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pax_import.initiateQuantityNode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pax_import.joinAnnotation">
+<code class="sig-prename descclassname">pax_import.</code><code class="sig-name descname">joinAnnotation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">aliasfile</span></em>, <em class="sig-param"><span class="n">annotField</span></em>, <em class="sig-param"><span class="n">destField</span></em>, <em class="sig-param"><span class="n">deflt</span></em>, <em class="sig-param"><span class="n">ptype</span><span class="o">=</span><span class="default_value">'string'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pax_import.html#joinAnnotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pax_import.joinAnnotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populate a new node property with values extracted from an annotation json file:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>propertiesfile</strong> -- json annotation file</p></li>
+<li><p><strong>annotField</strong> -- field in json data dictionary to be processed</p></li>
+<li><p><strong>destField</strong> -- new property name</p></li>
+<li><p><strong>deflt</strong> -- property default value for None</p></li>
+<li><p><strong>ptype</strong> -- new property type</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>annotation dictionary</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pax_import.linkEdges">
+<code class="sig-prename descclassname">pax_import.</code><code class="sig-name descname">linkEdges</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">displayProgress</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pax_import.html#linkEdges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pax_import.linkEdges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pax_import.paxFilter">
+<code class="sig-prename descclassname">pax_import.</code><code class="sig-name descname">paxFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">biopaxfile</span></em>, <em class="sig-param"><span class="n">filterdL</span></em>, <em class="sig-param"><span class="n">outputfile</span><span class="o">=</span><span class="default_value">'ouput.owl'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pax_import.html#paxFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pax_import.paxFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove Datasources  from a BIOPAX file. The process use PAXTOOLS, need a lot of memory and can be slow for big BIOPAX files:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>biopaxfile</strong> -- input BIOPAX files</p></li>
+<li><p><strong>outputfile</strong> -- output BIOPAX file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>void</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pax_import.paxMerge">
+<code class="sig-prename descclassname">pax_import.</code><code class="sig-name descname">paxMerge</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">biopaxfilelist</span></em>, <em class="sig-param"><span class="n">outputfile</span><span class="o">=</span><span class="default_value">'ouput.owl'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pax_import.html#paxMerge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pax_import.paxMerge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge multiple BIOPAX (RDSF/XML) files. The process use PAXTOOLS, need a lot of memory and can be slow for big BIOPAX files:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>biopaxfilelist</strong> -- a list of  input BIOPAX files to be merged</p></li>
+<li><p><strong>outputfile</strong> -- output BIOPAX file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>void</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pax_import.paxToReactionGraph">
+<code class="sig-prename descclassname">pax_import.</code><code class="sig-name descname">paxToReactionGraph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">biopaxfile</span></em>, <em class="sig-param"><span class="n">graphmlfile</span></em>, <em class="sig-param"><span class="n">blackList</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pax_import.html#paxToReactionGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pax_import.paxToReactionGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a reaction graph with binary interactions as a GRAPHML file from a BIOPAX file. Tte BIOPAX file is filtered, keeping only the regulation part (metabolism and genes). The process use PAXTOOLS, need a lot of memory and can be slow for big BIOPAX files:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>biopaxfile</strong> -- input BIOPAX file</p></li>
+<li><p><strong>biopaxfile</strong> -- output GRAPHML reaction file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>void</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pax_import.prepareSpaim">
+<code class="sig-prename descclassname">pax_import.</code><code class="sig-name descname">prepareSpaim</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inputGraph</span></em>, <em class="sig-param"><span class="n">outputGraph</span></em>, <em class="sig-param"><span class="n">outputDisplay</span></em>, <em class="sig-param"><span class="n">checkInvertP</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pax_import.html#prepareSpaim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pax_import.prepareSpaim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pax_import.reactionToInfluenceGraph">
+<code class="sig-prename descclassname">pax_import.</code><code class="sig-name descname">reactionToInfluenceGraph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">spaimG</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pax_import.html#reactionToInfluenceGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pax_import.reactionToInfluenceGraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pax_import.setEntityType">
+<code class="sig-prename descclassname">pax_import.</code><code class="sig-name descname">setEntityType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pax_import.html#setEntityType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pax_import.setEntityType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pax_import.undefNodesAndEdges">
+<code class="sig-prename descclassname">pax_import.</code><code class="sig-name descname">undefNodesAndEdges</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pax_import.html#undefNodesAndEdges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pax_import.undefNodesAndEdges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-extract">
+<span id="pax2graphml-extract"></span><h1>pax2graphml.extract<a class="headerlink" href="#module-extract" title="Permalink to this headline">¶</a></h1>
+<p>This module contains function to extract graph and connected components from a graph in graphml and assemble such graphs</p>
+<dl class="py function">
+<dt id="extract.defineBooleanFilter">
+<code class="sig-prename descclassname">extract.</code><code class="sig-name descname">defineBooleanFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gr</span></em>, <em class="sig-param"><span class="n">att</span></em>, <em class="sig-param"><span class="n">val</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract.html#defineBooleanFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.defineBooleanFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a boolean filter property:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gr</strong> -- a graph</p></li>
+<li><p><strong>att</strong> -- a  existing property name</p></li>
+<li><p><strong>val</strong> -- a value for the property att. Each node with with this property value will be selected by the filter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a filter as a dictionnary (node index,True/False)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="extract.extractConnectedComponentByAnnot">
+<code class="sig-prename descclassname">extract.</code><code class="sig-name descname">extractConnectedComponentByAnnot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">targ</span></em>, <em class="sig-param"><span class="n">annotkeyL</span></em>, <em class="sig-param"><span class="n">addVoidValue</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">extendToCCMember</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract.html#extractConnectedComponentByAnnot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.extractConnectedComponentByAnnot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract a sub graph build by merging a subset of connected components of the original graph. Each connected component contains nodes with properties matching provided values:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> -- a graph</p></li>
+<li><p><strong>targ</strong> -- a list of values that must match the values of teh properties defined by annotkeyL</p></li>
+<li><p><strong>annotkeyL</strong> -- a list of properties</p></li>
+<li><p><strong>addVoidValue</strong> -- a boolean defining if we  keeo void values.void values will have the string value &quot;&quot;</p></li>
+<li><p><strong>extendToCCMember</strong> -- if true  add all members of a connectes compoenent which,     at least one node matches a properties value defined in targ</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a sub graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>graph</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="extract.extractSubGraph">
+<code class="sig-prename descclassname">extract.</code><code class="sig-name descname">extractSubGraph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">nbIterations</span></em>, <em class="sig-param"><span class="n">chosenNodeId</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">direction</span><span class="o">=</span><span class="default_value">'all'</span></em>, <em class="sig-param"><span class="n">nbNodesLimit</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">nbNeighbours</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract.html#extractSubGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.extractSubGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>extract a sub graph  according to parameters:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gr</strong> -- a graph</p></li>
+<li><p><strong>nbIterations</strong> -- number of iterations</p></li>
+<li><p><strong>chosenNodeId</strong> -- selected node id</p></li>
+<li><p><strong>direction</strong> -- edge direction (all,in,out)</p></li>
+<li><p><strong>nbNodesLimit</strong> -- maximum node number</p></li>
+<li><p><strong>nbNeighbours</strong> -- number of neighbours</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the sub graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>graph</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="extract.filterGraphByNodesAttr">
+<code class="sig-prename descclassname">extract.</code><code class="sig-name descname">filterGraphByNodesAttr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gr</span></em>, <em class="sig-param"><span class="n">att</span></em>, <em class="sig-param"><span class="n">val</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract.html#filterGraphByNodesAttr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.filterGraphByNodesAttr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a sub graph where the nodes matches a property value:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gr</strong> -- a graph</p></li>
+<li><p><strong>att</strong> -- an  existing property name</p></li>
+<li><p><strong>val</strong> -- a value for the property att. Each node with with this property value will be selected by the filter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a sub graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>graph</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="extract.filterGraphFromBooleanFilter">
+<code class="sig-prename descclassname">extract.</code><code class="sig-name descname">filterGraphFromBooleanFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gr</span></em>, <em class="sig-param"><span class="n">vfilter</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract.html#filterGraphFromBooleanFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.filterGraphFromBooleanFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a sub graph using a filter:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gr</strong> -- a graph</p></li>
+<li><p><strong>vfilter</strong> -- a filter as a dictionnary (node index,True/False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a sub graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>graph</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="extract.generateSubGraphByNodeId">
+<code class="sig-prename descclassname">extract.</code><code class="sig-name descname">generateSubGraphByNodeId</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inputGraph</span></em>, <em class="sig-param"><span class="n">outputGraph</span></em>, <em class="sig-param"><span class="n">nodeid</span></em>, <em class="sig-param"><span class="n">direction</span><span class="o">=</span><span class="default_value">'in'</span></em>, <em class="sig-param"><span class="n">nbNeighbours</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract.html#generateSubGraphByNodeId"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.generateSubGraphByNodeId" title="Permalink to this definition">¶</a></dt>
+<dd><p>extract a connected component holding a node specified by node id:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputGraph</strong> -- input graphmlfile</p></li>
+<li><p><strong>outputGraph</strong> -- output graphmlfile</p></li>
+<li><p><strong>nodeid</strong> -- selected node id</p></li>
+<li><p><strong>direction</strong> -- edge direction (all,in,out)</p></li>
+<li><p><strong>nbNeighbours</strong> -- number of neighbours</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the sub graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>graph</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="extract.largestConnectedComponent">
+<code class="sig-prename descclassname">extract.</code><code class="sig-name descname">largestConnectedComponent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">directed</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract.html#largestConnectedComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.largestConnectedComponent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select the largest connected component:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>g</strong> -- a graph</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a sub graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>graph</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="extract.mergeGraph">
+<code class="sig-prename descclassname">extract.</code><code class="sig-name descname">mergeGraph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gr1</span></em>, <em class="sig-param"><span class="n">gr2</span></em>, <em class="sig-param"><span class="n">propertiesList</span></em>, <em class="sig-param"><span class="n">addVoid</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">caseSensitive</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract.html#mergeGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.mergeGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge two graphs. all nodes of both graphs, that share the same value of a list of properties are merged:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gr1</strong> -- first graph</p></li>
+<li><p><strong>gr2</strong> -- second graph</p></li>
+<li><p><strong>propertiesList</strong> -- a list of node properties</p></li>
+<li><p><strong>addVoid</strong> -- if True, nodes with void values are merged</p></li>
+<li><p><strong>caseSensitive</strong> -- if True, the value match is case sensitive</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the merged graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>graph</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="extract.mergeGraphNodesByProperties">
+<code class="sig-prename descclassname">extract.</code><code class="sig-name descname">mergeGraphNodesByProperties</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gr1</span></em>, <em class="sig-param"><span class="n">propertiesList</span></em>, <em class="sig-param"><span class="n">addVoid</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">caseSensitive</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract.html#mergeGraphNodesByProperties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.mergeGraphNodesByProperties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge all nodes of a graph, that share the same value of a list of properties:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gr</strong> -- a graph</p></li>
+<li><p><strong>propertiesList</strong> -- a list of node properties</p></li>
+<li><p><strong>caseSensitive</strong> -- if True, the value match is case sensitive</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the modified graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>graph</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="extract.mergeNodes">
+<code class="sig-prename descclassname">extract.</code><code class="sig-name descname">mergeNodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gr</span></em>, <em class="sig-param"><span class="n">exnode</span></em>, <em class="sig-param"><span class="n">nnode</span></em>, <em class="sig-param"><span class="n">removeNode</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract.html#mergeNodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.mergeNodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge two nodes of a graph, presserving edges and properties:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gr</strong> -- a graph</p></li>
+<li><p><strong>exnode</strong> -- first node to ne merged</p></li>
+<li><p><strong>nnode</strong> -- second node to ne merged</p></li>
+<li><p><strong>removeNode</strong> -- if True, remove exnode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the modified graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>graph</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="extract.removeLargestConnectedComponent">
+<code class="sig-prename descclassname">extract.</code><code class="sig-name descname">removeLargestConnectedComponent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">directed</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract.html#removeLargestConnectedComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.removeLargestConnectedComponent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the largest connected component:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>g</strong> -- a graph</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a sub graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>graph</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="extract.subGraphByValues">
+<code class="sig-prename descclassname">extract.</code><code class="sig-name descname">subGraphByValues</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">targL</span></em>, <em class="sig-param"><span class="n">annotkeyL</span></em>, <em class="sig-param"><span class="n">addVoidValue</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">incVal</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract.html#subGraphByValues"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.subGraphByValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract a sub graph list. Each graph contains nodes with properties matching provided values:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> -- a graph</p></li>
+<li><p><strong>targL</strong> -- a list of values that must match the values of teh properties defined by annotkeyL</p></li>
+<li><p><strong>annotkeyL</strong> -- a list of properties</p></li>
+<li><p><strong>addVoidValue</strong> -- a boolean defining if we  keeo void values</p></li>
+<li><p><strong>incVal</strong> -- incVal represents the void value symbol, used if addVoidValue is true</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of dictionnary where the key &quot;subgraph&quot; represents the subgraph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="extract.subGraphFilter">
+<code class="sig-prename descclassname">extract.</code><code class="sig-name descname">subGraphFilter</code><span class="sig-paren">(</span><em class="sig-param">g</em>, <em class="sig-param">nbIterations</em>, <em class="sig-param">centralNode</em>, <em class="sig-param">direction=&lt;built-in function all&gt;</em>, <em class="sig-param">nbNodesLimit=None</em>, <em class="sig-param">nbNeighbours=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract.html#subGraphFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.subGraphFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>define a sub graph filter according to parameters:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gr</strong> -- a graph</p></li>
+<li><p><strong>nbIterations</strong> -- number of iterations</p></li>
+<li><p><strong>centralNode</strong> -- selected node id</p></li>
+<li><p><strong>direction</strong> -- edge direction (all,in,out)</p></li>
+<li><p><strong>nbNodesLimit</strong> -- maximum node number</p></li>
+<li><p><strong>nbNeighbours</strong> -- number of neighbours</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the filter</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="extract.subGraphListByDataSource">
+<code class="sig-prename descclassname">extract.</code><code class="sig-name descname">subGraphListByDataSource</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">addVoidValue</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">incVal</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract.html#subGraphListByDataSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.subGraphListByDataSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract a sub graph list. Each graph contains nodes with datasource/provider matching input values:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> -- a graph</p></li>
+<li><p><strong>targL</strong> -- a list of values that must match the values of the properties defined by annotkeyL</p></li>
+<li><p><strong>annotkeyL</strong> -- a list of properties</p></li>
+<li><p><strong>addVoidValue</strong> -- a boolean defining if we  keeo void values</p></li>
+<li><p><strong>incVal</strong> -- incVal represents the void value symbol, used if addVoidValue is true</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of dictionnary where the key &quot;subgraph&quot; represents the subgraph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-properties">
+<span id="pax2graphml-properties"></span><h1>pax2graphml.properties<a class="headerlink" href="#module-properties" title="Permalink to this headline">¶</a></h1>
+<p>This module contains function to manipulate edge and node properties</p>
+<dl class="py function">
+<dt id="properties.annotEdgeFromFile">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">annotEdgeFromFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">annotfile</span></em>, <em class="sig-param"><span class="n">mapKey</span></em>, <em class="sig-param"><span class="n">newprop</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#annotEdgeFromFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.annotEdgeFromFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populate the edges with a new property. The values of the property are extract from a tabular file:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> -- a graph</p></li>
+<li><p><strong>annotfile</strong> -- the tabular annotation file</p></li>
+<li><p><strong>mapKey</strong> -- the node property holding the primary key that must be present as a named column in the file</p></li>
+<li><p><strong>newprop</strong> -- the new property to be created that must be present as a named column in the file</p></li>
+<li><p><strong>delimiter</strong> -- tabular file delimiter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>void</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="properties.annotNodeFromFile">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">annotNodeFromFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">annotfile</span></em>, <em class="sig-param"><span class="n">mapKey</span></em>, <em class="sig-param"><span class="n">newprop</span></em>, <em class="sig-param"><span class="n">delimiter</span><span class="o">=</span><span class="default_value">','</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#annotNodeFromFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.annotNodeFromFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populate the nodes with a new property. The values of the property are extract from a tabular file:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> -- a graph</p></li>
+<li><p><strong>annotfile</strong> -- the tabular annotation file</p></li>
+<li><p><strong>mapKey</strong> -- the node property holding the primary key that must be present as a named column in the file</p></li>
+<li><p><strong>newprop</strong> -- the new property to be created that must be present as a named column in the file</p></li>
+<li><p><strong>delimiter</strong> -- tabular file delimiter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>void</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="properties.copyEdgeProperties">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">copyEdgeProperties</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">sourceEdge</span></em>, <em class="sig-param"><span class="n">targetEdge</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#copyEdgeProperties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.copyEdgeProperties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy all properties of a source edge to a target edge:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> -- a graph</p></li>
+<li><p><strong>sourceEdge</strong> -- source node</p></li>
+<li><p><strong>targetEdge</strong> -- target node</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>void</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="properties.copyNodeProperties">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">copyNodeProperties</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">sourceNode</span></em>, <em class="sig-param"><span class="n">targetNode</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#copyNodeProperties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.copyNodeProperties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy all properties of a source node to a target node:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> -- a graph</p></li>
+<li><p><strong>sourceNode</strong> -- source node</p></li>
+<li><p><strong>targetNode</strong> -- target node</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>void</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="properties.defaultEdgeValue">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">defaultEdgeValue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gr</span></em>, <em class="sig-param"><span class="n">prop</span></em>, <em class="sig-param"><span class="n">dval</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#defaultEdgeValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.defaultEdgeValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>asign a userdefined value to an edge property when it is None ar equal to &quot;&quot;:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gr</strong> -- a graph</p></li>
+<li><p><strong>prop</strong> -- an existing property name</p></li>
+<li><p><strong>dval</strong> -- the  value to be used to replace None and &quot;&quot; string</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>void</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="properties.defaultNodeValue">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">defaultNodeValue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gr</span></em>, <em class="sig-param"><span class="n">prop</span></em>, <em class="sig-param"><span class="n">dval</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#defaultNodeValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.defaultNodeValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>asign a userdefined value to a node property when it is None ar equal to &quot;&quot;:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gr</strong> -- a graph</p></li>
+<li><p><strong>prop</strong> -- an existing property name</p></li>
+<li><p><strong>dval</strong> -- the  value to be used to replace None and &quot;&quot; string</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>void</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="properties.defineBiomartServer">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">defineBiomartServer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">martName</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#defineBiomartServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.defineBiomartServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>define a biomart server &quot;&quot;:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> -- the url of the biomartserver</p></li>
+<li><p><strong>martName</strong> -- the mart name</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>mart</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>mart Object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="properties.edgePropertyValues">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">edgePropertyValues</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">annotkey</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#edgePropertyValues"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.edgePropertyValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of unique values corresponding to an existing edge property:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> -- a graph</p></li>
+<li><p><strong>annotkey</strong> -- an existing propety name</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of edge property values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="properties.nodePropertyValues">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">nodePropertyValues</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">annotkey</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#nodePropertyValues"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.nodePropertyValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of unique values corresponding to an existing node property:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> -- a graph</p></li>
+<li><p><strong>annotkey</strong> -- an existing propety name</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of node property values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="properties.propertyValues">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">propertyValues</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">annotkey</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#propertyValues"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.propertyValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias of nodePropertyValues</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="properties.uniProtAnnot">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">uniProtAnnot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">protL</span></em>, <em class="sig-param"><span class="n">conf</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lsize</span><span class="o">=</span><span class="default_value">50</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#uniProtAnnot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.uniProtAnnot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configure a mart for Uniprot to GO annotation &quot;&quot;:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prot</strong> -- list of Uniprot gene symbols</p></li>
+<li><p><strong>conf</strong> -- the configuration dictionary</p></li>
+<li><p><strong>lsize</strong> -- the size of each chunk of inputs to be submitted in one time</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a dictionary of annotations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="properties.uniProtAnnotImpl">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">uniProtAnnotImpl</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prot</span></em>, <em class="sig-param"><span class="n">conf</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#uniProtAnnotImpl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.uniProtAnnotImpl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configure a mart for Uniprot to GO annotation &quot;&quot;:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prot</strong> -- list of Uniprot gene symbols</p></li>
+<li><p><strong>conf</strong> -- the configuration dictionary</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a dictionary of annotations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-graph_explore">
+<span id="pax2graphml-graph-explore"></span><h1>pax2graphml.graph_explore<a class="headerlink" href="#module-graph_explore" title="Permalink to this headline">¶</a></h1>
+<p>This module contains function to read and write graphml and compute topological statistics on graphs</p>
+<dl class="py function">
+<dt id="graph_explore.colorEdges">
+<code class="sig-prename descclassname">graph_explore.</code><code class="sig-name descname">colorEdges</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graph_explore.html#colorEdges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graph_explore.colorEdges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a edge color property that Differentiates the edge semantic (subtsrat, product, activator, inhibitor, modulator) using the spaim edge property (s,p,a,i,m):</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>g</strong> -- a graph instance</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>void</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="graph_explore.colorNodes">
+<code class="sig-prename descclassname">graph_explore.</code><code class="sig-name descname">colorNodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graph_explore.html#colorNodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graph_explore.colorNodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a node color property that Differentiates the node entities (reaction, chemical):</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>g</strong> -- a graph instance</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>void</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="graph_explore.computeBetweenness">
+<code class="sig-prename descclassname">graph_explore.</code><code class="sig-name descname">computeBetweenness</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graph_explore.html#computeBetweenness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graph_explore.computeBetweenness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the graph Betweenness:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>g</strong> -- a graph instance</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary holding the metrics data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="graph_explore.computeCloseness">
+<code class="sig-prename descclassname">graph_explore.</code><code class="sig-name descname">computeCloseness</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graph_explore.html#computeCloseness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graph_explore.computeCloseness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the graph Closeness:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>g</strong> -- a graph instance</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary holding the metrics data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="graph_explore.computeGraphMetrics">
+<code class="sig-prename descclassname">graph_explore.</code><code class="sig-name descname">computeGraphMetrics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graph_explore.html#computeGraphMetrics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graph_explore.computeGraphMetrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute multiple topological graph metrics (degree distribution, betweenness, pagerank, closeness):</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>g</strong> -- a graph instance</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary holding the metrics data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="graph_explore.computePagerank">
+<code class="sig-prename descclassname">graph_explore.</code><code class="sig-name descname">computePagerank</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graph_explore.html#computePagerank"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graph_explore.computePagerank" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the graph PageRank:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>g</strong> -- a graph instance</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary holding the metrics data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="graph_explore.degreeDistribution">
+<code class="sig-prename descclassname">graph_explore.</code><code class="sig-name descname">degreeDistribution</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graph_explore.html#degreeDistribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graph_explore.degreeDistribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the distribution of degrees of the node of the graph:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>g</strong> -- a graph instance</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>distibution of the degrees of the nodes</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="graph_explore.describeGraph">
+<code class="sig-prename descclassname">graph_explore.</code><code class="sig-name descname">describeGraph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graph_explore.html#describeGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graph_explore.describeGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string describing the graph will all edges and nodes with properties values :</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>g</strong> -- a graph</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="graph_explore.graphmlXmlString">
+<code class="sig-prename descclassname">graph_explore.</code><code class="sig-name descname">graphmlXmlString</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graphmlfile</span></em>, <em class="sig-param"><span class="n">ids</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">entity</span><span class="o">=</span><span class="default_value">'node'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graph_explore.html#graphmlXmlString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graph_explore.graphmlXmlString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the XML content extract of the graohml file:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graphmlfile</strong> -- graphml file path</p></li>
+<li><p><strong>ids</strong> -- an intger or  list or integers that correspondn to the id attribute values of the selected entities</p></li>
+<li><p><strong>entity</strong> -- &quot;edge&quot; or &quot;&quot;node&quot; value to define which entity should be selected</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>an XML string</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="graph_explore.largestCCdegreeDistribution">
+<code class="sig-prename descclassname">graph_explore.</code><code class="sig-name descname">largestCCdegreeDistribution</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graph_explore.html#largestCCdegreeDistribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graph_explore.largestCCdegreeDistribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the distribution of degrees of the nodes of the largest connected component:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>g</strong> -- a graph instance</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>distibution of the degrees of the nodes</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="graph_explore.loadGraphml">
+<code class="sig-prename descclassname">graph_explore.</code><code class="sig-name descname">loadGraphml</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graphmlfile</span></em>, <em class="sig-param"><span class="n">directed</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graph_explore.html#loadGraphml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graph_explore.loadGraphml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string with graph nodes count and edges count :</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graphmlfile</strong> -- a graphml file</p></li>
+<li><p><strong>directed</strong> -- a boolean that defines if the edges of the graph are oriented</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>graph object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="graph_explore.saveGraphml">
+<code class="sig-prename descclassname">graph_explore.</code><code class="sig-name descname">saveGraphml</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">graphmlOutFile</span></em>, <em class="sig-param"><span class="n">friendly</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graph_explore.html#saveGraphml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graph_explore.saveGraphml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a graph instance as a graphml file:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> -- a graph instance</p></li>
+<li><p><strong>graphmlOutFile</strong> -- graphml output file path</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>void</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="graph_explore.saveImage">
+<code class="sig-prename descclassname">graph_explore.</code><code class="sig-name descname">saveImage</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">pngfile</span></em>, <em class="sig-param"><span class="n">size</span><span class="o">=</span><span class="default_value">3000</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graph_explore.html#saveImage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graph_explore.saveImage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate an image from a graph instance :</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> -- a graph instance</p></li>
+<li><p><strong>pngfile</strong> -- png file path</p></li>
+<li><p><strong>size</strong> -- image size</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>void</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="graph_explore.summary">
+<code class="sig-prename descclassname">graph_explore.</code><code class="sig-name descname">summary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graph_explore.html#summary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#graph_explore.summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string with graph nodes count and edges count :</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>g</strong> -- a graph</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-utils">
+<span id="pax2graphml-utils"></span><h1>pax2graphml.utils<a class="headerlink" href="#module-utils" title="Permalink to this headline">¶</a></h1>
+<p>This module contains utilitary functions related to graph and file manipulation, package management and execution.</p>
+<dl class="py function">
+<dt id="utils.countEdge">
+<code class="sig-prename descclassname">utils.</code><code class="sig-name descname">countEdge</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'all'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#countEdge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.countEdge" title="Permalink to this definition">¶</a></dt>
+<dd><p>compute edges count from a selected node</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> -- graph node</p></li>
+<li><p><strong>mode</strong> -- count mode. values :&quot;all&quot;,&quot;in&quot;, &quot;out&quot;</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the edges count</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="utils.dataPath">
+<code class="sig-prename descclassname">utils.</code><code class="sig-name descname">dataPath</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#dataPath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.dataPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the data folder  path with example datasets</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a string representing the data folder         path  containing example data files like BIOPAX</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="utils.edgeDescription">
+<code class="sig-prename descclassname">utils.</code><code class="sig-name descname">edgeDescription</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">e</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#edgeDescription"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.edgeDescription" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a string giving al details from an edge, incuding source an target description</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="utils.edgeList">
+<code class="sig-prename descclassname">utils.</code><code class="sig-name descname">edgeList</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#edgeList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.edgeList" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a  simple  list of all edges of a graph (without iterator)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of edges</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="utils.friendlyFormatGraphmlKey">
+<code class="sig-prename descclassname">utils.</code><code class="sig-name descname">friendlyFormatGraphmlKey</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graphmlFile</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#friendlyFormatGraphmlKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.friendlyFormatGraphmlKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>modify in place a graphmlfile to have more human readableproperties data key</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>graphmlFile</strong> -- a graphmlFile file folling the graph.tools generation rules</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="utils.nodeList">
+<code class="sig-prename descclassname">utils.</code><code class="sig-name descname">nodeList</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#nodeList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.nodeList" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a  simple  list of all nodes of a graph (without iterator)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of nodes/vertices</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="utils.resourcesPath">
+<code class="sig-prename descclassname">utils.</code><code class="sig-name descname">resourcesPath</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#resourcesPath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.resourcesPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the resources  path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a string representing the resource         path containing additional files like template and  jar</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="utils.selectCCByNodeCount">
+<code class="sig-prename descclassname">utils.</code><code class="sig-name descname">selectCCByNodeCount</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">min</span></em>, <em class="sig-param"><span class="n">max</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#selectCCByNodeCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.selectCCByNodeCount" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>select a sub graoh from a graph, using the minimum and maximum node number</dt><dd><p>of each connected component as as a filter</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> -- a graph</p></li>
+<li><p><strong>min</strong> -- minimum node count of each connected component</p></li>
+<li><p><strong>max</strong> -- maximum node count of each connected component</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a sub graph</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>graph</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="utils.showEdgeProp">
+<code class="sig-prename descclassname">utils.</code><code class="sig-name descname">showEdgeProp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gh</span></em>, <em class="sig-param"><span class="n">e</span></em>, <em class="sig-param"><span class="n">sep</span><span class="o">=</span><span class="default_value">'\n'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#showEdgeProp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.showEdgeProp" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a string representing all the properties values from an edge</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="utils.showNodeProp">
+<code class="sig-prename descclassname">utils.</code><code class="sig-name descname">showNodeProp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gh</span></em>, <em class="sig-param"><span class="n">n</span></em>, <em class="sig-param"><span class="n">sep</span><span class="o">=</span><span class="default_value">'\n'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#showNodeProp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.showNodeProp" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a string representing all the properties values from a node</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="utils.showprop">
+<code class="sig-prename descclassname">utils.</code><code class="sig-name descname">showprop</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gh</span></em>, <em class="sig-param"><span class="n">n</span></em>, <em class="sig-param"><span class="n">sep</span><span class="o">=</span><span class="default_value">'\n'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#showprop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.showprop" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of showNodeProp</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a string</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">pax2graphml</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019-2020, Francois Moreews, Hugo Simon.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

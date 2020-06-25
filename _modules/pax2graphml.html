@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+
+<html lang="1.0">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pax2graphml &#8212; pax2graphml 1. documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pax2graphml</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">__version__</span><span class="o">=</span><span class="s1">&#39;0.2.0&#39;</span>
+<span class="n">silent</span><span class="o">=</span><span class="kc">True</span>
+
+
+<div class="viewcode-block" id="importPkBase"><a class="viewcode-back" href="../index.html#pax2graphml.importPkBase">[docs]</a><span class="k">def</span> <span class="nf">importPkBase</span><span class="p">():</span>
+            <span class="kn">import</span> <span class="nn">matplotlib</span>
+            <span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;Agg&#39;</span><span class="p">)</span>
+            <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+            <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+            <span class="kn">import</span> <span class="nn">graph_tool.all</span> <span class="k">as</span> <span class="nn">gt</span>
+            <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+            <span class="kn">import</span> <span class="nn">argparse</span>
+
+            <span class="kn">import</span> <span class="nn">pax2graphml.utils</span>
+            <span class="kn">import</span> <span class="nn">pax2graphml.math</span>
+            <span class="kn">import</span> <span class="nn">pax2graphml.clust</span>
+            <span class="kn">import</span> <span class="nn">pax2graphml.pax_import</span>
+            <span class="kn">import</span> <span class="nn">pax2graphml.graph_explore</span>
+            <span class="kn">import</span> <span class="nn">pax2graphml.properties</span>
+            <span class="kn">import</span> <span class="nn">pax2graphml.extract</span></div>
+
+<div class="viewcode-block" id="importPk"><a class="viewcode-back" href="../index.html#pax2graphml.importPk">[docs]</a><span class="k">def</span> <span class="nf">importPk</span><span class="p">():</span>
+  
+
+            <span class="kn">import</span> <span class="nn">pax2graphml.utils</span>
+            <span class="kn">import</span> <span class="nn">pax2graphml.math</span>
+            <span class="kn">import</span> <span class="nn">pax2graphml.clust</span>
+            <span class="kn">import</span> <span class="nn">pax2graphml.pax_import</span>
+            <span class="kn">import</span> <span class="nn">pax2graphml.graph_explore</span>
+            <span class="kn">import</span> <span class="nn">pax2graphml.properties</span>
+            <span class="kn">import</span> <span class="nn">pax2graphml.extract</span></div>
+
+
+<span class="k">if</span> <span class="n">silent</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+            <span class="n">prevOutFd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">dup</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">prevInFd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">dup</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">prevErrFd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">dup</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="c1">#Redirect standard in, out, and error</span>
+            <span class="n">si</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
+            <span class="n">se</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span><span class="s2">&quot;a+&quot;</span><span class="p">)</span>
+            <span class="n">so</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span><span class="s2">&quot;a+&quot;</span><span class="p">)</span>
+
+
+            <span class="n">os</span><span class="o">.</span><span class="n">dup2</span><span class="p">(</span><span class="n">si</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">dup2</span><span class="p">(</span><span class="n">so</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">dup2</span><span class="p">(</span><span class="n">se</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="mi">2</span><span class="p">)</span>
+
+            <span class="c1">#print(&quot;silent&quot;)</span>
+            <span class="n">importPkBase</span><span class="p">()</span>
+            <span class="c1">#Restore standard in, out, and error</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">dup2</span><span class="p">(</span><span class="n">prevOutFd</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">prevOutFd</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">dup2</span><span class="p">(</span><span class="n">prevInFd</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">prevInFd</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">dup2</span><span class="p">(</span><span class="n">prevErrFd</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">prevErrFd</span><span class="p">)</span>
+            <span class="c1">#print(&quot;not silent&quot;)</span>
+
+            <span class="n">importPk</span><span class="p">()</span>
+           
+<span class="k">else</span><span class="p">:</span>
+     <span class="n">importPkBase</span><span class="p">()</span>
+     <span class="n">importPk</span><span class="p">()</span>
+
+       
+
+<div class="viewcode-block" id="convertSpaim"><a class="viewcode-back" href="../index.html#pax2graphml.convertSpaim">[docs]</a><span class="k">def</span> <span class="nf">convertSpaim</span><span class="p">(</span> <span class="n">biopaxfile</span> <span class="p">,</span> <span class="n">graphmlfile</span> <span class="p">):</span>
+    <span class="k">return</span> <span class="n">convert</span><span class="p">(</span><span class="n">biopaxfile</span><span class="p">,</span> <span class="n">graphmlfile</span><span class="p">)</span></div>
+<span class="c1">#alias  </span>
+<div class="viewcode-block" id="convert"><a class="viewcode-back" href="../index.html#pax2graphml.convert">[docs]</a><span class="k">def</span> <span class="nf">convert</span><span class="p">(</span> <span class="n">biopaxfile</span> <span class="p">,</span> <span class="n">graphmlfile</span> <span class="p">):</span>
+    <span class="k">return</span> <span class="n">pax_import</span><span class="o">.</span><span class="n">paxToReactionGraph</span><span class="p">(</span><span class="n">biopaxfile</span><span class="p">,</span><span class="n">graphmlfile</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="merge"><a class="viewcode-back" href="../index.html#pax2graphml.merge">[docs]</a><span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="n">infiles</span><span class="p">,</span><span class="n">outfile</span><span class="p">):</span>
+     <span class="k">return</span> <span class="n">pax_import</span><span class="o">.</span><span class="n">paxMerge</span><span class="p">(</span><span class="n">infiles</span><span class="p">,</span><span class="n">outfile</span><span class="p">)</span></div>
+    
+
+
+<div class="viewcode-block" id="nodeList"><a class="viewcode-back" href="../index.html#pax2graphml.nodeList">[docs]</a><span class="k">def</span>  <span class="nf">nodeList</span><span class="p">(</span> <span class="n">g</span> <span class="p">):</span>
+    <span class="n">lst</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">nodeList</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+ 
+    <span class="k">return</span> <span class="n">lst</span></div>
+
+<div class="viewcode-block" id="edgeList"><a class="viewcode-back" href="../index.html#pax2graphml.edgeList">[docs]</a><span class="k">def</span>  <span class="nf">edgeList</span><span class="p">(</span> <span class="n">g</span> <span class="p">):</span>
+    <span class="n">lst</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">edgeList</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+ 
+    <span class="k">return</span> <span class="n">lst</span></div>
+
+ 
+<div class="viewcode-block" id="computeGraphMetrics"><a class="viewcode-back" href="../index.html#pax2graphml.computeGraphMetrics">[docs]</a><span class="k">def</span> <span class="nf">computeGraphMetrics</span><span class="p">(</span> <span class="n">g</span> <span class="p">):</span>
+    <span class="k">return</span> <span class="n">graph_explore</span><span class="o">.</span><span class="n">computeGraphMetrics</span><span class="p">(</span><span class="n">g</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="defineGraphModel"><a class="viewcode-back" href="../index.html#pax2graphml.defineGraphModel">[docs]</a><span class="k">def</span>  <span class="nf">defineGraphModel</span><span class="p">(</span> <span class="n">graphmlfile</span> <span class="p">):</span>
+    <span class="k">return</span> <span class="n">graph_explore</span><span class="o">.</span><span class="n">loadGraphml</span><span class="p">(</span><span class="n">graphmlfile</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="load"><a class="viewcode-back" href="../index.html#pax2graphml.load">[docs]</a><span class="k">def</span> <span class="nf">load</span><span class="p">(</span> <span class="n">graphmlfile</span> <span class="p">):</span>
+    <span class="k">return</span> <span class="n">defineGraphModel</span><span class="p">(</span><span class="n">graphmlfile</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="drawGraph"><a class="viewcode-back" href="../index.html#pax2graphml.drawGraph">[docs]</a><span class="k">def</span> <span class="nf">drawGraph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">ouputfile</span><span class="o">=</span><span class="s2">&quot;g.png&quot;</span><span class="p">):</span>
+     <span class="n">graph_explore</span><span class="o">.</span><span class="n">saveOrPlot</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ouputfile</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="save"><a class="viewcode-back" href="../index.html#pax2graphml.save">[docs]</a><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">ouputfile</span><span class="o">=</span><span class="s2">&quot;g.graphml&quot;</span><span class="p">):</span>
+     <span class="n">graph_explore</span><span class="o">.</span><span class="n">saveOrPlot</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">ouputfile</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span></div>
+
+
+           
+
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">pax2graphml</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019-2020, Francois Moreews, Hugo Simon.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
