@@ -62,7 +62,7 @@ function extractpage {
   logginfo "extractpage"
   mv _build/html tmphtml
   rm -f build.log conf.py index.rst Makefile 
-  rm -rf _static _templates _build
+  rm -rf _static _templates _build _modules _sources
   mv tmphtml/* ./
   rm -rf tmphtml
   ls -Rl ./
