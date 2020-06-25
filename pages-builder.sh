@@ -23,7 +23,7 @@ function docbuild {
   # build html docs from sphinx files
   CDIR=$PWD
 
-  cd $SOURCEDIR/.. && bash build-doc.sh 
+  cd $SOURCEDIR && bash build-doc.sh 
   #sphinx-build -b html . "_build"
   cd $CDIR
   cp -r  $SOURCEDIR/* ./ 
