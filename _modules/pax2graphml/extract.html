@@ -1,0 +1,787 @@
+
+<!DOCTYPE html>
+
+<html lang="1.0">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pax2graphml.extract &#8212; pax2graphml 1. documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pax2graphml.extract</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module contains function to extract graph and connected components from a graph in graphml and assemble such graphs&quot;&quot;&quot;</span>
+
+
+<span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s1">&#39;reStructuredText&#39;</span>
+
+
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">graph_tool.all</span> <span class="kn">import</span> <span class="n">random_graph</span><span class="p">,</span> <span class="n">label_components</span>
+<span class="kn">import</span> <span class="nn">graph_tool.all</span> <span class="k">as</span> <span class="nn">gt</span>
+
+<span class="kn">from</span> <span class="nn">pybiomart</span> <span class="kn">import</span>  <span class="n">Server</span><span class="p">,</span> <span class="n">Dataset</span>
+<span class="kn">from</span> <span class="nn">pybiomart.dataset</span> <span class="kn">import</span>   <span class="n">Filter</span>
+
+ 
+<span class="kn">from</span> <span class="nn">pax2graphml</span> <span class="kn">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">pax2graphml</span> <span class="kn">import</span> <span class="n">properties</span>
+
+
+<div class="viewcode-block" id="subGraphByValues"><a class="viewcode-back" href="../../index.html#pax2graphml.extract.subGraphByValues">[docs]</a><span class="k">def</span> <span class="nf">subGraphByValues</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">targL</span><span class="p">,</span><span class="n">annotkeyL</span><span class="p">,</span><span class="n">addVoidValue</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">incVal</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    
+  <span class="sd">&quot;&quot;&quot;Extract a sub graph list. Each graph contains nodes with properties matching provided values:</span>
+
+
+<span class="sd">  :param g: a graph</span>
+<span class="sd">  :param targL: a list of values that must match the values of teh properties defined by annotkeyL</span>
+<span class="sd">  :param annotkeyL: a list of properties</span>
+<span class="sd">  :param addVoidValue: a boolean defining if we  keeo void values</span>
+<span class="sd">  :param incVal: incVal represents the void value symbol, used if addVoidValue is true</span>
+<span class="sd">  :return:  a list of dictionnary where the key &quot;subgraph&quot; represents the subgraph</span>
+<span class="sd">  :rtype: list </span>
+<span class="sd"> </span>
+<span class="sd">  &quot;&quot;&quot;</span> 
+  
+  <span class="n">extendToCCMember</span><span class="o">=</span><span class="kc">False</span>     
+  <span class="n">subgraphList</span><span class="o">=</span><span class="nb">list</span><span class="p">()</span>
+  <span class="k">for</span> <span class="n">tar</span> <span class="ow">in</span> <span class="n">targL</span><span class="p">:</span>
+      <span class="n">pvset</span><span class="o">=</span><span class="nb">set</span><span class="p">()</span>
+      <span class="k">if</span> <span class="n">addVoidValue</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">incVal</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">tar</span> <span class="o">!=</span> <span class="n">incVal</span><span class="p">:</span>   
+           <span class="n">pvset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">incVal</span><span class="p">)</span>  
+           <span class="n">pvset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tar</span><span class="p">)</span>     
+      <span class="k">else</span><span class="p">:</span>
+          <span class="n">pvset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tar</span><span class="p">)</span>    
+      <span class="n">pvlist</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">pvset</span><span class="p">)</span>  
+      <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pvlist</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+
+         <span class="n">addVoidValueCC</span><span class="o">=</span><span class="kc">True</span>
+         <span class="n">sg</span><span class="p">,</span><span class="n">targmap</span><span class="o">=</span><span class="n">extractConnectedComponentByAnnot</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">pvlist</span><span class="p">,</span><span class="n">annotkeyL</span><span class="p">,</span><span class="n">addVoidValueCC</span><span class="p">,</span><span class="n">extendToCCMember</span><span class="p">)</span>    
+         <span class="n">d</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
+         <span class="n">d</span><span class="p">[</span><span class="s2">&quot;datasource&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">pvlist</span>
+         <span class="n">d</span><span class="p">[</span><span class="s2">&quot;subgraph&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">sg</span>
+         <span class="n">d</span><span class="p">[</span><span class="s2">&quot;ccomponent&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">targmap</span>
+         <span class="n">subgraphList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    
+  <span class="k">return</span> <span class="n">subgraphList</span>   </div>
+
+
+<div class="viewcode-block" id="subGraphListByDataSource"><a class="viewcode-back" href="../../index.html#pax2graphml.extract.subGraphListByDataSource">[docs]</a><span class="k">def</span> <span class="nf">subGraphListByDataSource</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">addVoidValue</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">incVal</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Extract a sub graph list. Each graph contains nodes with datasource/provider matching input values:</span>
+
+<span class="sd">    :param g: a graph</span>
+<span class="sd">    :param targL: a list of values that must match the values of the properties defined by annotkeyL</span>
+<span class="sd">    :param annotkeyL: a list of properties</span>
+<span class="sd">    :param addVoidValue: a boolean defining if we  keeo void values</span>
+<span class="sd">    :param incVal: incVal represents the void value symbol, used if addVoidValue is true</span>
+<span class="sd">    :return:  a list of dictionnary where the key &quot;subgraph&quot; represents the subgraph</span>
+<span class="sd">    :rtype: list </span>
+<span class="sd"> </span>
+<span class="sd"> </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">annotkey</span><span class="o">=</span><span class="s2">&quot;provider&quot;</span>
+    <span class="n">providerList</span><span class="o">=</span><span class="n">properties</span><span class="o">.</span><span class="n">propertyValues</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annotkey</span><span class="p">)</span>
+    <span class="n">annotkeyL</span><span class="o">=</span><span class="p">[</span><span class="n">annotkey</span><span class="p">]</span>
+    <span class="k">return</span>  <span class="n">subGraphByValues</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">providerList</span><span class="p">,</span><span class="n">annotkeyL</span><span class="p">,</span><span class="n">addVoidValue</span><span class="p">,</span><span class="n">incVal</span><span class="p">)</span></div>
+    
+ 
+
+<div class="viewcode-block" id="extractConnectedComponentByAnnot"><a class="viewcode-back" href="../../index.html#pax2graphml.extract.extractConnectedComponentByAnnot">[docs]</a><span class="k">def</span> <span class="nf">extractConnectedComponentByAnnot</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">targ</span><span class="p">,</span><span class="n">annotkeyL</span><span class="p">,</span><span class="n">addVoidValue</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">extendToCCMember</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Extract a sub graph build by merging a subset of connected components of the original graph. Each connected component contains nodes with properties matching provided values:</span>
+
+
+<span class="sd">    :param g: a graph</span>
+<span class="sd">    :param targ: a list of values that must match the values of teh properties defined by annotkeyL</span>
+<span class="sd">    :param annotkeyL: a list of properties</span>
+<span class="sd">    :param addVoidValue: a boolean defining if we  keeo void values.void values will have the string value &quot;&quot; </span>
+<span class="sd">    :param extendToCCMember:   if true  add all members of a connectes compoenent which, \</span>
+<span class="sd">    at least one node matches a properties value defined in targ </span>
+<span class="sd">    :return: a sub graph</span>
+<span class="sd">    :rtype: graph </span>
+<span class="sd"> </span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+
+    
+    <span class="n">targmap</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
+    <span class="n">targmapcc</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
+    <span class="n">revnidmap</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
+    <span class="n">prop2nid</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
+    <span class="n">selectedcc</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">annotkey</span> <span class="ow">in</span> <span class="n">annotkeyL</span><span class="p">:</span>
+      <span class="n">pkprop</span><span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">vertex_properties</span><span class="p">[</span><span class="n">annotkey</span><span class="p">]</span>
+      <span class="n">nid</span><span class="o">=</span><span class="mi">0</span>
+      <span class="n">vfilt</span> <span class="o">=</span>  <span class="n">g</span><span class="o">.</span><span class="n">new_vertex_property</span><span class="p">(</span><span class="s1">&#39;bool&#39;</span><span class="p">);</span> 
+      <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span>   <span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+          <span class="n">vfilt</span><span class="p">[</span><span class="n">nid</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+          <span class="n">xid</span><span class="o">=</span><span class="n">pkprop</span><span class="p">[</span><span class="n">nid</span><span class="p">]</span>
+          <span class="n">revnidmap</span><span class="p">[</span><span class="n">xid</span><span class="p">]</span><span class="o">=</span><span class="n">nid</span>
+         
+          <span class="k">if</span> <span class="n">xid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">xid</span> <span class="o">!=</span><span class="s2">&quot;&quot;</span><span class="p">:</span>
+              <span class="n">utils</span><span class="o">.</span><span class="n">__addArrayEl</span><span class="p">(</span><span class="n">prop2nid</span><span class="p">,</span><span class="n">xid</span><span class="p">,</span><span class="n">nid</span><span class="p">)</span>   
+          <span class="k">else</span><span class="p">:</span>
+             <span class="k">if</span> <span class="n">addVoidValue</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">xid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                       <span class="n">xid</span><span class="o">=</span><span class="s2">&quot;&quot;</span> 
+                    <span class="n">utils</span><span class="o">.</span><span class="n">__addArrayEl</span><span class="p">(</span><span class="n">prop2nid</span><span class="p">,</span><span class="n">xid</span><span class="p">,</span><span class="n">nid</span><span class="p">)</span>   
+             
+          <span class="n">nid</span><span class="o">+=</span><span class="mi">1</span>
+         
+    <span class="k">if</span> <span class="n">extendToCCMember</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>   
+        <span class="n">ccomp</span><span class="p">,</span> <span class="n">hist</span>  <span class="o">=</span> <span class="n">label_components</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attractors</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">mccid</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
+     
+
+            
+    <span class="k">if</span> <span class="n">targ</span><span class="o">!=</span><span class="kc">None</span><span class="p">:</span>        
+      <span class="k">for</span> <span class="n">nml</span> <span class="ow">in</span>  <span class="n">targ</span><span class="p">:</span>
+         <span class="n">nm</span><span class="o">=</span><span class="n">nml</span>
+         <span class="n">ccidl</span><span class="o">=</span><span class="nb">set</span><span class="p">()</span>   
+         <span class="k">if</span> <span class="n">nm</span> <span class="ow">in</span>  <span class="n">prop2nid</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> 
+           <span class="k">for</span> <span class="n">nid</span> <span class="ow">in</span> <span class="n">prop2nid</span><span class="p">[</span><span class="n">nm</span><span class="p">]:</span>
+              <span class="n">v</span><span class="o">=</span>  <span class="n">g</span><span class="o">.</span><span class="n">vertex</span><span class="p">(</span><span class="n">nid</span><span class="p">)</span>
+              <span class="n">vfilt</span><span class="p">[</span><span class="n">nid</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+              <span class="k">if</span> <span class="n">extendToCCMember</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span> 
+                <span class="n">ccid</span><span class="o">=</span><span class="n">ccomp</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+                <span class="n">ccidl</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ccid</span><span class="p">)</span>
+                <span class="n">selectedcc</span><span class="p">[</span><span class="n">ccid</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span>
+         <span class="k">else</span><span class="p">:</span>
+            <span class="n">nms</span><span class="o">=</span><span class="n">nml</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">nm</span> <span class="ow">in</span> <span class="n">nms</span><span class="p">:</span> 
+              <span class="k">if</span> <span class="n">nm</span> <span class="ow">in</span>  <span class="n">prop2nid</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> 
+                <span class="k">for</span> <span class="n">nid</span> <span class="ow">in</span> <span class="n">prop2nid</span><span class="p">[</span><span class="n">nm</span><span class="p">]:</span>                
+                   <span class="n">v</span><span class="o">=</span>  <span class="n">g</span><span class="o">.</span><span class="n">vertex</span><span class="p">(</span><span class="n">nid</span><span class="p">)</span>
+                   <span class="n">vfilt</span><span class="p">[</span><span class="n">nid</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                   <span class="k">if</span> <span class="n">extendToCCMember</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span> 
+                      <span class="n">ccid</span><span class="o">=</span><span class="n">ccomp</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+                      <span class="n">ccidl</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ccid</span><span class="p">)</span>
+                      <span class="n">selectedcc</span><span class="p">[</span><span class="n">ccid</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span>
+                
+         <span class="n">targmap</span><span class="p">[</span><span class="n">nml</span><span class="p">]</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">ccidl</span><span class="p">)</span>   
+
+    <span class="k">if</span> <span class="n">extendToCCMember</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+           <span class="n">nid</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> 
+           <span class="n">ccid</span><span class="o">=</span><span class="n">ccomp</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+           <span class="n">ccidct</span><span class="o">=</span><span class="mi">0</span>
+           <span class="k">if</span> <span class="n">ccid</span> <span class="ow">in</span> <span class="n">mccid</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+               <span class="n">ccidct</span><span class="o">=</span><span class="n">mccid</span><span class="p">[</span><span class="n">ccid</span><span class="p">]</span>
+
+           <span class="n">ccidct</span><span class="o">+=</span><span class="mi">1</span>
+           <span class="n">mccid</span><span class="p">[</span><span class="n">ccid</span><span class="p">]</span><span class="o">=</span><span class="n">ccidct</span>
+           <span class="k">if</span> <span class="n">ccid</span> <span class="ow">in</span> <span class="n">selectedcc</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> 
+               <span class="n">vfilt</span><span class="p">[</span><span class="n">nid</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            
+            
+    <span class="n">sgv</span> <span class="o">=</span> <span class="n">gt</span><span class="o">.</span><span class="n">GraphView</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">vfilt</span><span class="o">=</span><span class="n">vfilt</span><span class="p">)</span>
+    <span class="n">sg</span> <span class="o">=</span> <span class="n">gt</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">sgv</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>        
+
+    
+    <span class="k">return</span> <span class="n">sg</span><span class="p">,</span><span class="n">targmap</span></div>
+
+
+
+
+<div class="viewcode-block" id="defineBooleanFilter"><a class="viewcode-back" href="../../index.html#pax2graphml.extract.defineBooleanFilter">[docs]</a><span class="k">def</span> <span class="nf">defineBooleanFilter</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span><span class="n">att</span><span class="p">,</span><span class="n">val</span><span class="p">):</span>
+
+     <span class="sd">&quot;&quot;&quot;Create a boolean filter property:</span>
+
+
+<span class="sd">     :param gr: a graph</span>
+<span class="sd">     :param att: a  existing property name</span>
+<span class="sd">     :param val: a value for the property att. Each node with with this property value will be selected by the filter </span>
+<span class="sd">     :return: a filter as a dictionnary (node index,True/False)</span>
+<span class="sd">     :rtype: dict  </span>
+<span class="sd">     &quot;&quot;&quot;</span> 
+     <span class="n">vfilter</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">new_vertex_property</span><span class="p">(</span><span class="s2">&quot;bool&quot;</span><span class="p">);</span>
+     <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">gr</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+         <span class="n">cval</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">att</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
+         <span class="n">vindex</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">vertex_index</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+         <span class="k">if</span> <span class="n">cval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cval</span><span class="o">==</span><span class="n">val</span><span class="p">:</span>
+             <span class="n">vfilter</span><span class="p">[</span><span class="n">vindex</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+         <span class="k">else</span><span class="p">:</span>
+             <span class="n">vfilter</span><span class="p">[</span><span class="n">vindex</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+     <span class="k">return</span> <span class="n">vfilter</span>  </div>
+
+ 
+<div class="viewcode-block" id="filterGraphFromBooleanFilter"><a class="viewcode-back" href="../../index.html#pax2graphml.extract.filterGraphFromBooleanFilter">[docs]</a><span class="k">def</span> <span class="nf">filterGraphFromBooleanFilter</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span><span class="n">vfilter</span><span class="p">):</span>
+     <span class="sd">&quot;&quot;&quot;Create a sub graph using a filter:</span>
+
+<span class="sd">     :param gr: a graph</span>
+<span class="sd">     :param vfilter: a filter as a dictionnary (node index,True/False)</span>
+<span class="sd">     :return: a sub graph</span>
+<span class="sd">     :rtype: graph </span>
+<span class="sd"> </span>
+<span class="sd">     &quot;&quot;&quot;</span>
+     <span class="n">u</span> <span class="o">=</span> <span class="n">gt</span><span class="o">.</span><span class="n">GraphView</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span> <span class="n">vfilt</span><span class="o">=</span><span class="n">vfilter</span><span class="p">)</span>
+     <span class="n">u</span><span class="o">=</span><span class="n">gt</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+     <span class="k">return</span> <span class="n">u</span></div>
+
+
+<span class="c1">#filter a graph using a node property ( V2 with lambda)</span>
+<div class="viewcode-block" id="filterGraphByNodesAttr"><a class="viewcode-back" href="../../index.html#pax2graphml.extract.filterGraphByNodesAttr">[docs]</a><span class="k">def</span> <span class="nf">filterGraphByNodesAttr</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span><span class="n">att</span><span class="p">,</span><span class="n">val</span><span class="p">):</span>
+     <span class="sd">&quot;&quot;&quot;Create a sub graph where the nodes matches a property value:</span>
+
+<span class="sd">     :param gr: a graph</span>
+<span class="sd">     :param att: an  existing property name</span>
+<span class="sd">     :param val: a value for the property att. Each node with with this property value will be selected by the filter </span>
+<span class="sd">     :return: a sub graph</span>
+<span class="sd">     :rtype: graph </span>
+<span class="sd"> </span>
+<span class="sd">     &quot;&quot;&quot;</span>
+     <span class="n">u</span><span class="o">=</span><span class="n">gt</span><span class="o">.</span><span class="n">GraphView</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span> <span class="n">vfilt</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">gr</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">att</span><span class="p">][</span><span class="n">v</span><span class="p">]</span><span class="o">==</span><span class="n">val</span><span class="p">)</span>
+     <span class="n">u</span><span class="o">=</span><span class="n">gt</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+     <span class="k">return</span> <span class="n">u</span></div>
+
+
+
+
+<div class="viewcode-block" id="largestConnectedComponent"><a class="viewcode-back" href="../../index.html#pax2graphml.extract.largestConnectedComponent">[docs]</a><span class="k">def</span> <span class="nf">largestConnectedComponent</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;Select the largest connected component:</span>
+
+<span class="sd">	:param g: a graph</span>
+<span class="sd">	:return: a sub graph</span>
+<span class="sd">	:rtype: graph </span>
+<span class="sd"> </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">lCCfilt</span> <span class="o">=</span> <span class="n">gt</span><span class="o">.</span><span class="n">label_largest_component</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="n">directed</span><span class="p">)</span>
+	<span class="n">lCC</span> <span class="o">=</span> <span class="n">gt</span><span class="o">.</span><span class="n">GraphView</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">vfilt</span><span class="o">=</span><span class="n">lCCfilt</span><span class="p">)</span>
+	<span class="n">lCC</span><span class="o">=</span><span class="n">gt</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">lCC</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">largest CC order: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">lCC</span><span class="o">.</span><span class="n">vertices</span><span class="p">())))</span>
+	<span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;largest CC size: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">lCC</span><span class="o">.</span><span class="n">edges</span><span class="p">())))</span>
+	<span class="k">return</span> <span class="n">lCC</span></div>
+
+ 
+<div class="viewcode-block" id="removeLargestConnectedComponent"><a class="viewcode-back" href="../../index.html#pax2graphml.extract.removeLargestConnectedComponent">[docs]</a><span class="k">def</span> <span class="nf">removeLargestConnectedComponent</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;Remove the largest connected component:</span>
+
+<span class="sd">	:param g: a graph</span>
+<span class="sd">	:return: a sub graph</span>
+<span class="sd">	:rtype: graph </span>
+<span class="sd"> </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">woLCCfilt</span> <span class="o">=</span> <span class="n">gt</span><span class="o">.</span><span class="n">label_largest_component</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="n">directed</span><span class="p">)</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">woLCCfilt</span><span class="o">.</span><span class="n">a</span><span class="p">)):</span>
+		<span class="n">woLCCfilt</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="n">woLCCfilt</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+	<span class="n">woLCC</span> <span class="o">=</span> <span class="n">gt</span><span class="o">.</span><span class="n">GraphView</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">vfilt</span><span class="o">=</span><span class="n">woLCCfilt</span><span class="p">)</span>
+	<span class="n">woLCC</span><span class="o">=</span><span class="n">gt</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">woLCC</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;graph without largest CC order: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">woLCC</span><span class="o">.</span><span class="n">vertices</span><span class="p">())))</span>
+	<span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;graph without largest CC size: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">woLCC</span><span class="o">.</span><span class="n">edges</span><span class="p">())))</span>
+	<span class="k">return</span> <span class="n">woLCC</span></div>
+
+
+
+
+<span class="c1">###########################</span>
+
+
+
+<div class="viewcode-block" id="mergeNodes"><a class="viewcode-back" href="../../index.html#pax2graphml.extract.mergeNodes">[docs]</a><span class="k">def</span> <span class="nf">mergeNodes</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span><span class="n">exnode</span><span class="p">,</span><span class="n">nnode</span><span class="p">,</span><span class="n">removeNode</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Merge two nodes of a graph, presserving edges and properties:</span>
+
+<span class="sd">    :param gr: a graph</span>
+<span class="sd">    :param exnode: first node to ne merged</span>
+<span class="sd">    :param nnode: second node to ne merged</span>
+<span class="sd">    :param removeNode: if True, remove exnode</span>
+<span class="sd">    :return: the modified graph</span>
+<span class="sd">    :rtype: graph </span>
+<span class="sd"> </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="n">properties</span><span class="o">.</span><span class="n">copyNodeProperties</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span><span class="n">exnode</span><span class="p">,</span><span class="n">nnode</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">exnode</span><span class="o">.</span><span class="n">in_edges</span><span class="p">():</span>
+         <span class="n">ee</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">source</span><span class="p">(),</span><span class="n">nnode</span><span class="p">)</span>
+         <span class="k">if</span> <span class="n">ee</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>   
+           <span class="n">newEdge</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">source</span><span class="p">(),</span><span class="n">nnode</span><span class="p">)</span>
+           <span class="n">properties</span><span class="o">.</span><span class="n">copyEdgeProperties</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">newEdge</span><span class="p">)</span>
+            
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">exnode</span><span class="o">.</span><span class="n">out_edges</span><span class="p">():</span>
+        <span class="n">ee</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="n">nnode</span><span class="p">,</span><span class="n">e</span><span class="o">.</span><span class="n">target</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">ee</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>   
+            <span class="n">newEdge</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">nnode</span><span class="p">,</span><span class="n">e</span><span class="o">.</span><span class="n">target</span><span class="p">())</span> 
+            <span class="n">properties</span><span class="o">.</span><span class="n">copyEdgeProperties</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">newEdge</span><span class="p">)</span>
+           
+    <span class="n">earr</span><span class="o">=</span><span class="nb">list</span><span class="p">()</span>            
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">exnode</span><span class="o">.</span><span class="n">in_edges</span><span class="p">():</span>
+        <span class="n">earr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">exnode</span><span class="o">.</span><span class="n">out_edges</span><span class="p">():</span>
+        <span class="n">earr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">earr</span><span class="p">:</span>
+        <span class="n">gr</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>   
+    <span class="k">if</span> <span class="n">removeNode</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>    
+       <span class="n">gr</span><span class="o">.</span><span class="n">remove_vertex</span><span class="p">(</span> <span class="n">exnode</span><span class="p">)</span></div>
+
+
+
+    
+<span class="k">def</span> <span class="nf">__mergeNodesByPropValues</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span> <span class="n">propertiesList</span><span class="p">,</span><span class="n">caseSensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+  <span class="sd">&quot;&quot;&quot;Define a property to  all nodes of a graph, that share the same value of a list of properties:</span>
+
+<span class="sd">  :param gr: a graph</span>
+<span class="sd">  :param propertiesList: a list of node properties</span>
+<span class="sd">  :param caseSensitive: if True, the value match is case sensitive</span>
+<span class="sd">  :return: a property</span>
+<span class="sd">  :rtype: dict </span>
+<span class="sd"> </span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+
+  <span class="n">spropList</span><span class="o">=</span><span class="nb">list</span><span class="p">()</span>  
+  <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;:&quot;</span>
+  <span class="n">gprop</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">new_vertex_property</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">sprop</span> <span class="ow">in</span>  <span class="n">propertiesList</span><span class="p">:</span>
+       <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">gr</span><span class="o">.</span><span class="n">vertex_properties</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+          <span class="k">if</span> <span class="n">sprop</span><span class="o">==</span><span class="n">prop</span><span class="p">:</span>
+                <span class="n">spropList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sprop</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">gr</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span> 
+     <span class="n">gvp</span><span class="o">=</span><span class="nb">list</span><span class="p">()</span>
+     <span class="k">for</span> <span class="n">sprop</span> <span class="ow">in</span>  <span class="n">spropList</span><span class="p">:</span>
+         <span class="n">pv</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">sprop</span><span class="p">][</span><span class="n">v</span><span class="p">])</span>  
+         <span class="n">gvp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pv</span><span class="p">)</span>
+         <span class="n">fval</span><span class="o">=</span><span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gvp</span><span class="p">)</span>
+         <span class="k">if</span> <span class="n">caseSensitive</span><span class="o">==</span><span class="kc">False</span><span class="p">:</span>
+              <span class="n">fval</span><span class="o">=</span><span class="n">fval</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+     <span class="n">gprop</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">=</span><span class="n">fval</span>
+  <span class="k">return</span>  <span class="n">gprop</span>
+
+ 
+<div class="viewcode-block" id="mergeGraph"><a class="viewcode-back" href="../../index.html#pax2graphml.extract.mergeGraph">[docs]</a><span class="k">def</span> <span class="nf">mergeGraph</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span><span class="n">gr2</span><span class="p">,</span><span class="n">propertiesList</span><span class="p">,</span><span class="n">addVoid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">caseSensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+  <span class="sd">&quot;&quot;&quot;Merge two graphs. all nodes of both graphs, that share the same value of a list of properties are merged:</span>
+
+<span class="sd">  :param gr1: first graph</span>
+<span class="sd">  :param gr2: second graph</span>
+<span class="sd">  :param propertiesList: a list of node properties</span>
+<span class="sd">  :param addVoid:  if True, nodes with void values are merged</span>
+<span class="sd">  :param caseSensitive: if True, the value match is case sensitive</span>
+<span class="sd">  :return: the merged graph</span>
+<span class="sd">  :rtype: graph </span>
+<span class="sd"> </span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+    
+  <span class="n">gprop1</span><span class="o">=</span><span class="n">__mergeNodesByPropValues</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span> <span class="n">propertiesList</span><span class="p">,</span><span class="n">caseSensitive</span><span class="p">)</span>
+  <span class="n">gprop2</span><span class="o">=</span><span class="n">__mergeNodesByPropValues</span><span class="p">(</span><span class="n">gr2</span><span class="p">,</span> <span class="n">propertiesList</span><span class="p">,</span><span class="n">caseSensitive</span><span class="p">)</span>
+  <span class="n">nnodeMap</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
+  <span class="n">domergeMap</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
+  <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span> 
+  <span class="n">rprop</span> <span class="o">=</span> <span class="n">gr1</span><span class="o">.</span><span class="n">new_vertex_property</span><span class="p">(</span><span class="s2">&quot;int&quot;</span><span class="p">)</span>
+ 
+  <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">gr1</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span> 
+     
+    <span class="n">keyu</span><span class="o">=</span><span class="n">gprop1</span><span class="p">[</span><span class="n">u</span><span class="p">]</span>
+    <span class="n">rprop</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">gr2</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span> 
+        <span class="n">keyv</span><span class="o">=</span><span class="n">gprop2</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+        <span class="n">domerge</span><span class="o">=</span><span class="kc">False</span>
+        <span class="k">if</span> <span class="n">keyu</span> <span class="ow">is</span>   <span class="kc">None</span> <span class="ow">or</span>  <span class="n">keyv</span> <span class="ow">is</span>   <span class="kc">None</span> <span class="ow">or</span> <span class="n">keyu</span><span class="o">==</span><span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">if</span>  <span class="n">addVoid</span><span class="o">==</span><span class="kc">True</span> <span class="ow">and</span> <span class="n">keyu</span><span class="o">==</span><span class="n">keyv</span><span class="p">:</span>
+                <span class="n">domerge</span><span class="o">=</span><span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">kvu</span><span class="o">=</span><span class="n">keyu</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span>
+            <span class="n">kvv</span><span class="o">=</span><span class="n">keyv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">euv</span> <span class="ow">in</span> <span class="n">kvu</span><span class="p">:</span>
+               <span class="k">for</span> <span class="n">evv</span> <span class="ow">in</span> <span class="n">kvv</span><span class="p">:</span>
+                  <span class="k">if</span>  <span class="n">euv</span><span class="o">==</span><span class="n">evv</span><span class="p">:</span>
+                      <span class="n">domerge</span><span class="o">=</span><span class="kc">True</span>
+                      <span class="k">break</span>         
+        <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nnodeMap</span><span class="p">:</span>
+            
+            <span class="n">nnode</span><span class="o">=</span><span class="n">gr1</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">()</span> 
+            <span class="n">nnodeMap</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)]</span><span class="o">=</span><span class="n">nnode</span>
+           
+            <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">gr1</span><span class="o">.</span><span class="n">vertex_properties</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">gr1</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">nnode</span><span class="p">]</span><span class="o">=</span><span class="n">gr2</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">nnode</span><span class="o">=</span><span class="n">nnodeMap</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)]</span>
+            
+
+ 
+        <span class="k">if</span> <span class="n">domerge</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+           
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">p2g</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">showNodeProp</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span> <span class="n">nnode</span><span class="p">,</span> <span class="s2">&quot; , &quot;</span><span class="p">))</span>
+            <span class="n">ki</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">nnode</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ki</span> <span class="ow">in</span> <span class="n">domergeMap</span><span class="p">:</span>
+                <span class="n">kset</span><span class="o">=</span><span class="n">domergeMap</span><span class="p">[</span><span class="n">ki</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">kset</span><span class="o">=</span><span class="nb">set</span><span class="p">()</span>
+            <span class="n">vu</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+            <span class="n">kset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">vu</span><span class="p">)</span>    
+            <span class="n">domergeMap</span><span class="p">[</span><span class="n">ki</span><span class="p">]</span><span class="o">=</span><span class="n">kset</span>
+            <span class="n">rprop</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span>
+             
+            
+  <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">gr2</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+    
+    <span class="n">nnode</span><span class="o">=</span><span class="n">nnodeMap</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">in_edges</span><span class="p">():</span>
+        
+         <span class="n">source</span><span class="o">=</span><span class="n">nnodeMap</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">source</span><span class="p">())]</span>      
+         <span class="n">ee</span><span class="o">=</span><span class="n">gr1</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="n">source</span><span class="p">,</span><span class="n">nnode</span><span class="p">)</span>
+         <span class="k">if</span> <span class="n">ee</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>   
+            <span class="n">newEdge</span><span class="o">=</span><span class="n">gr1</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">source</span><span class="p">,</span><span class="n">nnode</span><span class="p">)</span>
+            <span class="n">properties</span><span class="o">.</span><span class="n">copyEdgeProperties</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">newEdge</span><span class="p">)</span>
+                      
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">out_edges</span><span class="p">():</span>
+        <span class="n">target</span><span class="o">=</span><span class="n">nnodeMap</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">target</span><span class="p">())]</span>                     
+        <span class="n">ee</span><span class="o">=</span><span class="n">gr1</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="n">nnode</span><span class="p">,</span><span class="n">target</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ee</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>   
+             <span class="n">newEdge</span><span class="o">=</span><span class="n">gr1</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">nnode</span><span class="p">,</span><span class="n">target</span><span class="p">)</span> 
+             <span class="n">properties</span><span class="o">.</span><span class="n">copyEdgeProperties</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">newEdge</span><span class="p">)</span>
+ 
+  <span class="n">nmap</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
+ 
+  <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">gr1</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span> 
+ 
+    <span class="n">nid</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">nmap</span><span class="p">[</span><span class="n">nid</span><span class="p">]</span><span class="o">=</span><span class="n">n</span>
+ 
+            
+  <span class="k">for</span> <span class="n">nid</span> <span class="ow">in</span> <span class="n">nmap</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> 
+        <span class="n">nnode</span><span class="o">=</span><span class="n">nmap</span><span class="p">[</span><span class="n">nid</span><span class="p">]</span>
+    
+        <span class="k">if</span> <span class="n">nid</span> <span class="ow">in</span> <span class="n">domergeMap</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+           
+           <span class="n">ulist</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">domergeMap</span><span class="p">[</span><span class="n">nid</span><span class="p">])</span>
+           <span class="k">for</span> <span class="n">ix</span> <span class="ow">in</span> <span class="n">ulist</span><span class="p">:</span>
+              <span class="n">u</span><span class="o">=</span><span class="n">nmap</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span>
+       
+              <span class="n">mergeNodes</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span><span class="n">u</span><span class="p">,</span><span class="n">nnode</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span>
+             
+  <span class="n">narr</span><span class="o">=</span><span class="nb">list</span><span class="p">()</span>              
+  <span class="k">for</span> <span class="n">nid</span> <span class="ow">in</span> <span class="n">nmap</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> 
+        <span class="n">u</span><span class="o">=</span><span class="n">nmap</span><span class="p">[</span><span class="n">nid</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">rprop</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">rprop</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+           <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;  --&gt;&gt;&gt;&gt;&quot;</span><span class="o">+</span><span class="n">p2g</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">showNodeProp</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="s2">&quot; , &quot;</span><span class="p">))</span> 
+           <span class="n">narr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">narr</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+           <span class="n">gr1</span><span class="o">.</span><span class="n">remove_vertex</span><span class="p">(</span><span class="n">narr</span><span class="p">)</span>
+
+ 
+  <span class="k">return</span> <span class="n">gr1</span></div>
+
+
+
+
+<div class="viewcode-block" id="mergeGraphNodesByProperties"><a class="viewcode-back" href="../../index.html#pax2graphml.extract.mergeGraphNodesByProperties">[docs]</a><span class="k">def</span> <span class="nf">mergeGraphNodesByProperties</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span><span class="n">propertiesList</span><span class="p">,</span><span class="n">addVoid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">caseSensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+
+  <span class="sd">&quot;&quot;&quot;Merge all nodes of a graph, that share the same value of a list of properties:</span>
+
+<span class="sd">  :param gr: a graph</span>
+<span class="sd">  :param propertiesList: a list of node properties</span>
+<span class="sd">  :param caseSensitive: if True, the value match is case sensitive</span>
+<span class="sd">  :return: the modified graph</span>
+<span class="sd">  :rtype: graph </span>
+<span class="sd"> </span>
+<span class="sd">  &quot;&quot;&quot;</span>
+    
+  <span class="n">gprop1</span><span class="o">=</span><span class="n">__mergeNodesByPropValues</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span> <span class="n">propertiesList</span><span class="p">,</span><span class="n">caseSensitive</span><span class="p">)</span>
+  <span class="n">nnodeMap</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
+  <span class="n">domergeMap</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
+  <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span> 
+  <span class="n">rprop</span> <span class="o">=</span> <span class="n">gr1</span><span class="o">.</span><span class="n">new_vertex_property</span><span class="p">(</span><span class="s2">&quot;int&quot;</span><span class="p">)</span>
+ 
+  <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">gr1</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span> 
+     
+    <span class="n">keyu</span><span class="o">=</span><span class="n">gprop1</span><span class="p">[</span><span class="n">u</span><span class="p">]</span>
+    <span class="n">rprop</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span>  <span class="n">gr1</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span> 
+        <span class="n">keyv</span><span class="o">=</span><span class="n">gprop1</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+        <span class="n">nnodeMap</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)]</span><span class="o">=</span><span class="n">v</span>
+        <span class="n">domerge</span><span class="o">=</span><span class="kc">False</span>
+        <span class="k">if</span> <span class="n">keyu</span> <span class="ow">is</span>   <span class="kc">None</span> <span class="ow">or</span>  <span class="n">keyv</span> <span class="ow">is</span>   <span class="kc">None</span> <span class="ow">or</span> <span class="n">keyu</span><span class="o">==</span><span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">if</span>  <span class="n">addVoid</span><span class="o">==</span><span class="kc">True</span> <span class="ow">and</span> <span class="n">keyu</span><span class="o">==</span><span class="n">keyv</span><span class="p">:</span>
+                <span class="n">domerge</span><span class="o">=</span><span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">kvu</span><span class="o">=</span><span class="n">keyu</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span>
+            <span class="n">kvv</span><span class="o">=</span><span class="n">keyv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">euv</span> <span class="ow">in</span> <span class="n">kvu</span><span class="p">:</span>
+               <span class="k">for</span> <span class="n">evv</span> <span class="ow">in</span> <span class="n">kvv</span><span class="p">:</span>
+                  <span class="k">if</span>  <span class="n">euv</span><span class="o">==</span><span class="n">evv</span><span class="p">:</span>
+                      <span class="n">domerge</span><span class="o">=</span><span class="kc">True</span>
+                      <span class="k">break</span>         
+ 
+ 
+        <span class="k">if</span> <span class="n">domerge</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+            <span class="n">nnode</span><span class="o">=</span><span class="n">u</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">p2g</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">showNodeProp</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span> <span class="n">nnode</span><span class="p">,</span> <span class="s2">&quot; , &quot;</span><span class="p">))</span>
+            <span class="n">ki</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">nnode</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ki</span> <span class="ow">in</span> <span class="n">domergeMap</span><span class="p">:</span>
+                <span class="n">kset</span><span class="o">=</span><span class="n">domergeMap</span><span class="p">[</span><span class="n">ki</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">kset</span><span class="o">=</span><span class="nb">set</span><span class="p">()</span>
+            <span class="n">vv</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">vv</span><span class="o">!=</span><span class="n">ki</span><span class="p">:</span>
+               <span class="n">kset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">vv</span><span class="p">)</span>    
+            
+            <span class="n">domergeMap</span><span class="p">[</span><span class="n">ki</span><span class="p">]</span><span class="o">=</span><span class="n">kset</span>
+            <span class="n">rprop</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span>
+
+ 
+  <span class="n">nmap</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
+    
+  <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">gr1</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span> 
+    <span class="n">nid</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">nmap</span><span class="p">[</span><span class="n">nid</span><span class="p">]</span><span class="o">=</span><span class="n">n</span>     
+  <span class="c1"># </span>
+  <span class="n">rmm</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
+  <span class="k">for</span> <span class="n">nid</span> <span class="ow">in</span> <span class="n">nmap</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> 
+        <span class="n">v</span><span class="o">=</span><span class="n">nmap</span><span class="p">[</span><span class="n">nid</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">nid</span> <span class="ow">in</span> <span class="n">domergeMap</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+           <span class="n">ulist</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">domergeMap</span><span class="p">[</span><span class="n">nid</span><span class="p">])</span>
+           <span class="k">for</span> <span class="n">ix</span> <span class="ow">in</span> <span class="n">ulist</span><span class="p">:</span> 
+              <span class="n">u</span><span class="o">=</span><span class="n">nmap</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span>
+              <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;-v--</span><span class="si">%s</span><span class="s2">   &quot;</span><span class="o">%</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="p">))</span> 
+              <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">u</span><span class="p">)</span><span class="o">!=</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                 <span class="n">st</span><span class="o">=</span><span class="nb">set</span><span class="p">()</span>  
+                 <span class="n">st</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ix</span><span class="p">))</span>
+                 <span class="n">st</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">nid</span><span class="p">))</span>  
+                 <span class="n">k</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">st</span><span class="p">))</span>
+                 <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">rmm</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">rmm</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span>     
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;-v u--</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> &quot;</span><span class="o">%</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">u</span><span class="p">)))</span> 
+                    <span class="n">rprop</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">=</span><span class="mi">2</span>
+                    <span class="n">mergeNodes</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span>
+         
+  <span class="n">narr</span><span class="o">=</span><span class="nb">list</span><span class="p">()</span>              
+  <span class="k">for</span> <span class="n">nid</span> <span class="ow">in</span> <span class="n">nmap</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> 
+        <span class="n">u</span><span class="o">=</span><span class="n">nmap</span><span class="p">[</span><span class="n">nid</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">rprop</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">rprop</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">==</span><span class="mi">2</span><span class="p">:</span>
+           <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;  --&gt;&gt;&gt;&gt;&quot;</span><span class="o">+</span><span class="n">p2g</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">showNodeProp</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="s2">&quot; , &quot;</span><span class="p">))</span> 
+           <span class="n">narr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">narr</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+           <span class="n">gr1</span><span class="o">.</span><span class="n">remove_vertex</span><span class="p">(</span><span class="n">narr</span><span class="p">)</span>
+
+ 
+  <span class="k">return</span> <span class="n">gr1</span>    </div>
+
+
+
+
+
+ 
+<div class="viewcode-block" id="subGraphFilter"><a class="viewcode-back" href="../../index.html#pax2graphml.extract.subGraphFilter">[docs]</a><span class="k">def</span> <span class="nf">subGraphFilter</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">nbIterations</span><span class="p">,</span> <span class="n">centralNode</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="nb">all</span><span class="p">,</span> <span class="n">nbNodesLimit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nbNeighbours</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;define a sub graph filter according to parameters:</span>
+
+<span class="sd">    :param gr: a graph</span>
+<span class="sd">    :param nbIterations: number of iterations</span>
+<span class="sd">    :param centralNode: selected node id</span>
+<span class="sd">    :param direction: edge direction (all,in,out)</span>
+<span class="sd">    :param nbNodesLimit:  maximum node number</span>
+<span class="sd">    :param nbNeighbours:  number of neighbours</span>
+<span class="sd">    :return: the filter</span>
+<span class="sd">    :rtype: dict </span>
+<span class="sd"> </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">vSubFilt</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">())))</span>
+    <span class="n">neighbourhood</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">(</span><span class="n">centralNode</span><span class="p">)]</span>
+    <span class="n">newNeighbours</span><span class="o">=</span><span class="n">neighbourhood</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">nbIterations</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">newNeighboursTamp</span><span class="o">=</span><span class="n">newNeighbours</span>
+        <span class="n">newNeighbours</span><span class="o">=</span><span class="p">[]</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">direction</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">direction</span><span class="p">)</span><span class="o">==</span><span class="s2">&quot;all&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">newNeighboursTamp</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">get_all_neighbours</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">neighbourhood</span><span class="p">):</span>
+                        <span class="n">newNeighbours</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">direction</span><span class="p">)</span><span class="o">==</span><span class="s2">&quot;in&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">newNeighboursTamp</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">get_in_neighbours</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">neighbourhood</span><span class="p">):</span>
+                        <span class="n">newNeighbours</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">direction</span><span class="p">)</span><span class="o">==</span><span class="s2">&quot;out&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">newNeighboursTamp</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">get_out_neighbours</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">neighbourhood</span><span class="p">):</span>
+                        <span class="n">newNeighbours</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">ERROR: DIRECTION UNDEFINED (must be {all, in, out})</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">newNeighbours</span><span class="o">==</span><span class="p">[]):</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">BREAK: NO NEW NEIGHBOURS AT ITERATION </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">nbNeighbours</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span><span class="c1">#choose randomly a given number (if not none) of neighbours</span>
+            <span class="n">newNeighbours</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">newNeighbours</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">nbNeighbours</span><span class="p">))</span>
+
+        <span class="n">newNeighbours</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">newNeighbours</span><span class="p">)</span>
+        <span class="n">neighbourhood</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">neighbourhood</span><span class="p">,</span> <span class="n">newNeighbours</span><span class="p">))</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">nbNodesLimit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">neighbourhood</span><span class="p">)</span><span class="o">&gt;=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nbNodesLimit</span><span class="p">)):</span><span class="c1">#break if cardinality is over the limit</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">BREAK: CARDINALITY REACHED THE GIVEN LIMIT</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">break</span>
+
+
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">(</span><span class="n">neighbourhood</span><span class="p">):</span><span class="c1">#build filter</span>
+        <span class="n">vSubFilt</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span>
+    <span class="k">return</span> <span class="n">vSubFilt</span></div>
+
+
+
+ 
+
+<div class="viewcode-block" id="extractSubGraph"><a class="viewcode-back" href="../../index.html#pax2graphml.extract.extractSubGraph">[docs]</a><span class="k">def</span> <span class="nf">extractSubGraph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">nbIterations</span><span class="p">,</span> <span class="n">chosenNodeId</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="n">nbNodesLimit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nbNeighbours</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;extract a sub graph  according to parameters:</span>
+
+<span class="sd">    :param gr: a graph</span>
+<span class="sd">    :param nbIterations: number of iterations</span>
+<span class="sd">    :param chosenNodeId: selected node id</span>
+<span class="sd">    :param direction: edge direction (all,in,out)</span>
+<span class="sd">    :param nbNodesLimit:  maximum node number</span>
+<span class="sd">    :param nbNeighbours:  number of neighbours</span>
+<span class="sd">    :return: the sub graph</span>
+<span class="sd">    :rtype: graph </span>
+<span class="sd"> </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">chosenNodeId</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">centralNode</span><span class="o">=</span><span class="n">gt</span><span class="o">.</span><span class="n">find_vertex</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="o">.</span><span class="n">_graphml_vertex_id</span><span class="p">,</span> <span class="n">chosenNodeId</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+ 
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">centralNode</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_vertices</span><span class="p">())</span>
+     
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Central Node Name: &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="n">centralNode</span><span class="p">]))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Central Node Id: &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="o">.</span><span class="n">_graphml_vertex_id</span><span class="p">[</span><span class="n">centralNode</span><span class="p">]))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Central Node Degree: &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_total_degrees</span><span class="p">([</span><span class="n">centralNode</span><span class="p">])))</span>
+
+    <span class="n">vSubFilt</span><span class="o">=</span><span class="n">subGraphFilter</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">nbIterations</span><span class="p">,</span> <span class="n">centralNode</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">nbNodesLimit</span><span class="p">,</span> <span class="n">nbNeighbours</span><span class="p">)</span>
+    <span class="n">subG</span> <span class="o">=</span> <span class="n">gt</span><span class="o">.</span><span class="n">GraphView</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">vfilt</span><span class="o">=</span><span class="n">vSubFilt</span><span class="p">)</span>
+    <span class="n">subG</span><span class="o">=</span><span class="n">gt</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">subG</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+
+
+<div class="viewcode-block" id="generateSubGraphByNodeId"><a class="viewcode-back" href="../../index.html#pax2graphml.extract.generateSubGraphByNodeId">[docs]</a><span class="k">def</span> <span class="nf">generateSubGraphByNodeId</span><span class="p">(</span><span class="n">inputGraph</span><span class="p">,</span><span class="n">outputGraph</span> <span class="p">,</span><span class="n">nodeid</span><span class="p">,</span><span class="n">direction</span><span class="o">=</span><span class="s2">&quot;in&quot;</span><span class="p">,</span><span class="n">nbNeighbours</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+
+      <span class="sd">&quot;&quot;&quot;extract a connected component holding a node specified by node id:</span>
+
+<span class="sd">      :param inputGraph: input graphmlfile</span>
+<span class="sd">      :param outputGraph: output graphmlfile</span>
+<span class="sd">      :param nodeid: selected node id</span>
+<span class="sd">      :param direction: edge direction (all,in,out)</span>
+<span class="sd">      :param nbNeighbours:  number of neighbours</span>
+<span class="sd">      :return: the sub graph</span>
+<span class="sd">      :rtype: graph </span>
+<span class="sd"> </span>
+<span class="sd">      &quot;&quot;&quot;</span>
+      <span class="n">g</span><span class="o">=</span><span class="n">p2g</span><span class="o">.</span><span class="n">graph_explore</span><span class="o">.</span><span class="n">loadGraphml</span><span class="p">(</span><span class="n">inputGraph</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+      <span class="n">g</span> <span class="o">=</span> <span class="n">extractSubGraph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">chosenNodeId</span><span class="o">=</span><span class="n">nodeid</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="n">direction</span><span class="p">,</span> <span class="n">nbNeighbours</span><span class="o">=</span><span class="n">nbNeighbours</span><span class="p">)</span>
+      <span class="k">return</span> <span class="n">g</span></div>
+
+
+
+
+
+ 
+
+
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">pax2graphml</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  <li><a href="../pax2graphml.html">pax2graphml</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019-2020, Francois Moreews, Hugo Simon.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
