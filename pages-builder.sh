@@ -86,7 +86,7 @@ if [ -d "_build" ]
 then
   listexport
   extractpage
-  #adddoc
+  adddoc
 else
 	logginfo "directory _build does not exists"
 fi
