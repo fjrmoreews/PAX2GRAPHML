@@ -59,12 +59,12 @@
 <span class="kn">from</span> <span class="nn">pax2graphml</span> <span class="kn">import</span> <span class="n">graph_explore</span>
 
  
-<div class="viewcode-block" id="paxToReactionGraph"><a class="viewcode-back" href="../index.html#pax_import.paxToReactionGraph">[docs]</a><span class="k">def</span> <span class="nf">paxToReactionGraph</span><span class="p">(</span><span class="n">biopaxfile</span><span class="p">,</span><span class="n">graphmlfile</span><span class="p">,</span><span class="n">blackList</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="biopax_to_reaction_graph"><a class="viewcode-back" href="../index.html#pax_import.biopax_to_reaction_graph">[docs]</a><span class="k">def</span> <span class="nf">biopax_to_reaction_graph</span><span class="p">(</span><span class="n">biopax_file</span><span class="p">,</span><span class="n">graphml_file</span><span class="p">,</span><span class="n">blackList</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;Generate a reaction graph with binary interactions as a GRAPHML file from a BIOPAX file. Tte BIOPAX file is filtered, keeping only the regulation part (metabolism and genes). The process use PAXTOOLS, need a lot of memory and can be slow for big BIOPAX files:</span>
 
-<span class="sd">    :param biopaxfile: input BIOPAX file</span>
-<span class="sd">    :param biopaxfile: output GRAPHML reaction file</span>
+<span class="sd">    :param biopax_file: input BIOPAX file</span>
+<span class="sd">    :param graphml_file: output GRAPHML reaction file</span>
 <span class="sd">    :return: void</span>
 <span class="sd">    :rtype: None</span>
 <span class="sd">  </span>
@@ -77,7 +77,7 @@
     <span class="k">else</span><span class="p">:</span>
        <span class="n">blackListOpt</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
 
-    <span class="n">cmd</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> -cp </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> -i &#39;</span><span class="si">%s</span><span class="s2">&#39; -o &#39;</span><span class="si">%s</span><span class="s2">&#39; -t &#39;</span><span class="si">%s</span><span class="s2">&#39; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">__jvm</span><span class="p">(),</span><span class="n">utils</span><span class="o">.</span><span class="n">__jvmopt</span><span class="p">(),</span><span class="n">utils</span><span class="o">.</span><span class="n">__jarpath</span><span class="p">(),</span><span class="bp">cls</span><span class="p">,</span><span class="n">biopaxfile</span><span class="p">,</span><span class="n">graphmlfile</span><span class="p">,</span><span class="n">utils</span><span class="o">.</span><span class="n">__template</span><span class="p">(),</span> <span class="n">blackListOpt</span><span class="p">)</span>
+    <span class="n">cmd</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> -cp </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> -i &#39;</span><span class="si">%s</span><span class="s2">&#39; -o &#39;</span><span class="si">%s</span><span class="s2">&#39; -t &#39;</span><span class="si">%s</span><span class="s2">&#39; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">__jvm</span><span class="p">(),</span><span class="n">utils</span><span class="o">.</span><span class="n">__jvmopt</span><span class="p">(),</span><span class="n">utils</span><span class="o">.</span><span class="n">__jarpath</span><span class="p">(),</span><span class="bp">cls</span><span class="p">,</span><span class="n">biopax_file</span><span class="p">,</span><span class="n">graphml_file</span><span class="p">,</span><span class="n">utils</span><span class="o">.</span><span class="n">__template</span><span class="p">(),</span> <span class="n">blackListOpt</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">__runCmd</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span></div>
 
 
@@ -89,62 +89,63 @@
 <span class="sd">&quot;&quot;&quot;</span>
  
 
-<div class="viewcode-block" id="paxMerge"><a class="viewcode-back" href="../index.html#pax_import.paxMerge">[docs]</a><span class="k">def</span> <span class="nf">paxMerge</span><span class="p">(</span><span class="n">biopaxfilelist</span><span class="p">,</span><span class="n">outputfile</span><span class="o">=</span><span class="s2">&quot;output.owl&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="biopax_merge"><a class="viewcode-back" href="../index.html#pax_import.biopax_merge">[docs]</a><span class="k">def</span> <span class="nf">biopax_merge</span><span class="p">(</span><span class="n">biopax_list</span><span class="p">,</span><span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;output.owl&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Merge multiple BIOPAX (RDSF/XML) files. The process use PAXTOOLS, need a lot of memory and can be slow for big BIOPAX files:</span>
 
-<span class="sd">    :param biopaxfilelist: a list of  input BIOPAX files to be merged</span>
-<span class="sd">    :param outputfile: output BIOPAX file</span>
+<span class="sd">    :param biopax_list: a list of  input BIOPAX files to be merged</span>
+<span class="sd">    :param output_file: output BIOPAX file</span>
 <span class="sd">    :return: void</span>
 <span class="sd">    :rtype: None</span>
 <span class="sd">  </span>
 <span class="sd">    &quot;&quot;&quot;</span>     
     <span class="bp">cls</span><span class="o">=</span><span class="s2">&quot;dyliss.biopax.app.Pax2Merge&quot;</span>
-    <span class="n">biopaxfilestr</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">biopaxfilelist</span><span class="p">)</span>
+    <span class="n">biopax_filestr</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">biopax_list</span><span class="p">)</span>
 
 
-    <span class="n">cmd</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> -cp </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> -i &#39;</span><span class="si">%s</span><span class="s2">&#39; -o &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">__jvm</span><span class="p">(),</span><span class="n">utils</span><span class="o">.</span><span class="n">__jvmopt</span><span class="p">(),</span><span class="n">utils</span><span class="o">.</span><span class="n">__jarpath</span><span class="p">(),</span><span class="bp">cls</span><span class="p">,</span><span class="n">biopaxfilestr</span><span class="p">,</span><span class="n">outputfile</span><span class="p">)</span>
+    <span class="n">cmd</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> -cp </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> -i &#39;</span><span class="si">%s</span><span class="s2">&#39; -o &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">__jvm</span><span class="p">(),</span><span class="n">utils</span><span class="o">.</span><span class="n">__jvmopt</span><span class="p">(),</span><span class="n">utils</span><span class="o">.</span><span class="n">__jarpath</span><span class="p">(),</span><span class="bp">cls</span><span class="p">,</span><span class="n">biopax_filestr</span><span class="p">,</span><span class="n">output_file</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">__runCmd</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span></div>
 
  
 
-<div class="viewcode-block" id="paxFilter"><a class="viewcode-back" href="../index.html#pax_import.paxFilter">[docs]</a><span class="k">def</span> <span class="nf">paxFilter</span><span class="p">(</span><span class="n">biopaxfile</span><span class="p">,</span><span class="n">filterdL</span><span class="p">,</span><span class="n">outputfile</span><span class="o">=</span><span class="s2">&quot;output.owl&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="pax_filter"><a class="viewcode-back" href="../index.html#pax_import.pax_filter">[docs]</a><span class="k">def</span> <span class="nf">pax_filter</span><span class="p">(</span><span class="n">biopax_file</span><span class="p">,</span><span class="n">datasources</span><span class="p">,</span><span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;output.owl&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Remove Datasources  from a BIOPAX file. The process use PAXTOOLS, need a lot of memory and can be slow for big BIOPAX files:</span>
 
-<span class="sd">    :param biopaxfile: input BIOPAX files </span>
-<span class="sd">    :param outputfile: output BIOPAX file</span>
+<span class="sd">    :param biopax_file: input BIOPAX files </span>
+<span class="sd">    :param datasources: list of datasources to exclude </span>
+<span class="sd">    :param output_file: output BIOPAX file</span>
 <span class="sd">    :return: void</span>
 <span class="sd">    :rtype: None</span>
 <span class="sd">  </span>
 <span class="sd">    &quot;&quot;&quot;</span>       
     <span class="bp">cls</span><span class="o">=</span><span class="s2">&quot;dyliss.biopax.app.BioPaxFilter&quot;</span>
-    <span class="n">filterd</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filterdL</span><span class="p">)</span>
-    <span class="n">cmd</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> -cp </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">  </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">__jvm</span><span class="p">(),</span><span class="n">utils</span><span class="o">.</span><span class="n">__jvmopt</span><span class="p">(),</span><span class="n">utils</span><span class="o">.</span><span class="n">__jarpath</span><span class="p">(),</span><span class="bp">cls</span><span class="p">,</span><span class="n">biopaxfile</span><span class="p">,</span><span class="n">filterd</span><span class="p">,</span><span class="n">outputfile</span><span class="p">)</span>
+    <span class="n">filterd</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">datasources</span><span class="p">)</span>
+    <span class="n">cmd</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> -cp </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">  </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">__jvm</span><span class="p">(),</span><span class="n">utils</span><span class="o">.</span><span class="n">__jvmopt</span><span class="p">(),</span><span class="n">utils</span><span class="o">.</span><span class="n">__jarpath</span><span class="p">(),</span><span class="bp">cls</span><span class="p">,</span><span class="n">biopax_file</span><span class="p">,</span><span class="n">filterd</span><span class="p">,</span><span class="n">output_file</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">__runCmd</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span></div>
 
 
 
 
 
-<div class="viewcode-block" id="generateNameAliases"><a class="viewcode-back" href="../index.html#pax_import.generateNameAliases">[docs]</a><span class="k">def</span> <span class="nf">generateNameAliases</span><span class="p">(</span><span class="n">biopaxfile</span><span class="p">,</span><span class="n">outputfile</span><span class="o">=</span><span class="s2">&quot;entities_aliases.json&quot;</span><span class="p">,</span><span class="n">opt</span><span class="o">=</span><span class="s2">&quot;--uri-ids&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="name_alias"><a class="viewcode-back" href="../index.html#pax_import.name_alias">[docs]</a><span class="k">def</span> <span class="nf">name_alias</span><span class="p">(</span><span class="n">biopax_file</span><span class="p">,</span><span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;entities_aliases.json&quot;</span><span class="p">,</span><span class="n">opt</span><span class="o">=</span><span class="s2">&quot;--uri-ids&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;#generate a json file with annottaions extracted from a BIOPAX file. The process use PAXTOOLS :</span>
 
-<span class="sd">    :param biopaxfile: input BIOPAX files </span>
-<span class="sd">    :param outputfile: output json file</span>
+<span class="sd">    :param biopax_file: input BIOPAX files </span>
+<span class="sd">    :param output_file: output json file</span>
 <span class="sd">    :param opt: output generation options</span>
 <span class="sd">    :return: void</span>
 <span class="sd">    :rtype: None</span>
 <span class="sd">  </span>
 <span class="sd">    &quot;&quot;&quot;</span>   
     <span class="bp">cls</span><span class="o">=</span><span class="s2">&quot;dyliss.biopax.app.P2GAliasProcessor&quot;</span>  
-    <span class="n">cmd</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> -cp </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> NAME_ALIAS &#39;</span><span class="si">%s</span><span class="s2">&#39; &#39;</span><span class="si">%s</span><span class="s2">&#39; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">__jvm</span><span class="p">(),</span><span class="n">utils</span><span class="o">.</span><span class="n">__jvmopt</span><span class="p">(),</span><span class="n">utils</span><span class="o">.</span><span class="n">__jarpath</span><span class="p">(),</span><span class="bp">cls</span><span class="p">,</span><span class="n">biopaxfile</span><span class="p">,</span><span class="n">outputfile</span><span class="p">,</span><span class="n">opt</span><span class="p">)</span>
+    <span class="n">cmd</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> -cp </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> NAME_ALIAS &#39;</span><span class="si">%s</span><span class="s2">&#39; &#39;</span><span class="si">%s</span><span class="s2">&#39; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">__jvm</span><span class="p">(),</span><span class="n">utils</span><span class="o">.</span><span class="n">__jvmopt</span><span class="p">(),</span><span class="n">utils</span><span class="o">.</span><span class="n">__jarpath</span><span class="p">(),</span><span class="bp">cls</span><span class="p">,</span><span class="n">biopax_file</span><span class="p">,</span><span class="n">output_file</span><span class="p">,</span><span class="n">opt</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">__runCmd</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span></div>
 
 
  
-<div class="viewcode-block" id="annotationDict"><a class="viewcode-back" href="../index.html#pax_import.annotationDict">[docs]</a><span class="k">def</span> <span class="nf">annotationDict</span><span class="p">(</span><span class="n">aliasfile</span><span class="p">):</span>
+<div class="viewcode-block" id="annotation_dict"><a class="viewcode-back" href="../index.html#pax_import.annotation_dict">[docs]</a><span class="k">def</span> <span class="nf">annotation_dict</span><span class="p">(</span><span class="n">alias_file</span><span class="p">):</span>
   <span class="sd">&quot;&quot;&quot;Create a dictionary from an annotation json file:</span>
 
-<span class="sd">  :param aliasfile: annotation json file</span>
+<span class="sd">  :param alias_file: annotation json file</span>
 <span class="sd">  :return: annotation dictionary</span>
 <span class="sd">  :rtype: dict</span>
 <span class="sd">  </span>
@@ -152,7 +153,7 @@
   
   <span class="n">alias</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
   <span class="n">dkey</span><span class="o">=</span><span class="s2">&quot;any&quot;</span>
-  <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">aliasfile</span><span class="p">)</span> <span class="k">as</span> <span class="n">jsf</span><span class="p">:</span>
+  <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">alias_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">jsf</span><span class="p">:</span>
     <span class="n">ar</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">jsf</span><span class="p">)</span>
     <span class="n">jsf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ar</span><span class="p">:</span>
@@ -167,33 +168,33 @@
            <span class="n">alias</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">t</span>
   <span class="k">return</span> <span class="n">alias</span></div>
 
-<div class="viewcode-block" id="joinAnnotation"><a class="viewcode-back" href="../index.html#pax_import.joinAnnotation">[docs]</a><span class="k">def</span> <span class="nf">joinAnnotation</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">aliasfile</span><span class="p">,</span><span class="n">annotField</span><span class="p">,</span> <span class="n">destField</span><span class="p">,</span><span class="n">deflt</span><span class="p">,</span> <span class="n">ptype</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="join_annotation"><a class="viewcode-back" href="../index.html#pax_import.join_annotation">[docs]</a><span class="k">def</span> <span class="nf">join_annotation</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">alias_file</span><span class="p">,</span><span class="n">annot_field</span><span class="p">,</span> <span class="n">dest_field</span><span class="p">,</span><span class="n">default_val</span><span class="p">,</span> <span class="n">property_type</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">):</span>
   
  
    <span class="sd">&quot;&quot;&quot;Populate a new node property with values extracted from an annotation json file:</span>
 
 <span class="sd">   :param propertiesfile: json annotation file    </span>
-<span class="sd">   :param annotField: field in json data dictionary to be processed</span>
-<span class="sd">   :param destField: new property name</span>
-<span class="sd">   :param deflt: property default value for None</span>
-<span class="sd">   :param ptype: new property type</span>
+<span class="sd">   :param annot_field: field in json data dictionary to be processed</span>
+<span class="sd">   :param dest_field: new property name</span>
+<span class="sd">   :param default_val: property default value for None</span>
+<span class="sd">   :param property_type: new property type</span>
 <span class="sd">   :return: annotation dictionary</span>
 <span class="sd">   :rtype: dict</span>
 <span class="sd">  </span>
 <span class="sd">   &quot;&quot;&quot;</span> 
-   <span class="n">mapd</span><span class="o">=</span><span class="n">annotationDict</span><span class="p">(</span><span class="n">aliasfile</span><span class="p">)</span>
+   <span class="n">mapd</span><span class="o">=</span><span class="n">annotation_dict</span><span class="p">(</span><span class="n">alias_file</span><span class="p">)</span>
   
    <span class="n">docreate</span><span class="o">=</span><span class="kc">True</span>
    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span>   <span class="n">g</span><span class="o">.</span><span class="n">vertex_properties</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="p">:</span>
     <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
-       <span class="k">if</span> <span class="n">p</span> <span class="o">==</span><span class="n">destField</span><span class="p">:</span>    
+       <span class="k">if</span> <span class="n">p</span> <span class="o">==</span><span class="n">dest_field</span><span class="p">:</span>    
             <span class="n">docreate</span><span class="o">=</span><span class="kc">False</span>
    <span class="k">if</span> <span class="n">docreate</span><span class="p">:</span>
-      <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">destField</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">new_vertex_property</span><span class="p">(</span><span class="n">ptype</span><span class="p">);</span>
+      <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">dest_field</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">new_vertex_property</span><span class="p">(</span><span class="n">property_type</span><span class="p">);</span>
     
    <span class="n">uri</span> <span class="o">=</span>  <span class="n">g</span><span class="o">.</span><span class="n">vertex_properties</span><span class="p">[</span><span class="s2">&quot;uri&quot;</span><span class="p">]</span>  
    <span class="n">provider</span> <span class="o">=</span>  <span class="n">g</span><span class="o">.</span><span class="n">vertex_properties</span><span class="p">[</span><span class="s2">&quot;provider&quot;</span><span class="p">]</span>
-   <span class="n">nprop</span> <span class="o">=</span>  <span class="n">g</span><span class="o">.</span><span class="n">vertex_properties</span><span class="p">[</span><span class="n">destField</span><span class="p">]</span>
+   <span class="n">nprop</span> <span class="o">=</span>  <span class="n">g</span><span class="o">.</span><span class="n">vertex_properties</span><span class="p">[</span><span class="n">dest_field</span><span class="p">]</span>
 
    
    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
@@ -208,14 +209,14 @@
           <span class="n">tupl</span><span class="o">=</span><span class="n">mapd</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
  
 
-          <span class="k">if</span> <span class="n">annotField</span> <span class="ow">in</span> <span class="n">tupl</span> <span class="p">:</span> 
-             <span class="n">nprop</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">tupl</span><span class="p">[</span><span class="n">annotField</span><span class="p">]</span>
+          <span class="k">if</span> <span class="n">annot_field</span> <span class="ow">in</span> <span class="n">tupl</span> <span class="p">:</span> 
+             <span class="n">nprop</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">tupl</span><span class="p">[</span><span class="n">annot_field</span><span class="p">]</span>
           <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">deflt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-             <span class="n">nprop</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">deflt</span>
+            <span class="k">if</span> <span class="n">default_val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+             <span class="n">nprop</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">default_val</span>
        <span class="k">else</span><span class="p">:</span>
-         <span class="k">if</span> <span class="n">deflt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">nprop</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">deflt</span></div>
+         <span class="k">if</span> <span class="n">default_val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">nprop</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">default_val</span></div>
 
 
 
@@ -235,7 +236,7 @@
             <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="o">.</span><span class="n">influenceType</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot;availability&quot;</span>
             <span class="n">qNode</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">()</span>
             <span class="c1">#Copie des informations</span>
-            <span class="n">properties</span><span class="o">.</span><span class="n">copyNodeProperties</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">qNode</span><span class="p">)</span>
+            <span class="n">properties</span><span class="o">.</span><span class="n">copy_node_properties</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">qNode</span><span class="p">)</span>
             <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="o">.</span><span class="n">influenceType</span><span class="p">[</span><span class="n">qNode</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot;quantity&quot;</span>
             <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="o">.</span><span class="n">_graphml_vertex_id</span><span class="p">[</span><span class="n">qNode</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="o">.</span><span class="n">_graphml_vertex_id</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;Q&quot;</span>
             <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="o">.</span><span class="n">color</span><span class="p">[</span><span class="n">qNode</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot;peru&quot;</span>
@@ -287,7 +288,7 @@
                             <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="o">.</span><span class="n">effect</span><span class="p">[</span><span class="n">sEdge</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;1&#39;</span>
                             <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="o">.</span><span class="n">color</span><span class="p">[</span><span class="n">sEdge</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;red&#39;</span>
                         <span class="k">else</span><span class="p">:</span>
-                             <span class="n">ed</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">edgeDescription</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
+                             <span class="n">ed</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">edge_description</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
                              <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;==&gt;ERROR:LINK PRODUCT, no ref vertex found   </span><span class="si">%s</span><span class="s2"> &quot;</span><span class="o">%</span><span class="p">(</span><span class="n">ed</span><span class="p">))</span>
                                 
                  <span class="k">except</span><span class="p">:</span>
@@ -306,7 +307,7 @@
                        
                         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rl</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
                             <span class="n">rr</span><span class="o">=</span><span class="n">rl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>    
-                            <span class="c1">#ed=utils.edgeDescription(g,e)</span>
+                            <span class="c1">#ed=utils.edge_description(g,e)</span>
                             <span class="c1">#print(&quot;==&gt;OK:LINK SUBSTRATE,  ref vertex found   %s &quot;%(ed))</span>
                             <span class="n">sEdge</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">rr</span> <span class="p">)</span>
  
@@ -321,7 +322,7 @@
                             <span class="n">g</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
                         <span class="k">else</span><span class="p">:</span>
-                             <span class="n">ed</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">edgeDescription</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
+                             <span class="n">ed</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">edge_description</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
                              <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;==&gt;ERROR:LINK ACTIVATOR, INHIBITOR, MODULATOR, no ref vertex found   </span><span class="si">%s</span><span class="s2"> &quot;</span><span class="o">%</span><span class="p">(</span><span class="n">ed</span><span class="p">))</span>
                                 
                 <span class="k">except</span><span class="p">:</span>
@@ -344,13 +345,13 @@
                        
                         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rl</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
                             <span class="n">rr</span><span class="o">=</span><span class="n">rl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>    
-                            <span class="c1">#ed=utils.edgeDescription(g,e)</span>
+                            <span class="c1">#ed=utils.edge_description(g,e)</span>
                             <span class="c1">#print(&quot;==&gt;OK:LINK SUBSTRATE,  ref vertex found   %s &quot;%(ed))</span>
                             <span class="n">sEdge</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">rr</span> <span class="p">)</span>
                             <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="o">.</span><span class="n">effect</span><span class="p">[</span><span class="n">sEdge</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;-1&#39;</span>
                             <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="o">.</span><span class="n">color</span><span class="p">[</span><span class="n">sEdge</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span>
                         <span class="k">else</span><span class="p">:</span>
-                             <span class="n">ed</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">edgeDescription</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
+                             <span class="n">ed</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">edge_description</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
                              <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;==&gt;ERROR:LINK SUBSTRATE, no ref vertex found   </span><span class="si">%s</span><span class="s2"> &quot;</span><span class="o">%</span><span class="p">(</span><span class="n">ed</span><span class="p">))</span>
                                 
                     <span class="k">except</span><span class="p">:</span>
@@ -379,7 +380,7 @@
                             <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="o">.</span><span class="n">effect</span><span class="p">[</span><span class="n">sEdge</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;-1&#39;</span>
                             <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="o">.</span><span class="n">color</span><span class="p">[</span><span class="n">sEdge</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;skyblue&#39;</span>
                     <span class="k">else</span><span class="p">:</span>
-                             <span class="n">ed</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">edgeDescription</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
+                             <span class="n">ed</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">edge_description</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
 
                              <span class="n">sbiopaxType</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="o">.</span><span class="n">biopaxType</span><span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">source</span><span class="p">()]</span>
                              <span class="n">tbiopaxType</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="o">.</span><span class="n">biopaxType</span><span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">target</span><span class="p">()]</span>   
@@ -400,33 +401,33 @@
 
 
 
-<div class="viewcode-block" id="reactionToInfluenceGraph"><a class="viewcode-back" href="../index.html#pax_import.reactionToInfluenceGraph">[docs]</a><span class="k">def</span> <span class="nf">reactionToInfluenceGraph</span><span class="p">(</span><span class="n">spaimG</span><span class="p">):</span>
+<div class="viewcode-block" id="reaction_to_influence_graph"><a class="viewcode-back" href="../index.html#pax_import.reaction_to_influence_graph">[docs]</a><span class="k">def</span> <span class="nf">reaction_to_influence_graph</span><span class="p">(</span><span class="n">reactionGraph</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;generate an influence graph from a checked reaction graph:</span>
 
-<span class="sd">    :param spaimG: checked reaction graph   </span>
+<span class="sd">    :param reactionGraph: checked reaction graph   </span>
 <span class="sd">    :return: influence graph</span>
 <span class="sd">    :rtype: graph object</span>
 <span class="sd">  </span>
 <span class="sd">    &quot;&quot;&quot;</span> 
 
-    <span class="n">infG</span><span class="o">=</span><span class="n">spaimG</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">infG</span><span class="o">=</span><span class="n">reactionGraph</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">__initiateQuantityNode</span><span class="p">(</span><span class="n">infG</span><span class="p">)</span>
     <span class="n">__linkEdges</span><span class="p">(</span><span class="n">infG</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">infG</span></div>
 
 
-<div class="viewcode-block" id="prepareSpaim"><a class="viewcode-back" href="../index.html#pax_import.prepareSpaim">[docs]</a><span class="k">def</span> <span class="nf">prepareSpaim</span><span class="p">(</span><span class="n">inputGraph</span><span class="p">,</span><span class="n">outputGraph</span><span class="p">,</span><span class="n">outputDisplay</span><span class="p">,</span><span class="n">checkInvertP</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="prepare_spaim"><a class="viewcode-back" href="../index.html#pax_import.prepare_spaim">[docs]</a><span class="k">def</span> <span class="nf">prepare_spaim</span><span class="p">(</span><span class="n">input_graph</span><span class="p">,</span><span class="n">output_graph</span><span class="p">,</span><span class="n">output_image</span><span class="p">,</span><span class="n">checkInvertP</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;generate an checked reaction graph from a raw reaction graph:</span>
 
-<span class="sd">    :param inputGraph: input graphml file containing the raw reaction graph</span>
-<span class="sd">    :param outputGraph: output graphml file containing the checked reaction graph</span>
+<span class="sd">    :param input_graph: input graphml file containing the raw reaction graph</span>
+<span class="sd">    :param output_graph: output graphml file containing the checked reaction graph</span>
 <span class="sd">    :return: void</span>
 <span class="sd">    :rtype: None</span>
 <span class="sd">  </span>
 <span class="sd">    &quot;&quot;&quot;</span> 
-    <span class="n">g</span><span class="o">=</span><span class="n">graph_explore</span><span class="o">.</span><span class="n">loadGraphml</span><span class="p">(</span><span class="n">inputGraph</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">=</span><span class="n">graph_explore</span><span class="o">.</span><span class="n">load_graphml</span><span class="p">(</span><span class="n">input_graph</span><span class="p">)</span>
     <span class="n">g</span><span class="o">=</span><span class="n">__setEntityType</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
     <span class="c1">#for v in g.vertices():</span>
     <span class="c1">#    print(g.vp.name[v].lower())</span>
@@ -462,7 +463,7 @@
          
        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="o">.</span><span class="n">spaim</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;p&#39;</span> <span class="ow">and</span> <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="o">.</span><span class="n">entityType</span><span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">source</span><span class="p">()]</span><span class="o">!=</span><span class="s2">&quot;reaction&quot;</span>  <span class="ow">and</span> <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="o">.</span><span class="n">entityType</span><span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">target</span><span class="p">()]</span><span class="o">==</span><span class="s2">&quot;reaction&quot;</span> <span class="p">):</span>
-            <span class="n">ed</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">edgeDescription</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">ed</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">edge_description</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-inversion from </span><span class="si">%s</span><span class="s2"> -</span><span class="si">%s</span><span class="s2">-&gt; </span><span class="si">%s</span><span class="s2"> --[ </span><span class="si">%s</span><span class="s2"> ]--&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">source</span><span class="p">(),</span><span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="o">.</span><span class="n">spaim</span><span class="p">[</span><span class="n">e</span><span class="p">],</span><span class="n">e</span><span class="o">.</span><span class="n">target</span><span class="p">(),</span> <span class="n">ed</span> <span class="p">))</span>
             <span class="n">source</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">source</span><span class="p">()))</span>
             <span class="n">target</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">target</span><span class="p">()))</span>
@@ -477,33 +478,33 @@
 
     <span class="n">g</span><span class="o">=</span><span class="n">gt</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">__undefNodesAndEdges</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
-    <span class="n">graph_explore</span><span class="o">.</span><span class="n">colorNodes</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
-    <span class="n">graph_explore</span><span class="o">.</span><span class="n">colorEdges</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+    <span class="n">graph_explore</span><span class="o">.</span><span class="n">color_nodes</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+    <span class="n">graph_explore</span><span class="o">.</span><span class="n">color_edges</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
  
-    <span class="k">if</span> <span class="n">outputGraph</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-       <span class="n">pgraph_explore</span><span class="o">.</span><span class="n">saveGraphml</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">outputGraph</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">outputDisplay</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-       <span class="n">graph_explore</span><span class="o">.</span><span class="n">saveImage</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">outputDisplay</span><span class="p">)</span></div>
+    <span class="k">if</span> <span class="n">output_graph</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+       <span class="n">pgraph_explore</span><span class="o">.</span><span class="n">save_graphml</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">output_graph</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">output_image</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+       <span class="n">graph_explore</span><span class="o">.</span><span class="n">save_image</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">output_image</span><span class="p">)</span></div>
 
 
 
-<div class="viewcode-block" id="generateInfluenceSubGraph"><a class="viewcode-back" href="../index.html#pax_import.generateInfluenceSubGraph">[docs]</a><span class="k">def</span> <span class="nf">generateInfluenceSubGraph</span><span class="p">(</span><span class="n">inputGraph</span><span class="p">,</span><span class="n">outputGraph</span><span class="p">,</span><span class="n">outputDisplay</span><span class="p">,</span><span class="n">minNode</span><span class="p">,</span><span class="n">maxNode</span><span class="p">):</span>
+<div class="viewcode-block" id="influence_subgraph"><a class="viewcode-back" href="../index.html#pax_import.influence_subgraph">[docs]</a><span class="k">def</span> <span class="nf">influence_subgraph</span><span class="p">(</span><span class="n">input_graph</span><span class="p">,</span><span class="n">output_graph</span><span class="p">,</span><span class="n">output_image</span><span class="p">,</span><span class="n">min_node</span><span class="p">,</span><span class="n">max_node</span><span class="p">):</span>
    <span class="sd">&quot;&quot;&quot;Generate an influence graph as a graphml file from a checked reaction graphml file. The graph is generated from one connected component:</span>
 <span class="sd"> </span>
-<span class="sd">   :param inputGraph: input graphml file containing the raw reaction graph</span>
-<span class="sd">   :param outputGraph: output graphml file containing the checked reaction graph</span>
-<span class="sd">   :param outputDisplay: output png file for graph visualization</span>
-<span class="sd">   :param minNode: minimum node count of tne connected component</span>
-<span class="sd">   :param maxNode: maximum node count of tne connected component</span>
+<span class="sd">   :param input_graph: input graphml file containing the raw reaction graph</span>
+<span class="sd">   :param output_graph: output graphml file containing the checked reaction graph</span>
+<span class="sd">   :param output_image: output png file for graph visualization</span>
+<span class="sd">   :param min_node: minimum node count of tne connected component</span>
+<span class="sd">   :param max_node: maximum node count of tne connected component</span>
 <span class="sd">   :return: void</span>
 <span class="sd">   :rtype: None</span>
 <span class="sd">  </span>
 <span class="sd">   &quot;&quot;&quot;</span>  
-   <span class="n">g</span><span class="o">=</span><span class="n">graph_explore</span><span class="o">.</span><span class="n">loadGraphml</span><span class="p">(</span><span class="n">inputGraph</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-   <span class="n">g</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">selectCCByNodeCount</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">minNode</span><span class="p">,</span><span class="n">maxNode</span><span class="p">)</span>
+   <span class="n">g</span><span class="o">=</span><span class="n">graph_explore</span><span class="o">.</span><span class="n">load_graphml</span><span class="p">(</span><span class="n">input_graph</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+   <span class="n">g</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">cc_by_node_count</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">min_node</span><span class="p">,</span><span class="n">max_node</span><span class="p">)</span>
    <span class="k">if</span> <span class="n">g</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-      <span class="n">g</span> <span class="o">=</span> <span class="n">reactionToInfluenceGraph</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
-      <span class="n">graph_explore</span><span class="o">.</span><span class="n">saveOrPlot</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">outputGraph</span><span class="p">,</span> <span class="n">outputDisplay</span><span class="p">)</span>
+      <span class="n">g</span> <span class="o">=</span> <span class="n">reaction_to_influence_graph</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+      <span class="n">graph_explore</span><span class="o">.</span><span class="n">saveOrPlot</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">output_graph</span><span class="p">,</span> <span class="n">output_image</span><span class="p">)</span>
       <span class="k">return</span> <span class="n">g</span>
    <span class="k">else</span><span class="p">:</span>
       <span class="k">return</span> <span class="kc">None</span></div>
@@ -511,20 +512,20 @@
 
 
 
-<div class="viewcode-block" id="generateInfluenceGraph"><a class="viewcode-back" href="../index.html#pax_import.generateInfluenceGraph">[docs]</a><span class="k">def</span> <span class="nf">generateInfluenceGraph</span><span class="p">(</span><span class="n">inputGraph</span><span class="p">,</span><span class="n">outputGraph</span><span class="p">,</span><span class="n">outputDisplay</span><span class="p">):</span>
+<div class="viewcode-block" id="influence_graph"><a class="viewcode-back" href="../index.html#pax_import.influence_graph">[docs]</a><span class="k">def</span> <span class="nf">influence_graph</span><span class="p">(</span><span class="n">input_graph</span><span class="p">,</span><span class="n">output_graph</span><span class="p">,</span><span class="n">output_image</span><span class="p">):</span>
   <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">  generate an influence graph as a graphml file from a checked reaction graphml file</span>
 <span class="sd"> </span>
-<span class="sd">  :param inputGraph: input graphml file containing the raw reaction graph</span>
-<span class="sd">  :param outputGraph: output graphml file containing the checked reaction graph</span>
+<span class="sd">  :param input_graph: input graphml file containing the raw reaction graph</span>
+<span class="sd">  :param output_graph: output graphml file containing the checked reaction graph</span>
 <span class="sd">  :return: void</span>
 <span class="sd">  :rtype: None</span>
 <span class="sd">  </span>
 <span class="sd">  &quot;&quot;&quot;</span> 
 
-  <span class="n">g</span><span class="o">=</span><span class="n">graph_explore</span><span class="o">.</span><span class="n">loadGraphml</span><span class="p">(</span><span class="n">inputGraph</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-  <span class="n">g</span> <span class="o">=</span> <span class="n">reactionToInfluenceGraph</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
-  <span class="n">graph_explore</span><span class="o">.</span><span class="n">saveOrPlot</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">outputGraph</span><span class="p">,</span> <span class="n">outputDisplay</span><span class="p">)</span></div>
+  <span class="n">g</span><span class="o">=</span><span class="n">graph_explore</span><span class="o">.</span><span class="n">load_graphml</span><span class="p">(</span><span class="n">input_graph</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+  <span class="n">g</span> <span class="o">=</span> <span class="n">reaction_to_influence_graph</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+  <span class="n">graph_explore</span><span class="o">.</span><span class="n">saveOrPlot</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">output_graph</span><span class="p">,</span> <span class="n">output_image</span><span class="p">)</span></div>
 
 
 

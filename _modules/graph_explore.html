@@ -60,16 +60,16 @@
 
 
  
-<div class="viewcode-block" id="loadGraphml"><a class="viewcode-back" href="../index.html#graph_explore.loadGraphml">[docs]</a><span class="k">def</span> <span class="nf">loadGraphml</span><span class="p">(</span><span class="n">graphmlfile</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="load_graphml"><a class="viewcode-back" href="../index.html#graph_explore.load_graphml">[docs]</a><span class="k">def</span> <span class="nf">load_graphml</span><span class="p">(</span><span class="n">graphml_file</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return a string with graph nodes count and edges count :</span>
 
-<span class="sd">    :param graphmlfile: a graphml file</span>
+<span class="sd">    :param graphml_file: a graphml file</span>
 <span class="sd">    :param directed: a boolean that defines if the edges of the graph are oriented </span>
 <span class="sd">    :return: graph</span>
 <span class="sd">    :rtype: graph object</span>
 <span class="sd">  </span>
 <span class="sd">    &quot;&quot;&quot;</span> 
-    <span class="n">g</span><span class="o">=</span><span class="n">gt</span><span class="o">.</span><span class="n">load_graph</span><span class="p">(</span><span class="n">graphmlfile</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">=</span><span class="n">gt</span><span class="o">.</span><span class="n">load_graph</span><span class="p">(</span><span class="n">graphml_file</span><span class="p">)</span>
     <span class="n">g</span><span class="o">.</span><span class="n">set_directed</span><span class="p">(</span><span class="n">directed</span><span class="p">)</span>
     <span class="n">g</span><span class="o">=</span><span class="n">gt</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;input graph order: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">())))</span>
@@ -79,7 +79,7 @@
 
 
 
-<div class="viewcode-block" id="describeGraph"><a class="viewcode-back" href="../index.html#graph_explore.describeGraph">[docs]</a><span class="k">def</span> <span class="nf">describeGraph</span><span class="p">(</span><span class="n">g</span><span class="p">):</span>
+<div class="viewcode-block" id="describe_graph"><a class="viewcode-back" href="../index.html#graph_explore.describe_graph">[docs]</a><span class="k">def</span> <span class="nf">describe_graph</span><span class="p">(</span><span class="n">g</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;Return a string describing the graph will all edges and nodes with properties values :</span>
 
@@ -91,11 +91,11 @@
 
     <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;&quot;</span> 
     <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span> 
-      <span class="n">desc</span><span class="o">+=</span><span class="s2">&quot;  vertex </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">v</span><span class="p">,</span>  <span class="n">utils</span><span class="o">.</span><span class="n">showNodeProp</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="p">)</span>
+      <span class="n">desc</span><span class="o">+=</span><span class="s2">&quot;  vertex </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">v</span><span class="p">,</span>  <span class="n">utils</span><span class="o">.</span><span class="n">node_to_string</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="p">)</span>
       <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">in_edges</span><span class="p">():</span>
-         <span class="n">desc</span><span class="o">+=</span><span class="s2">&quot;     </span><span class="si">%s</span><span class="s2"> in_edge:</span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">e</span><span class="p">,</span> <span class="n">utils</span><span class="o">.</span><span class="n">showEdgeProp</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="p">)</span>  
+         <span class="n">desc</span><span class="o">+=</span><span class="s2">&quot;     </span><span class="si">%s</span><span class="s2"> in_edge:</span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">e</span><span class="p">,</span> <span class="n">utils</span><span class="o">.</span><span class="n">edge_to_string</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="p">)</span>  
       <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">out_edges</span><span class="p">():</span>
-         <span class="n">desc</span><span class="o">+=</span><span class="s2">&quot;      </span><span class="si">%s</span><span class="s2"> out_edge:</span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">e</span><span class="p">,</span> <span class="n">utils</span><span class="o">.</span><span class="n">showEdgeProp</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="p">)</span> 
+         <span class="n">desc</span><span class="o">+=</span><span class="s2">&quot;      </span><span class="si">%s</span><span class="s2"> out_edge:</span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">e</span><span class="p">,</span> <span class="n">utils</span><span class="o">.</span><span class="n">edge_to_string</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="p">)</span> 
       <span class="n">desc</span><span class="o">+=</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">desc</span></div>
@@ -119,12 +119,12 @@
 
 
 
-<div class="viewcode-block" id="graphmlXmlString"><a class="viewcode-back" href="../index.html#graph_explore.graphmlXmlString">[docs]</a><span class="k">def</span> <span class="nf">graphmlXmlString</span><span class="p">(</span><span class="n">graphmlfile</span><span class="p">,</span><span class="n">ids</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">entity</span><span class="o">=</span><span class="s2">&quot;node&quot;</span> <span class="p">):</span>
+<div class="viewcode-block" id="graphml_xml_string"><a class="viewcode-back" href="../index.html#graph_explore.graphml_xml_string">[docs]</a><span class="k">def</span> <span class="nf">graphml_xml_string</span><span class="p">(</span><span class="n">graphml_file</span><span class="p">,</span><span class="n">ids</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">entity</span><span class="o">=</span><span class="s2">&quot;node&quot;</span> <span class="p">):</span>
 
 
   <span class="sd">&quot;&quot;&quot;Return the XML content extract of the graohml file:</span>
 
-<span class="sd">  :param graphmlfile: graphml file path</span>
+<span class="sd">  :param graphml_file: graphml file path</span>
 <span class="sd">  :param ids:  an intger or  list or integers that correspondn to the id attribute values of the selected entities</span>
 <span class="sd">  :param entity: &quot;edge&quot; or &quot;&quot;node&quot; value to define which entity should be selected</span>
 <span class="sd">  :return: an XML string</span>
@@ -137,7 +137,7 @@
   <span class="k">else</span><span class="p">:</span>
         <span class="n">idl</span> <span class="o">=</span> <span class="n">ids</span>
 
-  <span class="n">model</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">minidom</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">graphmlfile</span><span class="p">)</span>
+  <span class="n">model</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">minidom</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">graphml_file</span><span class="p">)</span>
   <span class="n">xmlent</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
  
   <span class="n">ret</span><span class="o">=</span><span class="nb">list</span><span class="p">()</span>
@@ -150,7 +150,7 @@
   <span class="k">return</span> <span class="n">ret</span></div>
 
 
-<div class="viewcode-block" id="largestCCdegreeDistribution"><a class="viewcode-back" href="../index.html#graph_explore.largestCCdegreeDistribution">[docs]</a><span class="k">def</span> <span class="nf">largestCCdegreeDistribution</span><span class="p">(</span><span class="n">g</span><span class="p">):</span>
+<div class="viewcode-block" id="largest_cc_degree_dist"><a class="viewcode-back" href="../index.html#graph_explore.largest_cc_degree_dist">[docs]</a><span class="k">def</span> <span class="nf">largest_cc_degree_dist</span><span class="p">(</span><span class="n">g</span><span class="p">):</span>
   <span class="sd">&quot;&quot;&quot;Generate the distribution of degrees of the nodes of the largest connected component:</span>
 
 <span class="sd">  :param g: a graph instance</span>
@@ -162,10 +162,10 @@
   <span class="n">lCC</span> <span class="o">=</span> <span class="n">gt</span><span class="o">.</span><span class="n">GraphView</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">vfilt</span><span class="o">=</span><span class="n">lCCFilt</span><span class="p">)</span>
   <span class="n">lCC</span> <span class="o">=</span> <span class="n">gt</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">lCC</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
  
-  <span class="n">dist</span> <span class="o">=</span> <span class="n">degreeDistribution</span><span class="p">(</span><span class="n">lCC</span><span class="p">)</span>
+  <span class="n">dist</span> <span class="o">=</span> <span class="n">degree_distribution</span><span class="p">(</span><span class="n">lCC</span><span class="p">)</span>
   <span class="k">return</span> <span class="n">dist</span></div>
 
-<div class="viewcode-block" id="degreeDistribution"><a class="viewcode-back" href="../index.html#graph_explore.degreeDistribution">[docs]</a><span class="k">def</span> <span class="nf">degreeDistribution</span><span class="p">(</span><span class="n">g</span><span class="p">):</span>
+<div class="viewcode-block" id="degree_distribution"><a class="viewcode-back" href="../index.html#graph_explore.degree_distribution">[docs]</a><span class="k">def</span> <span class="nf">degree_distribution</span><span class="p">(</span><span class="n">g</span><span class="p">):</span>
   <span class="sd">&quot;&quot;&quot;Generate the distribution of degrees of the node of the graph:</span>
 
 <span class="sd">  :param g: a graph instance</span>
@@ -180,7 +180,7 @@
 
 
 
-<div class="viewcode-block" id="computeBetweenness"><a class="viewcode-back" href="../index.html#graph_explore.computeBetweenness">[docs]</a><span class="k">def</span> <span class="nf">computeBetweenness</span><span class="p">(</span> <span class="n">g</span> <span class="p">):</span>
+<div class="viewcode-block" id="compute_betweenness"><a class="viewcode-back" href="../index.html#graph_explore.compute_betweenness">[docs]</a><span class="k">def</span> <span class="nf">compute_betweenness</span><span class="p">(</span> <span class="n">g</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the graph Betweenness:</span>
 
 <span class="sd">    :param g: a graph instance</span>
@@ -193,7 +193,7 @@
 
 
 
-<div class="viewcode-block" id="computePagerank"><a class="viewcode-back" href="../index.html#graph_explore.computePagerank">[docs]</a><span class="k">def</span> <span class="nf">computePagerank</span><span class="p">(</span> <span class="n">g</span> <span class="p">):</span>
+<div class="viewcode-block" id="compute_page_rank"><a class="viewcode-back" href="../index.html#graph_explore.compute_page_rank">[docs]</a><span class="k">def</span> <span class="nf">compute_page_rank</span><span class="p">(</span> <span class="n">g</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the graph PageRank:</span>
 
 <span class="sd">    :param g: a graph instance</span>
@@ -204,7 +204,7 @@
 <span class="sd">    &quot;&quot;&quot;</span> 
     <span class="k">return</span> <span class="n">centrality</span><span class="o">.</span><span class="n">pagerank</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>  </div>
 
-<div class="viewcode-block" id="computeCloseness"><a class="viewcode-back" href="../index.html#graph_explore.computeCloseness">[docs]</a><span class="k">def</span> <span class="nf">computeCloseness</span><span class="p">(</span> <span class="n">g</span> <span class="p">):</span>
+<div class="viewcode-block" id="compute_closeness"><a class="viewcode-back" href="../index.html#graph_explore.compute_closeness">[docs]</a><span class="k">def</span> <span class="nf">compute_closeness</span><span class="p">(</span> <span class="n">g</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the graph Closeness:</span>
 
 <span class="sd">    :param g: a graph instance</span>
@@ -215,7 +215,7 @@
     <span class="k">return</span> <span class="n">centrality</span><span class="o">.</span><span class="n">closeness</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>  </div>
 
 
-<div class="viewcode-block" id="computeGraphMetrics"><a class="viewcode-back" href="../index.html#graph_explore.computeGraphMetrics">[docs]</a><span class="k">def</span> <span class="nf">computeGraphMetrics</span><span class="p">(</span> <span class="n">g</span> <span class="p">):</span>
+<div class="viewcode-block" id="compute_graph_metrics"><a class="viewcode-back" href="../index.html#graph_explore.compute_graph_metrics">[docs]</a><span class="k">def</span> <span class="nf">compute_graph_metrics</span><span class="p">(</span> <span class="n">g</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute multiple topological graph metrics (degree distribution, betweenness, pagerank, closeness):</span>
 
 <span class="sd">    :param g: a graph instance</span>
@@ -231,8 +231,8 @@
       <span class="n">d</span><span class="p">[</span><span class="s2">&quot;pagerank&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">stat2</span>
       <span class="n">stat3</span><span class="o">=</span><span class="n">centrality</span><span class="o">.</span><span class="n">closeness</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
       <span class="n">d</span><span class="p">[</span><span class="s2">&quot;closeness&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">stat3</span>
-      <span class="n">d</span><span class="p">[</span><span class="s2">&quot;ccomponent&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">largestCCdegreeDistribution</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
-      <span class="n">d</span><span class="p">[</span><span class="s2">&quot;degreedist&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">degreeDistribution</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+      <span class="n">d</span><span class="p">[</span><span class="s2">&quot;ccomponent&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">largest_cc_degree_dist</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+      <span class="n">d</span><span class="p">[</span><span class="s2">&quot;degreedist&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">degree_distribution</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
 
       <span class="n">d</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
     <span class="k">except</span><span class="p">:</span>
@@ -243,7 +243,7 @@
 
 
 
-<div class="viewcode-block" id="saveGraphml"><a class="viewcode-back" href="../index.html#graph_explore.saveGraphml">[docs]</a><span class="k">def</span> <span class="nf">saveGraphml</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">graphmlOutFile</span><span class="p">,</span><span class="n">friendly</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="save_graphml"><a class="viewcode-back" href="../index.html#graph_explore.save_graphml">[docs]</a><span class="k">def</span> <span class="nf">save_graphml</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">graphmlOutFile</span><span class="p">,</span><span class="n">friendly</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Save a graph instance as a graphml file:</span>
 
 <span class="sd">    :param g: a graph instance</span>
@@ -257,48 +257,48 @@
     <span class="n">g</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">graphmlOutFile</span><span class="p">)</span>
      
     <span class="k">if</span> <span class="n">friendly</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
-       <span class="n">utils</span><span class="o">.</span><span class="n">friendlyFormatGraphmlKey</span><span class="p">(</span><span class="n">graphmlOutFile</span><span class="p">)</span></div>
+       <span class="n">utils</span><span class="o">.</span><span class="n">friendly_format_graphml</span><span class="p">(</span><span class="n">graphmlOutFile</span><span class="p">)</span></div>
   
 
 
 
  
-<span class="k">def</span> <span class="nf">__saveOrPlot</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">outputGraph</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">outputDisplay</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">__saveOrPlot</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">output_graph</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_image</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
    <span class="sd">&quot;&quot;&quot;Save a graph instance as a graphml file or save a graph image (png)&quot;&quot;&quot;</span>
 
    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">output graph order: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">())))</span>
    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;output graph size: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">())))</span>
-   <span class="k">if</span> <span class="p">(</span><span class="n">outputGraph</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">output_graph</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
          <span class="n">g</span><span class="o">=</span><span class="n">gt</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-         <span class="n">g</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">outputGraph</span><span class="p">)</span>
-   <span class="k">if</span> <span class="p">(</span><span class="n">outputDisplay</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+         <span class="n">g</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">output_graph</span><span class="p">)</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">output_image</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
         <span class="n">size</span><span class="o">=</span><span class="mi">3000</span>
-        <span class="n">__saveGraphImage</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">outputDisplay</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+        <span class="n">__saveGraphImage</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">output_image</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
 
 
 
 
 
-<div class="viewcode-block" id="saveImage"><a class="viewcode-back" href="../index.html#graph_explore.saveImage">[docs]</a><span class="k">def</span> <span class="nf">saveImage</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">pngfile</span><span class="p">,</span>  <span class="n">size</span><span class="o">=</span><span class="mi">3000</span><span class="p">):</span>
+<div class="viewcode-block" id="save_image"><a class="viewcode-back" href="../index.html#graph_explore.save_image">[docs]</a><span class="k">def</span> <span class="nf">save_image</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">image_file</span><span class="p">,</span>  <span class="n">size</span><span class="o">=</span><span class="mi">3000</span><span class="p">):</span>
   <span class="sd">&quot;&quot;&quot;Generate an image from a graph instance :</span>
 
 <span class="sd">  :param g: a graph instance</span>
-<span class="sd">  :param pngfile: png file path</span>
+<span class="sd">  :param image_file: png file path</span>
 <span class="sd">  :param size: image size</span>
 <span class="sd">  :return: void</span>
 <span class="sd">  :rtype: None</span>
 <span class="sd">  </span>
 <span class="sd">  &quot;&quot;&quot;</span> 
-  <span class="n">__saveGraphImage</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">pngfile</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span></div>
+  <span class="n">__saveGraphImage</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">image_file</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">__saveGraphImage</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">outputFile</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span><span class="n">conf</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">__saveGraphImage</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">image_file</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span><span class="n">conf</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
   <span class="sd">&quot;&quot;&quot;Generate an image from a graph instance :</span>
 
 <span class="sd">  :param g: a graph instance</span>
-<span class="sd">  :param pngfile: png file path</span>
+<span class="sd">  :param image_file: png file path</span>
 <span class="sd">  :param size: image size</span>
 <span class="sd">  :param conf: image configuration dictionary with nodelabel and edgelabel keys</span>
 <span class="sd">  :return: void</span>
@@ -325,14 +325,14 @@
      <span class="n">etext</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">edgelabel</span><span class="p">]</span>
 
  
-  <span class="n">gt</span><span class="o">.</span><span class="n">graph_draw</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">vertex_text</span><span class="o">=</span><span class="n">vtext</span><span class="p">,</span> <span class="n">edge_text</span><span class="o">=</span><span class="n">etext</span><span class="p">,</span> <span class="n">vertex_font_size</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">bg_color</span><span class="o">=</span><span class="p">[</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">],</span> <span class="n">vertex_fill_color</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="n">edge_color</span><span class="o">=</span><span class="n">ecolor</span><span class="p">,</span> <span class="n">output_size</span><span class="o">=</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="n">size</span><span class="p">),</span> <span class="n">output</span><span class="o">=</span><span class="n">outputFile</span><span class="p">)</span>
+  <span class="n">gt</span><span class="o">.</span><span class="n">graph_draw</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">vertex_text</span><span class="o">=</span><span class="n">vtext</span><span class="p">,</span> <span class="n">edge_text</span><span class="o">=</span><span class="n">etext</span><span class="p">,</span> <span class="n">vertex_font_size</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">bg_color</span><span class="o">=</span><span class="p">[</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">],</span> <span class="n">vertex_fill_color</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="n">edge_color</span><span class="o">=</span><span class="n">ecolor</span><span class="p">,</span> <span class="n">output_size</span><span class="o">=</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="n">size</span><span class="p">),</span> <span class="n">output</span><span class="o">=</span><span class="n">image_file</span><span class="p">)</span>
   
 
 
 
 
  
-<div class="viewcode-block" id="colorNodes"><a class="viewcode-back" href="../index.html#graph_explore.colorNodes">[docs]</a><span class="k">def</span> <span class="nf">colorNodes</span><span class="p">(</span><span class="n">g</span><span class="p">):</span>
+<div class="viewcode-block" id="color_nodes"><a class="viewcode-back" href="../index.html#graph_explore.color_nodes">[docs]</a><span class="k">def</span> <span class="nf">color_nodes</span><span class="p">(</span><span class="n">g</span><span class="p">):</span>
 
   <span class="sd">&quot;&quot;&quot;Generate a node color property that Differentiates the node entities (reaction, chemical):</span>
 
@@ -355,7 +355,7 @@
   <span class="k">return</span> <span class="n">g</span></div>
 
  
-<div class="viewcode-block" id="colorEdges"><a class="viewcode-back" href="../index.html#graph_explore.colorEdges">[docs]</a><span class="k">def</span> <span class="nf">colorEdges</span><span class="p">(</span><span class="n">g</span><span class="p">):</span>
+<div class="viewcode-block" id="color_edges"><a class="viewcode-back" href="../index.html#graph_explore.color_edges">[docs]</a><span class="k">def</span> <span class="nf">color_edges</span><span class="p">(</span><span class="n">g</span><span class="p">):</span>
 
 
     <span class="sd">&quot;&quot;&quot;Generate a edge color property that Differentiates the edge semantic (subtsrat, product, activator, inhibitor, modulator) using the spaim edge property (s,p,a,i,m):</span>

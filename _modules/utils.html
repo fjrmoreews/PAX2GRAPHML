@@ -56,7 +56,7 @@
 
  
 
-<div class="viewcode-block" id="resourcesPath"><a class="viewcode-back" href="../index.html#utils.resourcesPath">[docs]</a><span class="k">def</span> <span class="nf">resourcesPath</span><span class="p">():</span>
+<div class="viewcode-block" id="resource_path"><a class="viewcode-back" href="../index.html#utils.resource_path">[docs]</a><span class="k">def</span> <span class="nf">resource_path</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;return the resources  path</span>
 
 <span class="sd">        :return:  a string representing the resource \</span>
@@ -68,7 +68,7 @@
     <span class="n">pa</span> <span class="o">=</span> <span class="n">__relPath</span><span class="p">(</span><span class="s1">&#39;resources&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">pa</span></div>
 
-<div class="viewcode-block" id="dataPath"><a class="viewcode-back" href="../index.html#utils.dataPath">[docs]</a><span class="k">def</span> <span class="nf">dataPath</span><span class="p">():</span>
+<div class="viewcode-block" id="data_path"><a class="viewcode-back" href="../index.html#utils.data_path">[docs]</a><span class="k">def</span> <span class="nf">data_path</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;return the data folder  path with example datasets</span>
 
 <span class="sd">        :return:  a string representing the data folder \</span>
@@ -82,7 +82,7 @@
 
 
 
-<div class="viewcode-block" id="nodeList"><a class="viewcode-back" href="../index.html#utils.nodeList">[docs]</a><span class="k">def</span> <span class="nf">nodeList</span><span class="p">(</span><span class="n">g</span> <span class="p">):</span>
+<div class="viewcode-block" id="node_list"><a class="viewcode-back" href="../index.html#utils.node_list">[docs]</a><span class="k">def</span> <span class="nf">node_list</span><span class="p">(</span><span class="n">g</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;return a  simple  list of all nodes of a graph (without iterator)</span>
 
 <span class="sd">        :return:  a list of nodes/vertices</span>
@@ -95,7 +95,7 @@
     <span class="k">return</span> <span class="n">ar</span></div>
 
 
-<div class="viewcode-block" id="edgeList"><a class="viewcode-back" href="../index.html#utils.edgeList">[docs]</a><span class="k">def</span> <span class="nf">edgeList</span><span class="p">(</span> <span class="n">g</span> <span class="p">):</span>
+<div class="viewcode-block" id="edge_list"><a class="viewcode-back" href="../index.html#utils.edge_list">[docs]</a><span class="k">def</span> <span class="nf">edge_list</span><span class="p">(</span> <span class="n">g</span> <span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;return a  simple  list of all edges of a graph (without iterator)</span>
 
@@ -111,7 +111,7 @@
  
 
 
-<div class="viewcode-block" id="showNodeProp"><a class="viewcode-back" href="../index.html#utils.showNodeProp">[docs]</a><span class="k">def</span> <span class="nf">showNodeProp</span><span class="p">(</span><span class="n">gh</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="node_to_string"><a class="viewcode-back" href="../index.html#utils.node_to_string">[docs]</a><span class="k">def</span> <span class="nf">node_to_string</span><span class="p">(</span><span class="n">gh</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;return a string representing all the properties values from a node</span>
 
@@ -123,15 +123,15 @@
     <span class="k">return</span> <span class="n">s</span></div>
 
 
-<div class="viewcode-block" id="showprop"><a class="viewcode-back" href="../index.html#utils.showprop">[docs]</a><span class="k">def</span> <span class="nf">showprop</span><span class="p">(</span><span class="n">gh</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
-  <span class="sd">&quot;&quot;&quot;alias of showNodeProp</span>
+<div class="viewcode-block" id="to_string"><a class="viewcode-back" href="../index.html#utils.to_string">[docs]</a><span class="k">def</span> <span class="nf">to_string</span><span class="p">(</span><span class="n">gh</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;alias of node_to_string</span>
 
 <span class="sd">     :return:  a string</span>
 <span class="sd">  &quot;&quot;&quot;</span>  
-  <span class="k">return</span> <span class="n">showNodeProp</span><span class="p">(</span><span class="n">gh</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">sep</span> <span class="p">)</span></div>
+  <span class="k">return</span> <span class="n">node_to_string</span><span class="p">(</span><span class="n">gh</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">sep</span> <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="showEdgeProp"><a class="viewcode-back" href="../index.html#utils.showEdgeProp">[docs]</a><span class="k">def</span> <span class="nf">showEdgeProp</span><span class="p">(</span><span class="n">gh</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="edge_to_string"><a class="viewcode-back" href="../index.html#utils.edge_to_string">[docs]</a><span class="k">def</span> <span class="nf">edge_to_string</span><span class="p">(</span><span class="n">gh</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;return a string representing all the properties values from an edge</span>
 
@@ -143,15 +143,15 @@
     <span class="k">return</span> <span class="n">s</span></div>
 
 
-<div class="viewcode-block" id="edgeDescription"><a class="viewcode-back" href="../index.html#utils.edgeDescription">[docs]</a><span class="k">def</span> <span class="nf">edgeDescription</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="p">):</span>
+<div class="viewcode-block" id="edge_description"><a class="viewcode-back" href="../index.html#utils.edge_description">[docs]</a><span class="k">def</span> <span class="nf">edge_description</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;return a string giving al details from an edge, incuding source an target description</span>
 
 <span class="sd">        :return:  a string</span>
 <span class="sd">    &quot;&quot;&quot;</span> 
-    <span class="n">ep</span><span class="o">=</span><span class="n">showEdgeProp</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
-    <span class="n">sp</span><span class="o">=</span><span class="n">showNodeProp</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="o">.</span><span class="n">source</span><span class="p">(),</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
-    <span class="n">tp</span><span class="o">=</span><span class="n">showNodeProp</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="o">.</span><span class="n">target</span><span class="p">(),</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>   
+    <span class="n">ep</span><span class="o">=</span><span class="n">edge_to_string</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+    <span class="n">sp</span><span class="o">=</span><span class="n">node_to_string</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="o">.</span><span class="n">source</span><span class="p">(),</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+    <span class="n">tp</span><span class="o">=</span><span class="n">node_to_string</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="o">.</span><span class="n">target</span><span class="p">(),</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>   
     <span class="k">return</span> <span class="s2">&quot;edge:</span><span class="si">%s</span><span class="s2"> </span><span class="se">\n\t</span><span class="s2">source: </span><span class="si">%s</span><span class="s2">  </span><span class="se">\n\t</span><span class="s2">target: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">ep</span><span class="p">,</span><span class="n">sp</span><span class="p">,</span><span class="n">tp</span><span class="p">)</span></div>
 
                         
@@ -160,7 +160,7 @@
 
 
  
-<div class="viewcode-block" id="countEdge"><a class="viewcode-back" href="../index.html#utils.countEdge">[docs]</a><span class="k">def</span> <span class="nf">countEdge</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="count_edge"><a class="viewcode-back" href="../index.html#utils.count_edge">[docs]</a><span class="k">def</span> <span class="nf">count_edge</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;compute edges count from a selected node</span>
 
@@ -185,7 +185,7 @@
 
 
 
-<div class="viewcode-block" id="selectCCByNodeCount"><a class="viewcode-back" href="../index.html#utils.selectCCByNodeCount">[docs]</a><span class="k">def</span> <span class="nf">selectCCByNodeCount</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="nb">min</span><span class="p">,</span><span class="nb">max</span><span class="p">):</span>
+<div class="viewcode-block" id="cc_by_node_count"><a class="viewcode-back" href="../index.html#utils.cc_by_node_count">[docs]</a><span class="k">def</span> <span class="nf">cc_by_node_count</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="nb">min</span><span class="p">,</span><span class="nb">max</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;select a sub graoh from a graph, using the minimum and maximum node number</span>
 <span class="sd">           of each connected component as as a filter</span>
@@ -245,11 +245,11 @@
 
 
 
-<div class="viewcode-block" id="friendlyFormatGraphmlKey"><a class="viewcode-back" href="../index.html#utils.friendlyFormatGraphmlKey">[docs]</a><span class="k">def</span> <span class="nf">friendlyFormatGraphmlKey</span><span class="p">(</span><span class="n">graphmlFile</span><span class="p">):</span>
+<div class="viewcode-block" id="friendly_format_graphml"><a class="viewcode-back" href="../index.html#utils.friendly_format_graphml">[docs]</a><span class="k">def</span> <span class="nf">friendly_format_graphml</span><span class="p">(</span><span class="n">graphml_file</span><span class="p">):</span>
 
-      <span class="sd">&quot;&quot;&quot;modify in place a graphmlfile to have more human readableproperties data key</span>
+      <span class="sd">&quot;&quot;&quot;modify in place a graphml_file to have more human readableproperties data key</span>
 
-<span class="sd">        :param graphmlFile: a graphmlFile file folling the graph.tools generation rules</span>
+<span class="sd">        :param graphml_file: a graphml file file folling the graph.tools generation rules</span>
 <span class="sd">      &quot;&quot;&quot;</span> 
      
       <span class="n">f</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -258,7 +258,7 @@
       <span class="n">ns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">gns</span><span class="p">}</span>
          
  
-      <span class="n">root</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">graphmlFile</span><span class="p">)</span>
+      <span class="n">root</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">graphml_file</span><span class="p">)</span>
        
       <span class="n">lst</span><span class="o">=</span><span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;./x:key&quot;</span><span class="p">,</span> <span class="n">namespaces</span><span class="o">=</span><span class="n">ns</span><span class="p">)</span>
  
@@ -291,7 +291,7 @@
                  <span class="n">pretty_print</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xml_declaration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span>
 
-      <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">tmpf</span><span class="p">,</span> <span class="n">graphmlFile</span><span class="p">)</span>  </div>
+      <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">tmpf</span><span class="p">,</span> <span class="n">graphml_file</span><span class="p">)</span>  </div>
 
 
 
@@ -310,7 +310,7 @@
 
 <span class="k">def</span> <span class="nf">__gdir</span><span class="p">():</span>
    <span class="sd">&quot;&quot;&quot; return the resources directory if exists else use an evironment variable &quot;&quot;&quot;</span> 
-   <span class="n">fname</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">resourcesPath</span><span class="p">()</span>
+   <span class="n">fname</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">resource_path</span><span class="p">()</span>
    <span class="k">if</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="p">):</span>
       <span class="k">return</span> <span class="n">fname</span>
    <span class="k">else</span><span class="p">:</span>

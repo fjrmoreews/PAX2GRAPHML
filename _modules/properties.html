@@ -54,12 +54,12 @@
 <span class="kn">from</span> <span class="nn">pax2graphml</span> <span class="kn">import</span> <span class="n">utils</span>
 <span class="kn">from</span> <span class="nn">pax2graphml</span> <span class="kn">import</span> <span class="n">extract</span>
 
-<div class="viewcode-block" id="propertyValues"><a class="viewcode-back" href="../index.html#properties.propertyValues">[docs]</a><span class="k">def</span> <span class="nf">propertyValues</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annotkey</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Alias of nodePropertyValues&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="property_values"><a class="viewcode-back" href="../index.html#properties.property_values">[docs]</a><span class="k">def</span> <span class="nf">property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annotkey</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Alias of node_property_values&quot;&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="n">nodePropertyValues</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annotkey</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">node_property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annotkey</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="nodePropertyValues"><a class="viewcode-back" href="../index.html#properties.nodePropertyValues">[docs]</a><span class="k">def</span> <span class="nf">nodePropertyValues</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annotkey</span><span class="p">):</span>
+<div class="viewcode-block" id="node_property_values"><a class="viewcode-back" href="../index.html#properties.node_property_values">[docs]</a><span class="k">def</span> <span class="nf">node_property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annotkey</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return a list of unique values corresponding to an existing node property:</span>
 
 <span class="sd">    :param g: a graph</span>
@@ -79,7 +79,7 @@
     <span class="n">pv</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">vset</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">pv</span></div>
 
-<div class="viewcode-block" id="edgePropertyValues"><a class="viewcode-back" href="../index.html#properties.edgePropertyValues">[docs]</a><span class="k">def</span> <span class="nf">edgePropertyValues</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annotkey</span><span class="p">):</span>
+<div class="viewcode-block" id="edge_property_values"><a class="viewcode-back" href="../index.html#properties.edge_property_values">[docs]</a><span class="k">def</span> <span class="nf">edge_property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annotkey</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;Return a list of unique values corresponding to an existing edge property:</span>
 
@@ -119,7 +119,7 @@
         <span class="k">if</span> <span class="n">xid</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">xid</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
                  <span class="n">gr</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">v</span><span class="p">]</span><span class="o">=</span><span class="n">dval</span>   </div>
    
-<div class="viewcode-block" id="defaultEdgeValue"><a class="viewcode-back" href="../index.html#properties.defaultEdgeValue">[docs]</a><span class="k">def</span> <span class="nf">defaultEdgeValue</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span><span class="n">prop</span><span class="p">,</span><span class="n">dval</span> <span class="p">):</span>
+<div class="viewcode-block" id="default_edge_value"><a class="viewcode-back" href="../index.html#properties.default_edge_value">[docs]</a><span class="k">def</span> <span class="nf">default_edge_value</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span><span class="n">prop</span><span class="p">,</span><span class="n">dval</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;asign a userdefined value to an edge property when it is None ar equal to &quot;&quot;:</span>
 
 <span class="sd">    :param gr: a graph</span>
@@ -147,7 +147,7 @@
 
 
 
-<div class="viewcode-block" id="defineBiomartServer"><a class="viewcode-back" href="../index.html#properties.defineBiomartServer">[docs]</a><span class="k">def</span> <span class="nf">defineBiomartServer</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">martName</span><span class="p">):</span>  
+<div class="viewcode-block" id="define_biomart_server"><a class="viewcode-back" href="../index.html#properties.define_biomart_server">[docs]</a><span class="k">def</span> <span class="nf">define_biomart_server</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">martName</span><span class="p">):</span>  
    <span class="sd">&quot;&quot;&quot;define a biomart server &quot;&quot;:</span>
 
 <span class="sd">   :param url: the url of the biomartserver</span>
@@ -161,7 +161,7 @@
 
 
 
-<div class="viewcode-block" id="uniProtAnnotImpl"><a class="viewcode-back" href="../index.html#properties.uniProtAnnotImpl">[docs]</a><span class="k">def</span> <span class="nf">uniProtAnnotImpl</span><span class="p">(</span> <span class="n">prot</span><span class="p">,</span><span class="n">conf</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="uniprot_annot_impl"><a class="viewcode-back" href="../index.html#properties.uniprot_annot_impl">[docs]</a><span class="k">def</span> <span class="nf">uniprot_annot_impl</span><span class="p">(</span> <span class="n">prot</span><span class="p">,</span><span class="n">conf</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
   <span class="sd">&quot;&quot;&quot;Configure a mart for Uniprot to GO annotation &quot;&quot;:</span>
 
@@ -186,7 +186,7 @@
        <span class="s1">&#39;searchkey&#39;</span> <span class="p">:</span><span class="s1">&#39;uniprot_gn_symbol&#39;</span>
      <span class="p">}</span>
   
-  <span class="n">mart</span><span class="o">=</span><span class="n">defineBiomartServer</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;server&#39;</span><span class="p">],</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;mart&#39;</span><span class="p">])</span>  
+  <span class="n">mart</span><span class="o">=</span><span class="n">define_biomart_server</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;server&#39;</span><span class="p">],</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;mart&#39;</span><span class="p">])</span>  
   <span class="n">dataset</span> <span class="o">=</span> <span class="p">(</span><span class="n">mart</span><span class="o">.</span><span class="n">datasets</span><span class="p">[</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">]])</span>
   <span class="n">attr</span><span class="o">=</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;attr&#39;</span><span class="p">]</span>
 
@@ -226,7 +226,7 @@
   <span class="k">return</span> <span class="n">unimap</span></div>
 
 
-<div class="viewcode-block" id="uniProtAnnot"><a class="viewcode-back" href="../index.html#properties.uniProtAnnot">[docs]</a><span class="k">def</span> <span class="nf">uniProtAnnot</span><span class="p">(</span><span class="n">protL</span><span class="p">,</span><span class="n">conf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">lsize</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+<div class="viewcode-block" id="uniprot_annot"><a class="viewcode-back" href="../index.html#properties.uniprot_annot">[docs]</a><span class="k">def</span> <span class="nf">uniprot_annot</span><span class="p">(</span><span class="n">protL</span><span class="p">,</span><span class="n">conf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">lsize</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
 
    <span class="sd">&quot;&quot;&quot;Configure a mart for Uniprot to GO annotation &quot;&quot;:</span>
 
@@ -242,7 +242,7 @@
    <span class="n">allM</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
    <span class="k">for</span> <span class="n">prot</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">:</span>
      <span class="c1">#print(prot)   </span>
-     <span class="n">unimap</span><span class="o">=</span><span class="n">uniProtAnnotImpl</span><span class="p">(</span><span class="n">prot</span><span class="p">)</span>
+     <span class="n">unimap</span><span class="o">=</span><span class="n">uniprot_annot_impl</span><span class="p">(</span><span class="n">prot</span><span class="p">)</span>
      <span class="n">allM</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">unimap</span><span class="p">)</span> 
    <span class="k">return</span> <span class="n">allM</span></div>
 
@@ -266,7 +266,7 @@
   
 
   <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">newprop</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">new_vertex_property</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
-  <span class="n">protL</span><span class="o">=</span><span class="n">propertyValues</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">mapKey</span><span class="p">)</span>
+  <span class="n">protL</span><span class="o">=</span><span class="n">property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">mapKey</span><span class="p">)</span>
 
   <span class="n">nodes</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span>
   <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
@@ -276,7 +276,7 @@
          <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">newprop</span><span class="p">][</span><span class="n">node</span><span class="p">]</span><span class="o">=</span><span class="n">andict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
 
             
-<div class="viewcode-block" id="annotEdgeFromFile"><a class="viewcode-back" href="../index.html#properties.annotEdgeFromFile">[docs]</a><span class="k">def</span> <span class="nf">annotEdgeFromFile</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annotfile</span><span class="p">,</span><span class="n">mapKey</span><span class="p">,</span><span class="n">newprop</span><span class="p">):</span>
+<div class="viewcode-block" id="annot_edge_from_file"><a class="viewcode-back" href="../index.html#properties.annot_edge_from_file">[docs]</a><span class="k">def</span> <span class="nf">annot_edge_from_file</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annotfile</span><span class="p">,</span><span class="n">mapKey</span><span class="p">,</span><span class="n">newprop</span><span class="p">):</span>
 
   <span class="sd">&quot;&quot;&quot;Populate the edges with a new property. The values of the property are extract from a tabular file:</span>
 
@@ -295,7 +295,7 @@
   
 
   <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">newprop</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">new_edge_property</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
-  <span class="n">protL</span><span class="o">=</span><span class="n">edgePropertyValues</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">mapKey</span><span class="p">)</span>
+  <span class="n">protL</span><span class="o">=</span><span class="n">edge_property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">mapKey</span><span class="p">)</span>
 
   <span class="n">edges</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
   <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
@@ -308,7 +308,7 @@
 
 
  
-<div class="viewcode-block" id="copyNodeProperties"><a class="viewcode-back" href="../index.html#properties.copyNodeProperties">[docs]</a><span class="k">def</span> <span class="nf">copyNodeProperties</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sourceNode</span><span class="p">,</span> <span class="n">targetNode</span><span class="p">):</span>
+<div class="viewcode-block" id="copy_node_properties"><a class="viewcode-back" href="../index.html#properties.copy_node_properties">[docs]</a><span class="k">def</span> <span class="nf">copy_node_properties</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sourceNode</span><span class="p">,</span> <span class="n">targetNode</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Copy all properties of a source node to a target node:</span>
 
 <span class="sd">    :param g: a graph</span>
@@ -321,7 +321,7 @@
         <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">targetNode</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">sourceNode</span><span class="p">]</span></div>
 
  
-<div class="viewcode-block" id="copyEdgeProperties"><a class="viewcode-back" href="../index.html#properties.copyEdgeProperties">[docs]</a><span class="k">def</span> <span class="nf">copyEdgeProperties</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sourceEdge</span><span class="p">,</span> <span class="n">targetEdge</span><span class="p">):</span>
+<div class="viewcode-block" id="copy_edge_properties"><a class="viewcode-back" href="../index.html#properties.copy_edge_properties">[docs]</a><span class="k">def</span> <span class="nf">copy_edge_properties</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sourceEdge</span><span class="p">,</span> <span class="n">targetEdge</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;Copy all properties of a source edge to a target edge:</span>
 
