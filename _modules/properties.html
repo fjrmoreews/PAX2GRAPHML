@@ -54,23 +54,23 @@
 <span class="kn">from</span> <span class="nn">pax2graphml</span> <span class="kn">import</span> <span class="n">utils</span>
 <span class="kn">from</span> <span class="nn">pax2graphml</span> <span class="kn">import</span> <span class="n">extract</span>
 
-<div class="viewcode-block" id="property_values"><a class="viewcode-back" href="../index.html#properties.property_values">[docs]</a><span class="k">def</span> <span class="nf">property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annotkey</span><span class="p">):</span>
+<div class="viewcode-block" id="property_values"><a class="viewcode-back" href="../index.html#properties.property_values">[docs]</a><span class="k">def</span> <span class="nf">property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annot_key</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Alias of node_property_values&quot;&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="n">node_property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annotkey</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">node_property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annot_key</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="node_property_values"><a class="viewcode-back" href="../index.html#properties.node_property_values">[docs]</a><span class="k">def</span> <span class="nf">node_property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annotkey</span><span class="p">):</span>
+<div class="viewcode-block" id="node_property_values"><a class="viewcode-back" href="../index.html#properties.node_property_values">[docs]</a><span class="k">def</span> <span class="nf">node_property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annot_key</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return a list of unique values corresponding to an existing node property:</span>
 
 <span class="sd">    :param g: a graph</span>
-<span class="sd">    :param annotkey: an existing propety name</span>
+<span class="sd">    :param annot_key: an existing propety name</span>
 <span class="sd">    :return:  a list of node property values</span>
 <span class="sd">    :rtype: list </span>
 <span class="sd"> </span>
 <span class="sd">    &quot;&quot;&quot;</span> 
   
     <span class="n">vset</span><span class="o">=</span><span class="nb">set</span><span class="p">()</span>
-    <span class="n">pkprop</span><span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">vertex_properties</span><span class="p">[</span><span class="n">annotkey</span><span class="p">]</span>
+    <span class="n">pkprop</span><span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">vertex_properties</span><span class="p">[</span><span class="n">annot_key</span><span class="p">]</span>
     <span class="n">nid</span><span class="o">=</span><span class="mi">0</span>
     <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span>   <span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
        <span class="n">vset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">pkprop</span><span class="p">[</span><span class="n">nid</span><span class="p">])</span>  
@@ -79,19 +79,19 @@
     <span class="n">pv</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">vset</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">pv</span></div>
 
-<div class="viewcode-block" id="edge_property_values"><a class="viewcode-back" href="../index.html#properties.edge_property_values">[docs]</a><span class="k">def</span> <span class="nf">edge_property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annotkey</span><span class="p">):</span>
+<div class="viewcode-block" id="edge_property_values"><a class="viewcode-back" href="../index.html#properties.edge_property_values">[docs]</a><span class="k">def</span> <span class="nf">edge_property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annot_key</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;Return a list of unique values corresponding to an existing edge property:</span>
 
 <span class="sd">    :param g: a graph</span>
-<span class="sd">    :param annotkey: an existing propety name</span>
+<span class="sd">    :param annot_key: an existing propety name</span>
 <span class="sd">    :return:  a list of edge property values</span>
 <span class="sd">    :rtype: list </span>
 <span class="sd"> </span>
 <span class="sd">    &quot;&quot;&quot;</span> 
      
     <span class="n">vset</span><span class="o">=</span><span class="nb">set</span><span class="p">()</span>
-    <span class="n">pkprop</span><span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">edge_properties</span><span class="p">[</span><span class="n">annotkey</span><span class="p">]</span>
+    <span class="n">pkprop</span><span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">edge_properties</span><span class="p">[</span><span class="n">annot_key</span><span class="p">]</span>
     
     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span>   <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
        <span class="n">vset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">pkprop</span><span class="p">[</span><span class="n">e</span><span class="p">])</span>  
@@ -102,13 +102,13 @@
 
 
 
-<div class="viewcode-block" id="defaultNodeValue"><a class="viewcode-back" href="../index.html#properties.defaultNodeValue">[docs]</a><span class="k">def</span> <span class="nf">defaultNodeValue</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span><span class="n">prop</span><span class="p">,</span><span class="n">dval</span> <span class="p">):</span>
+<div class="viewcode-block" id="defaultNodeValue"><a class="viewcode-back" href="../index.html#properties.defaultNodeValue">[docs]</a><span class="k">def</span> <span class="nf">defaultNodeValue</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span><span class="n">prop</span><span class="p">,</span><span class="n">default_val</span> <span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;asign a userdefined value to a node property when it is None ar equal to &quot;&quot;:</span>
 
 <span class="sd">    :param gr: a graph</span>
 <span class="sd">    :param prop: an existing property name</span>
-<span class="sd">    :param dval: the  value to be used to replace None and &quot;&quot; string</span>
+<span class="sd">    :param default_val: the  value to be used to replace None and &quot;&quot; string</span>
 <span class="sd">    :return:  void</span>
 <span class="sd">    :rtype: None </span>
 <span class="sd"> </span>
@@ -117,14 +117,14 @@
     <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span>   <span class="n">gr</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
         <span class="n">xid</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">xid</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">xid</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-                 <span class="n">gr</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">v</span><span class="p">]</span><span class="o">=</span><span class="n">dval</span>   </div>
+                 <span class="n">gr</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">v</span><span class="p">]</span><span class="o">=</span><span class="n">default_val</span>   </div>
    
-<div class="viewcode-block" id="default_edge_value"><a class="viewcode-back" href="../index.html#properties.default_edge_value">[docs]</a><span class="k">def</span> <span class="nf">default_edge_value</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span><span class="n">prop</span><span class="p">,</span><span class="n">dval</span> <span class="p">):</span>
+<div class="viewcode-block" id="default_edge_value"><a class="viewcode-back" href="../index.html#properties.default_edge_value">[docs]</a><span class="k">def</span> <span class="nf">default_edge_value</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span><span class="n">prop</span><span class="p">,</span><span class="n">default_val</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;asign a userdefined value to an edge property when it is None ar equal to &quot;&quot;:</span>
 
 <span class="sd">    :param gr: a graph</span>
 <span class="sd">    :param prop: an existing property name</span>
-<span class="sd">    :param dval: the  value to be used to replace None and &quot;&quot; string</span>
+<span class="sd">    :param default_val: the  value to be used to replace None and &quot;&quot; string</span>
 <span class="sd">    :return:  void</span>
 <span class="sd">    :rtype: None </span>
 <span class="sd"> </span>
@@ -133,7 +133,7 @@
     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span>   <span class="n">gr</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
         <span class="n">xid</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">e</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">xid</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">xid</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-                 <span class="n">gr</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">e</span><span class="p">]</span><span class="o">=</span><span class="n">dval</span>   </div>
+                 <span class="n">gr</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">e</span><span class="p">]</span><span class="o">=</span><span class="n">default_val</span>   </div>
 
 
 
@@ -147,16 +147,16 @@
 
 
 
-<div class="viewcode-block" id="define_biomart_server"><a class="viewcode-back" href="../index.html#properties.define_biomart_server">[docs]</a><span class="k">def</span> <span class="nf">define_biomart_server</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">martName</span><span class="p">):</span>  
+<div class="viewcode-block" id="define_biomart_server"><a class="viewcode-back" href="../index.html#properties.define_biomart_server">[docs]</a><span class="k">def</span> <span class="nf">define_biomart_server</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">mart_name</span><span class="p">):</span>  
    <span class="sd">&quot;&quot;&quot;define a biomart server &quot;&quot;:</span>
 
 <span class="sd">   :param url: the url of the biomartserver</span>
-<span class="sd">   :param martName: the mart name</span>
+<span class="sd">   :param mart_name: the mart name</span>
 <span class="sd">   :return:  mart </span>
 <span class="sd">   :rtype: mart Object </span>
 <span class="sd">   &quot;&quot;&quot;</span>     
    <span class="n">server</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">url</span><span class="p">)</span>
-   <span class="n">mart</span><span class="o">=</span><span class="n">server</span><span class="o">.</span><span class="n">marts</span><span class="p">[</span><span class="n">martName</span><span class="p">]</span>
+   <span class="n">mart</span><span class="o">=</span><span class="n">server</span><span class="o">.</span><span class="n">marts</span><span class="p">[</span><span class="n">mart_name</span><span class="p">]</span>
    <span class="k">return</span> <span class="n">mart</span></div>
 
 
@@ -226,19 +226,19 @@
   <span class="k">return</span> <span class="n">unimap</span></div>
 
 
-<div class="viewcode-block" id="uniprot_annot"><a class="viewcode-back" href="../index.html#properties.uniprot_annot">[docs]</a><span class="k">def</span> <span class="nf">uniprot_annot</span><span class="p">(</span><span class="n">protL</span><span class="p">,</span><span class="n">conf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">lsize</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+<div class="viewcode-block" id="uniprot_annot"><a class="viewcode-back" href="../index.html#properties.uniprot_annot">[docs]</a><span class="k">def</span> <span class="nf">uniprot_annot</span><span class="p">(</span><span class="n">protein_list</span><span class="p">,</span><span class="n">conf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">chunck_size</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
 
    <span class="sd">&quot;&quot;&quot;Configure a mart for Uniprot to GO annotation &quot;&quot;:</span>
 
 <span class="sd">   :param prot:  list of Uniprot gene symbols</span>
 <span class="sd">   :param conf: the configuration dictionary</span>
-<span class="sd">   :param lsize: the size of each chunk of inputs to be submitted in one time</span>
+<span class="sd">   :param chunck_size: the size of each chunk of inputs to be submitted in one time</span>
 <span class="sd">   :return:  a dictionary of annotations </span>
 <span class="sd">   :rtype: dict </span>
 <span class="sd">  </span>
 <span class="sd">   &quot;&quot;&quot;</span>    
     
-   <span class="n">chunks</span> <span class="o">=</span> <span class="p">[</span><span class="n">protL</span><span class="p">[</span><span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">+</span><span class="n">lsize</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">protL</span><span class="p">),</span> <span class="n">lsize</span><span class="p">)]</span>
+   <span class="n">chunks</span> <span class="o">=</span> <span class="p">[</span><span class="n">protein_list</span><span class="p">[</span><span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">+</span><span class="n">chunck_size</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">protein_list</span><span class="p">),</span> <span class="n">chunck_size</span><span class="p">)]</span>
    <span class="n">allM</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
    <span class="k">for</span> <span class="n">prot</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">:</span>
      <span class="c1">#print(prot)   </span>
@@ -247,62 +247,62 @@
    <span class="k">return</span> <span class="n">allM</span></div>
 
 
-<div class="viewcode-block" id="annotNodeFromFile"><a class="viewcode-back" href="../index.html#properties.annotNodeFromFile">[docs]</a><span class="k">def</span> <span class="nf">annotNodeFromFile</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annotfile</span><span class="p">,</span><span class="n">mapKey</span><span class="p">,</span><span class="n">newprop</span><span class="p">,</span><span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="annotNodeFromFile"><a class="viewcode-back" href="../index.html#properties.annotNodeFromFile">[docs]</a><span class="k">def</span> <span class="nf">annotNodeFromFile</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annot_file</span><span class="p">,</span><span class="n">map_key</span><span class="p">,</span><span class="n">new_prop</span><span class="p">,</span><span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
 
   <span class="sd">&quot;&quot;&quot;Populate the nodes with a new property. The values of the property are extract from a tabular file:</span>
 
 <span class="sd">  :param g: a graph</span>
-<span class="sd">  :param annotfile: the tabular annotation file</span>
-<span class="sd">  :param mapKey: the node property holding the primary key that must be present as a named column in the file</span>
-<span class="sd">  :param newprop: the new property to be created that must be present as a named column in the file</span>
+<span class="sd">  :param annot_file: the tabular annotation file</span>
+<span class="sd">  :param map_key: the node property holding the primary key that must be present as a named column in the file</span>
+<span class="sd">  :param new_prop: the new property to be created that must be present as a named column in the file</span>
 <span class="sd">  :param delimiter: tabular file delimiter</span>
 <span class="sd">  :rtype: void </span>
 <span class="sd">  </span>
 <span class="sd">  &quot;&quot;&quot;</span>  
 
-  <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">annotfile</span><span class="p">,</span>   <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">)</span>
+  <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">annot_file</span><span class="p">,</span>   <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">)</span>
 
   <span class="n">andict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
   
 
-  <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">newprop</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">new_vertex_property</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
-  <span class="n">protL</span><span class="o">=</span><span class="n">property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">mapKey</span><span class="p">)</span>
+  <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">new_prop</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">new_vertex_property</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+  <span class="n">protein_list</span><span class="o">=</span><span class="n">property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">map_key</span><span class="p">)</span>
 
   <span class="n">nodes</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span>
   <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
-    <span class="n">key</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">mapKey</span><span class="p">][</span><span class="n">node</span><span class="p">]</span>
+    <span class="n">key</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">map_key</span><span class="p">][</span><span class="n">node</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
       <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">andict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>   
-         <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">newprop</span><span class="p">][</span><span class="n">node</span><span class="p">]</span><span class="o">=</span><span class="n">andict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
+         <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">new_prop</span><span class="p">][</span><span class="n">node</span><span class="p">]</span><span class="o">=</span><span class="n">andict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
 
             
-<div class="viewcode-block" id="annot_edge_from_file"><a class="viewcode-back" href="../index.html#properties.annot_edge_from_file">[docs]</a><span class="k">def</span> <span class="nf">annot_edge_from_file</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annotfile</span><span class="p">,</span><span class="n">mapKey</span><span class="p">,</span><span class="n">newprop</span><span class="p">):</span>
+<div class="viewcode-block" id="annot_edge_from_file"><a class="viewcode-back" href="../index.html#properties.annot_edge_from_file">[docs]</a><span class="k">def</span> <span class="nf">annot_edge_from_file</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annot_file</span><span class="p">,</span><span class="n">map_key</span><span class="p">,</span><span class="n">new_prop</span><span class="p">):</span>
 
   <span class="sd">&quot;&quot;&quot;Populate the edges with a new property. The values of the property are extract from a tabular file:</span>
 
 <span class="sd">  :param g: a graph</span>
-<span class="sd">  :param annotfile: the tabular annotation file</span>
-<span class="sd">  :param mapKey: the node property holding the primary key that must be present as a named column in the file</span>
-<span class="sd">  :param newprop: the new property to be created that must be present as a named column in the file</span>
+<span class="sd">  :param annot_file: the tabular annotation file</span>
+<span class="sd">  :param map_key: the node property holding the primary key that must be present as a named column in the file</span>
+<span class="sd">  :param new_prop: the new property to be created that must be present as a named column in the file</span>
 <span class="sd">  :param delimiter: tabular file delimiter</span>
 <span class="sd">  :rtype: void </span>
 <span class="sd">  </span>
 <span class="sd">  &quot;&quot;&quot;</span> 
 
 
-  <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">annotfile</span><span class="p">,</span>  <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+  <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">annot_file</span><span class="p">,</span>  <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
   <span class="n">andict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
   
 
-  <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">newprop</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">new_edge_property</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
-  <span class="n">protL</span><span class="o">=</span><span class="n">edge_property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">mapKey</span><span class="p">)</span>
+  <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">new_prop</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">new_edge_property</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+  <span class="n">protein_list</span><span class="o">=</span><span class="n">edge_property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">map_key</span><span class="p">)</span>
 
   <span class="n">edges</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
   <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
-    <span class="n">key</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">mapKey</span><span class="p">][</span><span class="n">edge</span><span class="p">]</span>
+    <span class="n">key</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">map_key</span><span class="p">][</span><span class="n">edge</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
       <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">andict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>   
-         <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">newprop</span><span class="p">][</span><span class="n">edge</span><span class="p">]</span><span class="o">=</span><span class="n">andict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
+         <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">new_prop</span><span class="p">][</span><span class="n">edge</span><span class="p">]</span><span class="o">=</span><span class="n">andict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
 
 
 
@@ -321,19 +321,19 @@
         <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">targetNode</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">sourceNode</span><span class="p">]</span></div>
 
  
-<div class="viewcode-block" id="copy_edge_properties"><a class="viewcode-back" href="../index.html#properties.copy_edge_properties">[docs]</a><span class="k">def</span> <span class="nf">copy_edge_properties</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sourceEdge</span><span class="p">,</span> <span class="n">targetEdge</span><span class="p">):</span>
+<div class="viewcode-block" id="copy_edge_properties"><a class="viewcode-back" href="../index.html#properties.copy_edge_properties">[docs]</a><span class="k">def</span> <span class="nf">copy_edge_properties</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">source_edge</span><span class="p">,</span> <span class="n">target_edge</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;Copy all properties of a source edge to a target edge:</span>
 
 <span class="sd">    :param g: a graph</span>
-<span class="sd">    :param sourceEdge: source node</span>
-<span class="sd">    :param targetEdge:  target node</span>
+<span class="sd">    :param source_edge: source node</span>
+<span class="sd">    :param target_edge:  target node</span>
 <span class="sd">    :rtype: void </span>
 <span class="sd">  </span>
 <span class="sd">    &quot;&quot;&quot;</span> 
 
     <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">edge_properties</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">targetEdge</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">sourceEdge</span><span class="p">]</span></div>
+        <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">target_edge</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">source_edge</span><span class="p">]</span></div>
 
 
 

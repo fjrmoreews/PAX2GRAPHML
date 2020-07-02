@@ -56,16 +56,16 @@
 <span class="kn">from</span> <span class="nn">pax2graphml</span> <span class="kn">import</span> <span class="n">properties</span>
 
 
-<div class="viewcode-block" id="sub_graph_by_value"><a class="viewcode-back" href="../index.html#extract.sub_graph_by_value">[docs]</a><span class="k">def</span> <span class="nf">sub_graph_by_value</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">targL</span><span class="p">,</span><span class="n">annot_keys</span><span class="p">,</span><span class="n">add_void</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">incVal</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="sub_graph_by_value"><a class="viewcode-back" href="../index.html#extract.sub_graph_by_value">[docs]</a><span class="k">def</span> <span class="nf">sub_graph_by_value</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">targets</span><span class="p">,</span><span class="n">annot_keys</span><span class="p">,</span><span class="n">add_void</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">void_symbol</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     
-  <span class="sd">&quot;&quot;&quot;Extract a sub graph list. Each graph contains nodes with properties matching provided values:</span>
+  <span class="sd">&quot;&quot;&quot;Extract a subgraph list. Each graph contains nodes with properties matching provided values:</span>
 
 
 <span class="sd">  :param g: a graph</span>
-<span class="sd">  :param targL: a list of values that must match the values of teh properties defined by annot_keys</span>
+<span class="sd">  :param targets: a list of values that must match the values of the properties defined by annot_keys</span>
 <span class="sd">  :param annot_keys: a list of properties</span>
 <span class="sd">  :param add_void: a boolean defining if we  keeo void values</span>
-<span class="sd">  :param incVal: incVal represents the void value symbol, used if add_void is true</span>
+<span class="sd">  :param void_symbol: void_symbol represents the void value symbol, used if add_void is true</span>
 <span class="sd">  :return:  a list of dictionnary where the key &quot;subgraph&quot; represents the subgraph</span>
 <span class="sd">  :rtype: list </span>
 <span class="sd"> </span>
@@ -73,11 +73,11 @@
   
   <span class="n">extend_to_cc</span><span class="o">=</span><span class="kc">False</span>     
   <span class="n">subgraphList</span><span class="o">=</span><span class="nb">list</span><span class="p">()</span>
-  <span class="k">for</span> <span class="n">tar</span> <span class="ow">in</span> <span class="n">targL</span><span class="p">:</span>
+  <span class="k">for</span> <span class="n">tar</span> <span class="ow">in</span> <span class="n">targets</span><span class="p">:</span>
       <span class="n">pvset</span><span class="o">=</span><span class="nb">set</span><span class="p">()</span>
       <span class="k">if</span> <span class="n">add_void</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">incVal</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">tar</span> <span class="o">!=</span> <span class="n">incVal</span><span class="p">:</span>   
-           <span class="n">pvset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">incVal</span><span class="p">)</span>  
+        <span class="k">if</span> <span class="n">void_symbol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">tar</span> <span class="o">!=</span> <span class="n">void_symbol</span><span class="p">:</span>   
+           <span class="n">pvset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">void_symbol</span><span class="p">)</span>  
            <span class="n">pvset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tar</span><span class="p">)</span>     
       <span class="k">else</span><span class="p">:</span>
           <span class="n">pvset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tar</span><span class="p">)</span>    
@@ -95,39 +95,37 @@
   <span class="k">return</span> <span class="n">subgraphList</span>   </div>
 
 
-<div class="viewcode-block" id="subgraphs_by_datasource"><a class="viewcode-back" href="../index.html#extract.subgraphs_by_datasource">[docs]</a><span class="k">def</span> <span class="nf">subgraphs_by_datasource</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">add_void</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">incVal</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="subgraphs_by_datasource"><a class="viewcode-back" href="../index.html#extract.subgraphs_by_datasource">[docs]</a><span class="k">def</span> <span class="nf">subgraphs_by_datasource</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">add_void</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">void_symbol</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;Extract a sub graph list. Each graph contains nodes with datasource/provider matching input values:</span>
+    <span class="sd">&quot;&quot;&quot;Extract a subgraph list. Each graph contains nodes with datasource/provider matching input values:</span>
 
 <span class="sd">    :param g: a graph</span>
-<span class="sd">    :param targL: a list of values that must match the values of the properties defined by annot_keys</span>
-<span class="sd">    :param annot_keys: a list of properties</span>
-<span class="sd">    :param add_void: a boolean defining if we  keeo void values</span>
-<span class="sd">    :param incVal: incVal represents the void value symbol, used if add_void is true</span>
+<span class="sd">    :param add_void: a boolean defining if we  keep void values</span>
+<span class="sd">    :param void_symbol: void_symbol represents the void value symbol, used if add_void is true</span>
 <span class="sd">    :return:  a list of dictionnary where the key &quot;subgraph&quot; represents the subgraph</span>
 <span class="sd">    :rtype: list </span>
 <span class="sd"> </span>
 <span class="sd"> </span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">annotkey</span><span class="o">=</span><span class="s2">&quot;provider&quot;</span>
-    <span class="n">providerList</span><span class="o">=</span><span class="n">properties</span><span class="o">.</span><span class="n">property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annotkey</span><span class="p">)</span>
-    <span class="n">annot_keys</span><span class="o">=</span><span class="p">[</span><span class="n">annotkey</span><span class="p">]</span>
-    <span class="k">return</span>  <span class="n">sub_graph_by_value</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">providerList</span><span class="p">,</span><span class="n">annot_keys</span><span class="p">,</span><span class="n">add_void</span><span class="p">,</span><span class="n">incVal</span><span class="p">)</span></div>
+    <span class="n">annot_key</span><span class="o">=</span><span class="s2">&quot;provider&quot;</span>
+    <span class="n">providerList</span><span class="o">=</span><span class="n">properties</span><span class="o">.</span><span class="n">property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annot_key</span><span class="p">)</span>
+    <span class="n">annot_keys</span><span class="o">=</span><span class="p">[</span><span class="n">annot_key</span><span class="p">]</span>
+    <span class="k">return</span>  <span class="n">sub_graph_by_value</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">providerList</span><span class="p">,</span><span class="n">annot_keys</span><span class="p">,</span><span class="n">add_void</span><span class="p">,</span><span class="n">void_symbol</span><span class="p">)</span></div>
     
  
 
 <div class="viewcode-block" id="connected_component_by_annotation"><a class="viewcode-back" href="../index.html#extract.connected_component_by_annotation">[docs]</a><span class="k">def</span> <span class="nf">connected_component_by_annotation</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">targ</span><span class="p">,</span><span class="n">annot_keys</span><span class="p">,</span><span class="n">add_void</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">extend_to_cc</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;Extract a sub graph build by merging a subset of connected components of the original graph. Each connected component contains nodes with properties matching provided values:</span>
+    <span class="sd">&quot;&quot;&quot;Extract a subgraph build by merging a subset of connected components of the original graph. Each connected component contains nodes with properties matching provided values:</span>
 
 
 <span class="sd">    :param g: a graph</span>
-<span class="sd">    :param targ: a list of values that must match the values of teh properties defined by annot_keys</span>
+<span class="sd">    :param targ: a list of values that must match the values of the properties defined by annot_keys</span>
 <span class="sd">    :param annot_keys: a list of properties</span>
 <span class="sd">    :param add_void: a boolean defining if we  keeo void values.void values will have the string value &quot;&quot; </span>
 <span class="sd">    :param extend_to_cc:   if true  add all members of a connectes compoenent which, \</span>
 <span class="sd">    at least one node matches a properties value defined in targ </span>
-<span class="sd">    :return: a sub graph</span>
+<span class="sd">    :return: a subgraph</span>
 <span class="sd">    :rtype: graph </span>
 <span class="sd"> </span>
 <span class="sd">    &quot;&quot;&quot;</span> 
@@ -138,8 +136,8 @@
     <span class="n">revnidmap</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
     <span class="n">prop2nid</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
     <span class="n">selectedcc</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">annotkey</span> <span class="ow">in</span> <span class="n">annot_keys</span><span class="p">:</span>
-      <span class="n">pkprop</span><span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">vertex_properties</span><span class="p">[</span><span class="n">annotkey</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">annot_key</span> <span class="ow">in</span> <span class="n">annot_keys</span><span class="p">:</span>
+      <span class="n">pkprop</span><span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">vertex_properties</span><span class="p">[</span><span class="n">annot_key</span><span class="p">]</span>
       <span class="n">nid</span><span class="o">=</span><span class="mi">0</span>
       <span class="n">vfilt</span> <span class="o">=</span>  <span class="n">g</span><span class="o">.</span><span class="n">new_vertex_property</span><span class="p">(</span><span class="s1">&#39;bool&#39;</span><span class="p">);</span> 
       <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span>   <span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
@@ -235,11 +233,11 @@
 
  
 <div class="viewcode-block" id="filter_from_boolean_filter"><a class="viewcode-back" href="../index.html#extract.filter_from_boolean_filter">[docs]</a><span class="k">def</span> <span class="nf">filter_from_boolean_filter</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span><span class="n">vfilter</span><span class="p">):</span>
-     <span class="sd">&quot;&quot;&quot;Create a sub graph using a filter:</span>
+     <span class="sd">&quot;&quot;&quot;Create a subgraph using a filter:</span>
 
 <span class="sd">     :param gr: a graph</span>
 <span class="sd">     :param vfilter: a filter as a dictionnary (node index,True/False)</span>
-<span class="sd">     :return: a sub graph</span>
+<span class="sd">     :return: a subgraph</span>
 <span class="sd">     :rtype: graph </span>
 <span class="sd"> </span>
 <span class="sd">     &quot;&quot;&quot;</span>
@@ -250,12 +248,12 @@
 
 <span class="c1">#filter a graph using a node property ( V2 with lambda)</span>
 <div class="viewcode-block" id="filter_by_node_attribute"><a class="viewcode-back" href="../index.html#extract.filter_by_node_attribute">[docs]</a><span class="k">def</span> <span class="nf">filter_by_node_attribute</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span><span class="n">att</span><span class="p">,</span><span class="n">val</span><span class="p">):</span>
-     <span class="sd">&quot;&quot;&quot;Create a sub graph where the nodes matches a property value:</span>
+     <span class="sd">&quot;&quot;&quot;Create a subgraph where the nodes matches a property value:</span>
 
 <span class="sd">     :param gr: a graph</span>
 <span class="sd">     :param att: an  existing property name</span>
 <span class="sd">     :param val: a value for the property att. Each node with with this property value will be selected by the filter </span>
-<span class="sd">     :return: a sub graph</span>
+<span class="sd">     :return: a subgraph</span>
 <span class="sd">     :rtype: graph </span>
 <span class="sd"> </span>
 <span class="sd">     &quot;&quot;&quot;</span>
@@ -271,7 +269,7 @@
 	<span class="sd">&quot;&quot;&quot;Select the largest connected component:</span>
 
 <span class="sd">	:param g: a graph</span>
-<span class="sd">	:return: a sub graph</span>
+<span class="sd">	:return: a subgraph</span>
 <span class="sd">	:rtype: graph </span>
 <span class="sd"> </span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -288,7 +286,7 @@
 	<span class="sd">&quot;&quot;&quot;Remove the largest connected component:</span>
 
 <span class="sd">	:param g: a graph</span>
-<span class="sd">	:return: a sub graph</span>
+<span class="sd">	:return: a subgraph</span>
 <span class="sd">	:rtype: graph </span>
 <span class="sd"> </span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -602,7 +600,7 @@
  
 <div class="viewcode-block" id="sub_graph_filter"><a class="viewcode-back" href="../index.html#extract.sub_graph_filter">[docs]</a><span class="k">def</span> <span class="nf">sub_graph_filter</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">iteration_count</span><span class="p">,</span> <span class="n">central_node</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="nb">all</span><span class="p">,</span> <span class="n">node_limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">neighbour_count</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;define a sub graph filter according to parameters:</span>
+    <span class="sd">&quot;&quot;&quot;define a subgraph filter according to parameters:</span>
 
 <span class="sd">    :param gr: a graph</span>
 <span class="sd">    :param iteration_count: number of iterations</span>
@@ -665,7 +663,7 @@
 
 <div class="viewcode-block" id="subgraph_by_direction"><a class="viewcode-back" href="../index.html#extract.subgraph_by_direction">[docs]</a><span class="k">def</span> <span class="nf">subgraph_by_direction</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">iteration_count</span><span class="p">,</span> <span class="n">chosen_node_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="n">node_limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">neighbour_count</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;extract a sub graph  according to parameters:</span>
+    <span class="sd">&quot;&quot;&quot;extract a subgraph  according to parameters:</span>
 
 <span class="sd">    :param gr: a graph</span>
 <span class="sd">    :param iteration_count: number of iterations</span>
@@ -673,7 +671,7 @@
 <span class="sd">    :param direction: edge direction (all,in,out)</span>
 <span class="sd">    :param node_limit:  maximum node number</span>
 <span class="sd">    :param neighbour_count:  number of neighbours</span>
-<span class="sd">    :return: the sub graph</span>
+<span class="sd">    :return: the subgraph</span>
 <span class="sd">    :rtype: graph </span>
 <span class="sd"> </span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -703,7 +701,7 @@
 <span class="sd">      :param nodeid: selected node id</span>
 <span class="sd">      :param direction: edge direction (all,in,out)</span>
 <span class="sd">      :param neighbour_count:  number of neighbours</span>
-<span class="sd">      :return: the sub graph</span>
+<span class="sd">      :return: the subgraph</span>
 <span class="sd">      :rtype: graph </span>
 <span class="sd"> </span>
 <span class="sd">      &quot;&quot;&quot;</span>

@@ -173,7 +173,7 @@
  
    <span class="sd">&quot;&quot;&quot;Populate a new node property with values extracted from an annotation json file:</span>
 
-<span class="sd">   :param propertiesfile: json annotation file    </span>
+<span class="sd">   :param properties_file: json annotation file    </span>
 <span class="sd">   :param annot_field: field in json data dictionary to be processed</span>
 <span class="sd">   :param dest_field: new property name</span>
 <span class="sd">   :param default_val: property default value for None</span>
@@ -401,17 +401,17 @@
 
 
 
-<div class="viewcode-block" id="reaction_to_influence_graph"><a class="viewcode-back" href="../index.html#pax_import.reaction_to_influence_graph">[docs]</a><span class="k">def</span> <span class="nf">reaction_to_influence_graph</span><span class="p">(</span><span class="n">reactionGraph</span><span class="p">):</span>
+<div class="viewcode-block" id="reaction_to_influence_graph"><a class="viewcode-back" href="../index.html#pax_import.reaction_to_influence_graph">[docs]</a><span class="k">def</span> <span class="nf">reaction_to_influence_graph</span><span class="p">(</span><span class="n">reaction_graph</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;generate an influence graph from a checked reaction graph:</span>
 
-<span class="sd">    :param reactionGraph: checked reaction graph   </span>
+<span class="sd">    :param reaction_graph: checked reaction graph   </span>
 <span class="sd">    :return: influence graph</span>
 <span class="sd">    :rtype: graph object</span>
 <span class="sd">  </span>
 <span class="sd">    &quot;&quot;&quot;</span> 
 
-    <span class="n">infG</span><span class="o">=</span><span class="n">reactionGraph</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">infG</span><span class="o">=</span><span class="n">reaction_graph</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">__initiateQuantityNode</span><span class="p">(</span><span class="n">infG</span><span class="p">)</span>
     <span class="n">__linkEdges</span><span class="p">(</span><span class="n">infG</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">infG</span></div>
