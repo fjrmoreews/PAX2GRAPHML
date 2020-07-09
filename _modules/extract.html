@@ -52,8 +52,8 @@
 <span class="kn">from</span> <span class="nn">pybiomart.dataset</span> <span class="kn">import</span>   <span class="n">Filter</span>
 
  
-<span class="kn">from</span> <span class="nn">pax2graphml</span> <span class="kn">import</span> <span class="n">utils</span>
-<span class="kn">from</span> <span class="nn">pax2graphml</span> <span class="kn">import</span> <span class="n">properties</span>
+<span class="kn">from</span> <span class="nn">pax2graphml</span> <span class="kn">import</span> <span class="n">utils</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">graph_explore</span>
+ 
 
 
 <div class="viewcode-block" id="sub_graph_by_value"><a class="viewcode-back" href="../index.html#extract.sub_graph_by_value">[docs]</a><span class="k">def</span> <span class="nf">sub_graph_by_value</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">targets</span><span class="p">,</span><span class="n">annot_keys</span><span class="p">,</span><span class="n">add_void</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">void_symbol</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -348,9 +348,9 @@
 
 
     
-<span class="k">def</span> <span class="nf">__merge_nodes_by_property</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span> <span class="n">properties_list</span><span class="p">,</span><span class="n">caseSensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">__merging_property</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span> <span class="n">properties_list</span><span class="p">,</span><span class="n">caseSensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
-  <span class="sd">&quot;&quot;&quot;Define a property to  all nodes of a graph, that share the same value of a list of properties:</span>
+  <span class="sd">&quot;&quot;&quot;Define a merging property for all nodes of a graph, using a concatenation of the values of each property of a list:</span>
 
 <span class="sd">  :param gr: a graph</span>
 <span class="sd">  :param properties_list: a list of node properties</span>
@@ -395,8 +395,8 @@
 <span class="sd">  &quot;&quot;&quot;</span>
 
     
-  <span class="n">gprop1</span><span class="o">=</span><span class="n">__merge_nodes_by_property</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span> <span class="n">properties_list</span><span class="p">,</span><span class="n">caseSensitive</span><span class="p">)</span>
-  <span class="n">gprop2</span><span class="o">=</span><span class="n">__merge_nodes_by_property</span><span class="p">(</span><span class="n">gr2</span><span class="p">,</span> <span class="n">properties_list</span><span class="p">,</span><span class="n">caseSensitive</span><span class="p">)</span>
+  <span class="n">gprop1</span><span class="o">=</span><span class="n">__merging_property</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span> <span class="n">properties_list</span><span class="p">,</span><span class="n">caseSensitive</span><span class="p">)</span>
+  <span class="n">gprop2</span><span class="o">=</span><span class="n">__merging_property</span><span class="p">(</span><span class="n">gr2</span><span class="p">,</span> <span class="n">properties_list</span><span class="p">,</span><span class="n">caseSensitive</span><span class="p">)</span>
   <span class="n">nnodeMap</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
   <span class="n">domergeMap</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
   <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span> 
@@ -435,7 +435,7 @@
  
         <span class="k">if</span> <span class="n">domerge</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
            
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">p2g</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">node_to_string</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span> <span class="n">second_node</span><span class="p">,</span> <span class="s2">&quot; , &quot;</span><span class="p">))</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">node_to_string</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span> <span class="n">second_node</span><span class="p">,</span> <span class="s2">&quot; , &quot;</span><span class="p">))</span>
             <span class="n">ki</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">second_node</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">ki</span> <span class="ow">in</span> <span class="n">domergeMap</span><span class="p">:</span>
                 <span class="n">kset</span><span class="o">=</span><span class="n">domergeMap</span><span class="p">[</span><span class="n">ki</span><span class="p">]</span>
@@ -488,7 +488,7 @@
   <span class="k">for</span> <span class="n">nid</span> <span class="ow">in</span> <span class="n">nmap</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> 
         <span class="n">u</span><span class="o">=</span><span class="n">nmap</span><span class="p">[</span><span class="n">nid</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">rprop</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">rprop</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
-           <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;  --&gt;&gt;&gt;&gt;&quot;</span><span class="o">+</span><span class="n">p2g</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">node_to_string</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="s2">&quot; , &quot;</span><span class="p">))</span> 
+           <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;  --&gt;&gt;&gt;&gt;&quot;</span><span class="o">+</span><span class="n">utils</span><span class="o">.</span><span class="n">node_to_string</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="s2">&quot; , &quot;</span><span class="p">))</span> 
            <span class="n">narr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
   <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">narr</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
            <span class="n">gr1</span><span class="o">.</span><span class="n">remove_vertex</span><span class="p">(</span><span class="n">narr</span><span class="p">)</span>
@@ -512,7 +512,7 @@
 <span class="sd"> </span>
 <span class="sd">  &quot;&quot;&quot;</span>
     
-  <span class="n">gprop1</span><span class="o">=</span><span class="n">__merge_nodes_by_property</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span> <span class="n">properties_list</span><span class="p">,</span><span class="n">caseSensitive</span><span class="p">)</span>
+  <span class="n">gprop1</span><span class="o">=</span><span class="n">__merging_property</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span> <span class="n">properties_list</span><span class="p">,</span><span class="n">caseSensitive</span><span class="p">)</span>
   <span class="n">nnodeMap</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
   <span class="n">domergeMap</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
   <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span> 
@@ -542,7 +542,7 @@
  
         <span class="k">if</span> <span class="n">domerge</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
             <span class="n">second_node</span><span class="o">=</span><span class="n">u</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">p2g</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">node_to_string</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span> <span class="n">second_node</span><span class="p">,</span> <span class="s2">&quot; , &quot;</span><span class="p">))</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">node_to_string</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span> <span class="n">second_node</span><span class="p">,</span> <span class="s2">&quot; , &quot;</span><span class="p">))</span>
             <span class="n">ki</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">second_node</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">ki</span> <span class="ow">in</span> <span class="n">domergeMap</span><span class="p">:</span>
                 <span class="n">kset</span><span class="o">=</span><span class="n">domergeMap</span><span class="p">[</span><span class="n">ki</span><span class="p">]</span>
@@ -585,7 +585,7 @@
   <span class="k">for</span> <span class="n">nid</span> <span class="ow">in</span> <span class="n">nmap</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> 
         <span class="n">u</span><span class="o">=</span><span class="n">nmap</span><span class="p">[</span><span class="n">nid</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">rprop</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">rprop</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">==</span><span class="mi">2</span><span class="p">:</span>
-           <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;  --&gt;&gt;&gt;&gt;&quot;</span><span class="o">+</span><span class="n">p2g</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">node_to_string</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="s2">&quot; , &quot;</span><span class="p">))</span> 
+           <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;  --&gt;&gt;&gt;&gt;&quot;</span><span class="o">+</span><span class="n">utils</span><span class="o">.</span><span class="n">node_to_string</span><span class="p">(</span><span class="n">gr1</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="s2">&quot; , &quot;</span><span class="p">))</span> 
            <span class="n">narr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
   <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">narr</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
            <span class="n">gr1</span><span class="o">.</span><span class="n">remove_vertex</span><span class="p">(</span><span class="n">narr</span><span class="p">)</span>
@@ -705,7 +705,7 @@
 <span class="sd">      :rtype: graph </span>
 <span class="sd"> </span>
 <span class="sd">      &quot;&quot;&quot;</span>
-      <span class="n">g</span><span class="o">=</span><span class="n">p2g</span><span class="o">.</span><span class="n">graph_explore</span><span class="o">.</span><span class="n">load_graphml</span><span class="p">(</span><span class="n">input_graph</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+      <span class="n">g</span><span class="o">=</span><span class="n">graph_explore</span><span class="o">.</span><span class="n">load_graphml</span><span class="p">(</span><span class="n">input_graph</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
       <span class="n">g</span> <span class="o">=</span> <span class="n">subgraph_by_direction</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">chosen_node_id</span><span class="o">=</span><span class="n">nodeid</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="n">direction</span><span class="p">,</span> <span class="n">neighbour_count</span><span class="o">=</span><span class="n">neighbour_count</span><span class="p">)</span>
       <span class="k">return</span> <span class="n">g</span></div>
 

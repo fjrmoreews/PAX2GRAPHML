@@ -222,7 +222,10 @@
         
     <span class="k">else</span><span class="p">:</span>
         <span class="k">break</span>
-   
+  <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">unimap</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+     <span class="n">v</span><span class="o">=</span> <span class="n">unimap</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+     <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">unimap</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
   <span class="k">return</span> <span class="n">unimap</span></div>
 
 
@@ -247,14 +250,118 @@
    <span class="k">return</span> <span class="n">allM</span></div>
 
 
-<div class="viewcode-block" id="annotNodeFromFile"><a class="viewcode-back" href="../index.html#properties.annotNodeFromFile">[docs]</a><span class="k">def</span> <span class="nf">annotNodeFromFile</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annot_file</span><span class="p">,</span><span class="n">map_key</span><span class="p">,</span><span class="n">new_prop</span><span class="p">,</span><span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
+ 
+<div class="viewcode-block" id="is_unique"><a class="viewcode-back" href="../index.html#properties.is_unique">[docs]</a><span class="k">def</span> <span class="nf">is_unique</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">key_prop</span><span class="p">,</span> <span class="n">exclude_void</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+  <span class="sd">&quot;&quot;&quot;Evaluate if a property contains one unique value for each node:</span>
+
+<span class="sd">  :param g: a graph</span>
+<span class="sd">  :param key_prop: the key node property to be evaluated</span>
+<span class="sd">  :param exclude_void: define is we include None values </span>
+<span class="sd">  :rtype: boolean </span>
+<span class="sd">  </span>
+<span class="sd">  &quot;&quot;&quot;</span>  
+  <span class="n">ud</span><span class="o">=</span><span class="nb">set</span><span class="p">()</span>
+  <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+  <span class="n">vc</span><span class="o">=</span><span class="mi">0</span>
+  <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>  
+    <span class="n">key</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">key_prop</span><span class="p">][</span><span class="n">node</span><span class="p">]</span> 
+    <span class="k">if</span> <span class="n">exclude_void</span><span class="o">==</span><span class="kc">True</span> <span class="ow">and</span>  <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span> <span class="p">:</span>
+      <span class="n">vc</span><span class="o">+=</span><span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+      <span class="n">ud</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+
+
+  <span class="k">if</span> <span class="n">i</span><span class="o">!=</span><span class="nb">len</span><span class="p">(</span><span class="n">ud</span><span class="p">):</span>
+     <span class="k">return</span> <span class="kc">False</span>
+  <span class="k">else</span> <span class="p">:</span>
+     <span class="k">return</span> <span class="kc">True</span> </div>
+
+<div class="viewcode-block" id="annot_node_to_file"><a class="viewcode-back" href="../index.html#properties.annot_node_to_file">[docs]</a><span class="k">def</span> <span class="nf">annot_node_to_file</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">output_prop_file</span><span class="p">,</span><span class="n">key_prop</span><span class="p">,</span><span class="n">annot_prop</span><span class="p">,</span><span class="n">defval</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">excluded_keys</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">],</span><span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
+
+  <span class="sd">&quot;&quot;&quot;Export two properties to a tabular file. The first property act as a  key to identify the node, the second as an additionnal annotaion attribute. The Unicity of the key is not tested :</span>
+
+<span class="sd">  :param g: a graph</span>
+<span class="sd">  :param output_prop_file: the tabular output file</span>
+<span class="sd">  :param key_prop: the key node property that will be present as a named column in the file. &#39;index&#39; references the node index (from 0)</span>
+<span class="sd">  :param annot_prop: the additionnal property to be exported as a named column in the file</span>
+<span class="sd">  :param defval: value to replace None values in output</span>
+<span class="sd">  :param excluded_keys: list of key_prop values that will be excluded </span>
+<span class="sd">  :param delimiter: tabular file delimiter</span>
+<span class="sd">  :rtype: void </span>
+<span class="sd">  </span>
+<span class="sd">  &quot;&quot;&quot;</span>  
+  <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_prop_file</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> 
+  <span class="n">endL</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+  <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s%s%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key_prop</span><span class="p">,</span><span class="n">delimiter</span><span class="p">,</span><span class="n">annot_prop</span><span class="p">,</span><span class="n">endL</span><span class="p">))</span>
+  <span class="n">idx</span><span class="o">=-</span><span class="mi">1</span>
+  <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+   
+    <span class="n">idx</span><span class="o">+=</span><span class="mi">1</span>
+    <span class="k">if</span> <span class="n">key_prop</span><span class="o">==</span><span class="s2">&quot;index&quot;</span><span class="p">:</span>
+      <span class="n">key</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">key</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">key_prop</span><span class="p">][</span><span class="n">node</span><span class="p">]</span>
+    
+    <span class="n">annot</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">annot_prop</span><span class="p">][</span><span class="n">node</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">excluded_keys</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+         <span class="n">key</span><span class="o">=</span><span class="s1">&#39;None&#39;</span>    
+      <span class="k">if</span> <span class="n">annot</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+         <span class="n">annot</span><span class="o">=</span><span class="n">defval</span>            
+      <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s2">&quot;</span><span class="si">%s%s%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="n">delimiter</span><span class="p">,</span><span class="n">annot</span><span class="p">,</span><span class="n">endL</span><span class="p">))</span>
+  <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+
+
+<div class="viewcode-block" id="annot_edge_to_file"><a class="viewcode-back" href="../index.html#properties.annot_edge_to_file">[docs]</a><span class="k">def</span> <span class="nf">annot_edge_to_file</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">output_prop_file</span><span class="p">,</span><span class="n">key_prop</span><span class="p">,</span><span class="n">annot_prop</span><span class="p">,</span><span class="n">defval</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">excluded_keys</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">],</span><span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
+
+  <span class="sd">&quot;&quot;&quot;Export two properties to a tabular file. The first property act as a  key to identify the edge, the second as an additionnal annotaion attribute. The Unicity of the key is not tested :</span>
+
+<span class="sd">  :param g: a graph</span>
+<span class="sd">  :param output_prop_file: the tabular output file</span>
+<span class="sd">  :param key_prop: the key edge property that will be present as a named column in the file.  &#39;index&#39; references the edge index (from 0)</span>
+<span class="sd">  :param annot_prop: the additionnal property to be exported as a named column in the file</span>
+<span class="sd">  :param defval: value to replace None values in output</span>
+<span class="sd">  :param excluded_keys: list of key_prop values that will be excluded </span>
+<span class="sd">  :param delimiter: tabular file delimiter</span>
+<span class="sd">  :rtype: void </span>
+<span class="sd">  </span>
+<span class="sd">  &quot;&quot;&quot;</span>  
+  <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_prop_file</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> 
+  <span class="n">endL</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+  <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s%s%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key_prop</span><span class="p">,</span><span class="n">delimiter</span><span class="p">,</span><span class="n">annot_prop</span><span class="p">,</span><span class="n">endL</span><span class="p">))</span>
+  <span class="n">idx</span><span class="o">=-</span><span class="mi">1</span>
+  <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+    <span class="n">idx</span><span class="o">+=</span><span class="mi">1</span>
+    
+    <span class="k">if</span> <span class="n">key_prop</span><span class="o">==</span><span class="s2">&quot;index&quot;</span><span class="p">:</span>
+       <span class="n">key</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+       <span class="n">key</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">key_prop</span><span class="p">][</span><span class="n">edge</span><span class="p">]</span>
+
+    <span class="n">annot</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">annot_prop</span><span class="p">][</span><span class="n">edge</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">excluded_keys</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+         <span class="n">key</span><span class="o">=</span><span class="s1">&#39;None&#39;</span>    
+      <span class="k">if</span> <span class="n">annot</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+         <span class="n">annot</span><span class="o">=</span><span class="n">defval</span>            
+      <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s2">&quot;</span><span class="si">%s%s%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="n">delimiter</span><span class="p">,</span><span class="n">annot</span><span class="p">,</span><span class="n">endL</span><span class="p">))</span>
+  <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="annot_node_from_file"><a class="viewcode-back" href="../index.html#properties.annot_node_from_file">[docs]</a><span class="k">def</span> <span class="nf">annot_node_from_file</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annot_file</span><span class="p">,</span><span class="n">map_key</span><span class="p">,</span><span class="n">new_prop</span><span class="p">,</span><span class="n">new_prop_type</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
 
   <span class="sd">&quot;&quot;&quot;Populate the nodes with a new property. The values of the property are extract from a tabular file:</span>
 
 <span class="sd">  :param g: a graph</span>
 <span class="sd">  :param annot_file: the tabular annotation file</span>
-<span class="sd">  :param map_key: the node property holding the primary key that must be present as a named column in the file</span>
+<span class="sd">  :param map_key: the node property holding the primary key that must be present as a named column in the file.  &#39;index&#39; references the node index (from 0)</span>
 <span class="sd">  :param new_prop: the new property to be created that must be present as a named column in the file</span>
+<span class="sd">  :param new_prop_type: type of the new property (&#39;string&#39;,&#39;int&#39;, &#39;float&#39;, &#39;long&#39;,&#39;bool&#39;)</span>
 <span class="sd">  :param delimiter: tabular file delimiter</span>
 <span class="sd">  :rtype: void </span>
 <span class="sd">  </span>
@@ -263,46 +370,67 @@
   <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">annot_file</span><span class="p">,</span>   <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">)</span>
 
   <span class="n">andict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-  
 
-  <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">new_prop</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">new_vertex_property</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
-  <span class="n">protein_list</span><span class="o">=</span><span class="n">property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">map_key</span><span class="p">)</span>
+  <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">new_prop</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">new_vertex_property</span><span class="p">(</span><span class="n">new_prop_type</span><span class="p">)</span>
+ 
 
   <span class="n">nodes</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span>
+  <span class="n">idx</span><span class="o">=-</span><span class="mi">1</span>
   <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
-    <span class="n">key</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">map_key</span><span class="p">][</span><span class="n">node</span><span class="p">]</span>
+    <span class="n">idx</span><span class="o">+=</span><span class="mi">1</span>
+    <span class="k">if</span> <span class="n">map_key</span><span class="o">==</span><span class="s1">&#39;index&#39;</span><span class="p">:</span>
+       <span class="n">key</span><span class="o">=</span><span class="n">idx</span>
+       <span class="c1">#key=g.vertex_index[node]</span>
+    <span class="k">else</span><span class="p">:</span>
+       <span class="n">key</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">map_key</span><span class="p">][</span><span class="n">node</span><span class="p">]</span>
+
     <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
       <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">andict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>   
          <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">new_prop</span><span class="p">][</span><span class="n">node</span><span class="p">]</span><span class="o">=</span><span class="n">andict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
 
-            
-<div class="viewcode-block" id="annot_edge_from_file"><a class="viewcode-back" href="../index.html#properties.annot_edge_from_file">[docs]</a><span class="k">def</span> <span class="nf">annot_edge_from_file</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annot_file</span><span class="p">,</span><span class="n">map_key</span><span class="p">,</span><span class="n">new_prop</span><span class="p">):</span>
+
+ 
+
+           
+<div class="viewcode-block" id="annot_edge_from_file"><a class="viewcode-back" href="../index.html#properties.annot_edge_from_file">[docs]</a><span class="k">def</span> <span class="nf">annot_edge_from_file</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annot_file</span><span class="p">,</span><span class="n">map_key</span><span class="p">,</span><span class="n">new_prop</span><span class="p">,</span><span class="n">new_prop_type</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
 
   <span class="sd">&quot;&quot;&quot;Populate the edges with a new property. The values of the property are extract from a tabular file:</span>
 
 <span class="sd">  :param g: a graph</span>
 <span class="sd">  :param annot_file: the tabular annotation file</span>
-<span class="sd">  :param map_key: the node property holding the primary key that must be present as a named column in the file</span>
+<span class="sd">  :param map_key: the node property holding the primary key that must be present as a named column in the file.  &#39;index&#39; references the edge index (from 0)</span>
 <span class="sd">  :param new_prop: the new property to be created that must be present as a named column in the file</span>
+<span class="sd">  :param new_prop_type: type of the new property (&#39;string&#39;,&#39;int&#39;, &#39;float&#39;, &#39;long&#39;,&#39;bool&#39;)</span>
 <span class="sd">  :param delimiter: tabular file delimiter</span>
 <span class="sd">  :rtype: void </span>
 <span class="sd">  </span>
 <span class="sd">  &quot;&quot;&quot;</span> 
 
 
-  <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">annot_file</span><span class="p">,</span>  <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+  <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">annot_file</span><span class="p">,</span>  <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">)</span>
   <span class="n">andict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
   
 
-  <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">new_prop</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">new_edge_property</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
-  <span class="n">protein_list</span><span class="o">=</span><span class="n">edge_property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">map_key</span><span class="p">)</span>
+  <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">new_prop</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">new_edge_property</span><span class="p">(</span><span class="n">new_prop_type</span><span class="p">)</span>
+ 
 
   <span class="n">edges</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
+  <span class="n">idx</span><span class="o">=-</span><span class="mi">1</span>
   <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
-    <span class="n">key</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">map_key</span><span class="p">][</span><span class="n">edge</span><span class="p">]</span>
+    <span class="n">idx</span><span class="o">+=</span><span class="mi">1</span>
+    <span class="k">if</span> <span class="n">map_key</span><span class="o">==</span><span class="s1">&#39;index&#39;</span><span class="p">:</span>
+       <span class="n">key</span><span class="o">=</span><span class="n">idx</span>
+    <span class="k">else</span><span class="p">:</span>
+       <span class="n">key</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">map_key</span><span class="p">][</span><span class="n">edge</span><span class="p">]</span>
+
+    
     <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
       <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">andict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>   
          <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">new_prop</span><span class="p">][</span><span class="n">edge</span><span class="p">]</span><span class="o">=</span><span class="n">andict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
+
+
+
+
 
 
 
