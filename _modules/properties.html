@@ -692,12 +692,14 @@
 <div class="viewcode-block" id="create_property_from_map"><a class="viewcode-back" href="../index.html#properties.create_property_from_map">[docs]</a><span class="k">def</span> <span class="nf">create_property_from_map</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">annot_map</span><span class="p">,</span><span class="n">primary_key</span><span class="p">,</span> <span class="n">new_property</span><span class="p">,</span><span class="n">case_sensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     
   <span class="sd">&quot;&quot;&quot;Create a new node property from a dictionary &quot;&quot;:</span>
+
 <span class="sd">   :param g:  a graph</span>
 <span class="sd">   :param annot_map:  a dictionary </span>
 <span class="sd">   :param primary_key: the primary key property (e.g. uri, uniprot...)</span>
 <span class="sd">   :param new_property: the new property name. The expected type  is &#39;object&#39;</span>
 <span class="sd">   :param case_sensitive: define if the primary key mapping is case sensitive or not</span>
 <span class="sd">   :return:  void  </span>
+
 <span class="sd">  &quot;&quot;&quot;</span>
 
   <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">new_property</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">new_vertex_property</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span>
@@ -722,10 +724,12 @@
 <div class="viewcode-block" id="count_edges_by_values"><a class="viewcode-back" href="../index.html#properties.count_edges_by_values">[docs]</a><span class="k">def</span> <span class="nf">count_edges_by_values</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span><span class="n">att</span><span class="p">):</span>
 
      <span class="sd">&quot;&quot;&quot;Count edges for each value of an input property:</span>
+
 <span class="sd">     :param gr: a graph</span>
 <span class="sd">     :param att: a  existing property name</span>
 <span class="sd">     :return: a dictionnary (property value/count)</span>
 <span class="sd">     :rtype: dict  </span>
+
 <span class="sd">     &quot;&quot;&quot;</span>        
      <span class="n">avlist</span><span class="o">=</span><span class="n">edge_property_values</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span><span class="n">att</span><span class="p">)</span> 
      <span class="nb">print</span><span class="p">(</span><span class="n">avlist</span><span class="p">)</span> 
@@ -745,10 +749,12 @@
 <div class="viewcode-block" id="count_nodes_by_values"><a class="viewcode-back" href="../index.html#properties.count_nodes_by_values">[docs]</a><span class="k">def</span> <span class="nf">count_nodes_by_values</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span><span class="n">att</span><span class="p">):</span>
 
      <span class="sd">&quot;&quot;&quot;Count nodes for each value of an input property:</span>
+
 <span class="sd">     :param gr: a graph</span>
 <span class="sd">     :param att: a  existing property name</span>
 <span class="sd">     :return: a dictionnary (property value/count)</span>
 <span class="sd">     :rtype: dict  </span>
+
 <span class="sd">     &quot;&quot;&quot;</span>        
      <span class="n">avlist</span><span class="o">=</span><span class="n">node_property_values</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span><span class="n">att</span><span class="p">)</span> 
      <span class="nb">print</span><span class="p">(</span><span class="n">avlist</span><span class="p">)</span> 
