@@ -243,6 +243,7 @@
 
 
 
+
 <div class="viewcode-block" id="save_graphml"><a class="viewcode-back" href="../index.html#graph_explore.save_graphml">[docs]</a><span class="k">def</span> <span class="nf">save_graphml</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">graphml_file</span><span class="p">,</span><span class="n">friendly</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Save a graph instance as a graphml file:</span>
 
@@ -252,6 +253,7 @@
 <span class="sd">    :rtype: None</span>
 <span class="sd">  </span>
 <span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">utils</span><span class="o">.</span><span class="n">__clean_rm</span><span class="p">(</span><span class="n">graphml_file</span><span class="p">)</span>
 
     <span class="n">g</span><span class="o">=</span><span class="n">gt</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">g</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">graphml_file</span><span class="p">)</span>
@@ -270,9 +272,11 @@
    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;output graph size: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">())))</span>
    <span class="k">if</span> <span class="p">(</span><span class="n">output_graph</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
          <span class="n">g</span><span class="o">=</span><span class="n">gt</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+         <span class="n">utils</span><span class="o">.</span><span class="n">__clean_rm</span><span class="p">(</span><span class="n">output_graph</span><span class="p">)</span>
          <span class="n">g</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">output_graph</span><span class="p">)</span>
    <span class="k">if</span> <span class="p">(</span><span class="n">output_image</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
         <span class="n">size</span><span class="o">=</span><span class="mi">3000</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">__clean_rm</span><span class="p">(</span><span class="n">output_image</span><span class="p">)</span>
         <span class="n">__saveGraphImage</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">output_image</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
 
 

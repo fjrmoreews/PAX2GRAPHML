@@ -403,6 +403,12 @@
     <span class="n">mp</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">ar</span>   
 
 
+<span class="k">def</span> <span class="nf">__clean_rm</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+  <span class="n">err</span><span class="o">=</span><span class="mi">0</span>
+  <span class="k">try</span><span class="p">:</span>
+     <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">graphmlOutFile</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span>  <span class="kc">None</span><span class="p">)</span>
+  <span class="k">except</span><span class="p">:</span> 
+     <span class="n">err</span><span class="o">=</span><span class="mi">1</span> 
 
 
 <span class="k">def</span> <span class="nf">__str2bool</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
