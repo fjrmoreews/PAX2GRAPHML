@@ -72,15 +72,31 @@
     <span class="n">vset</span><span class="o">=</span><span class="nb">set</span><span class="p">()</span>
     <span class="n">pkprop</span><span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">vertex_properties</span><span class="p">[</span><span class="n">annot_key</span><span class="p">]</span>
     <span class="n">nid</span><span class="o">=</span><span class="mi">0</span>
-    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span>   <span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
-       <span class="n">vset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">pkprop</span><span class="p">[</span><span class="n">nid</span><span class="p">])</span>  
-       <span class="n">nid</span><span class="o">+=</span><span class="mi">1</span>
+    <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">pkprop</span><span class="o">.</span><span class="n">value_type</span><span class="p">())</span><span class="o">==</span><span class="s2">&quot;python::object&quot;</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span>   <span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+         <span class="n">vaf</span><span class="o">=</span><span class="n">pkprop</span><span class="p">[</span><span class="n">nid</span><span class="p">]</span>
+         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vaf</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">))</span> <span class="p">:</span>    
+            <span class="k">for</span> <span class="n">va</span> <span class="ow">in</span> <span class="n">vaf</span><span class="p">:</span>
+                 <span class="n">vset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">va</span><span class="p">)</span>  
+         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vaf</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">))</span> <span class="p">:</span>    
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">vaf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                 <span class="n">vset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">vaf</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>                      
+         <span class="k">else</span><span class="p">:</span>
+            <span class="n">vaf</span><span class="o">=</span><span class="n">pkprop</span><span class="p">[</span><span class="n">nid</span><span class="p">]</span>
+            <span class="n">vset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">vaf</span><span class="p">)</span>  
+            
+         <span class="n">nid</span><span class="o">+=</span><span class="mi">1</span>  
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span>   <span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+         <span class="n">vset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">pkprop</span><span class="p">[</span><span class="n">nid</span><span class="p">])</span>  
+         <span class="n">nid</span><span class="o">+=</span><span class="mi">1</span>
     
     <span class="n">pv</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">vset</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">pv</span></div>
 
-<div class="viewcode-block" id="edge_property_values"><a class="viewcode-back" href="../index.html#properties.edge_property_values">[docs]</a><span class="k">def</span> <span class="nf">edge_property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annot_key</span><span class="p">):</span>
 
+
+<div class="viewcode-block" id="edge_property_values"><a class="viewcode-back" href="../index.html#properties.edge_property_values">[docs]</a><span class="k">def</span> <span class="nf">edge_property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annot_key</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return a list of unique values corresponding to an existing edge property:</span>
 
 <span class="sd">    :param g: a graph</span>
@@ -89,16 +105,62 @@
 <span class="sd">    :rtype: list </span>
 <span class="sd"> </span>
 <span class="sd">    &quot;&quot;&quot;</span> 
-     
+  
     <span class="n">vset</span><span class="o">=</span><span class="nb">set</span><span class="p">()</span>
     <span class="n">pkprop</span><span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">edge_properties</span><span class="p">[</span><span class="n">annot_key</span><span class="p">]</span>
-    
-    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span>   <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
-       <span class="n">vset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">pkprop</span><span class="p">[</span><span class="n">e</span><span class="p">])</span>  
-       
+    <span class="n">nid</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">pkprop</span><span class="o">.</span><span class="n">value_type</span><span class="p">())</span><span class="o">==</span><span class="s2">&quot;python::object&quot;</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span>   <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+         <span class="n">vaf</span><span class="o">=</span><span class="n">pkprop</span><span class="p">[</span><span class="n">e</span><span class="p">]</span>
+         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vaf</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">))</span> <span class="p">:</span>    
+            <span class="k">for</span> <span class="n">va</span> <span class="ow">in</span> <span class="n">vaf</span><span class="p">:</span>
+                 <span class="n">vset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">va</span><span class="p">)</span>  
+         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vaf</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">))</span> <span class="p">:</span>    
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">vaf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                 <span class="n">vset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">vaf</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>                      
+         <span class="k">else</span><span class="p">:</span>
+            <span class="n">vaf</span><span class="o">=</span><span class="n">pkprop</span><span class="p">[</span><span class="n">e</span><span class="p">]</span>
+            <span class="n">vset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">vaf</span><span class="p">)</span>  
+            
+         <span class="n">nid</span><span class="o">+=</span><span class="mi">1</span>  
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span>   <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+         <span class="n">vset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">pkprop</span><span class="p">[</span><span class="n">e</span><span class="p">])</span>  
+         <span class="n">nid</span><span class="o">+=</span><span class="mi">1</span>
     
     <span class="n">pv</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">vset</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">pv</span></div>
+
+<div class="viewcode-block" id="describe_properties"><a class="viewcode-back" href="../index.html#properties.describe_properties">[docs]</a><span class="k">def</span> <span class="nf">describe_properties</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return a description of node and edge properties with names and types:</span>
+
+<span class="sd">    :param g: a graph</span>
+<span class="sd">    :param name: property name (optional). If None, all properties are described</span>
+<span class="sd">    :return:  a description of edge and node properties</span>
+<span class="sd">    :rtype: string </span>
+<span class="sd"> </span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">strn</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+    <span class="n">stre</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">nm</span><span class="o">=</span><span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">cstrn</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+        <span class="n">cstre</span><span class="o">=</span><span class="s2">&quot;&quot;</span>        
+        <span class="n">tp</span><span class="o">=</span><span class="s1">&#39;&#39;</span> 
+        <span class="k">if</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;v&#39;</span><span class="p">:</span>
+          <span class="n">tp</span><span class="o">=</span><span class="s1">&#39;node&#39;</span>
+          <span class="n">cstrn</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>   <span class="o">%</span> <span class="p">(</span><span class="n">tp</span><span class="p">,</span><span class="n">nm</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">value_type</span><span class="p">())</span> 
+        <span class="k">elif</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;e&#39;</span><span class="p">:</span>
+          <span class="n">tp</span><span class="o">=</span><span class="s1">&#39;edge&#39;</span>
+          <span class="n">cstre</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>   <span class="o">%</span> <span class="p">(</span><span class="n">tp</span><span class="p">,</span><span class="n">nm</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">value_type</span><span class="p">())</span> 
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span>  <span class="kc">None</span> <span class="ow">and</span> <span class="n">name</span> <span class="o">==</span><span class="n">nm</span><span class="p">:</span> 
+           <span class="k">return</span> <span class="n">cstrn</span><span class="o">+</span><span class="n">cstre</span>
+        <span class="k">else</span><span class="p">:</span>
+           <span class="n">strn</span><span class="o">+=</span><span class="n">cstrn</span>
+           <span class="n">stre</span><span class="o">+=</span><span class="n">cstre</span>
+
+    <span class="k">return</span> <span class="n">strn</span><span class="o">+</span><span class="n">stre</span></div>
 
 
 
@@ -161,7 +223,7 @@
 
 
 
-<div class="viewcode-block" id="uniprot_annot_impl"><a class="viewcode-back" href="../index.html#properties.uniprot_annot_impl">[docs]</a><span class="k">def</span> <span class="nf">uniprot_annot_impl</span><span class="p">(</span> <span class="n">prot</span><span class="p">,</span><span class="n">conf</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="client_annot_impl"><a class="viewcode-back" href="../index.html#properties.client_annot_impl">[docs]</a><span class="k">def</span> <span class="nf">client_annot_impl</span><span class="p">(</span> <span class="n">prot</span><span class="p">,</span><span class="n">conf</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
   <span class="sd">&quot;&quot;&quot;Configure a mart for Uniprot to GO annotation &quot;&quot;:</span>
 
@@ -172,20 +234,6 @@
 <span class="sd"> </span>
 <span class="sd">  &quot;&quot;&quot;</span>    
 
-  <span class="k">if</span> <span class="n">conf</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">conf</span><span class="o">=</span><span class="p">{</span>
-       <span class="s1">&#39;server&#39;</span><span class="p">:</span><span class="s1">&#39;http://www.ensembl.org&#39;</span><span class="p">,</span>
-       <span class="s1">&#39;mart&#39;</span><span class="p">:</span><span class="s1">&#39;ENSEMBL_MART_ENSEMBL&#39;</span><span class="p">,</span>
-       <span class="s1">&#39;dataset&#39;</span><span class="p">:</span><span class="s1">&#39;hsapiens_gene_ensembl&#39;</span><span class="p">,</span>
-       <span class="s1">&#39;attr&#39;</span><span class="p">:[</span>
-           <span class="s1">&#39;ensembl_gene_id&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;external_gene_name&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;uniprot_gn_symbol&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;go_id&#39;</span>
-          <span class="p">],</span>
-       <span class="s1">&#39;searchkey&#39;</span> <span class="p">:</span><span class="s1">&#39;uniprot_gn_symbol&#39;</span>
-     <span class="p">}</span>
-  
   <span class="n">mart</span><span class="o">=</span><span class="n">define_biomart_server</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;server&#39;</span><span class="p">],</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;mart&#39;</span><span class="p">])</span>  
   <span class="n">dataset</span> <span class="o">=</span> <span class="p">(</span><span class="n">mart</span><span class="o">.</span><span class="n">datasets</span><span class="p">[</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">]])</span>
   <span class="n">attr</span><span class="o">=</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;attr&#39;</span><span class="p">]</span>
@@ -199,17 +247,26 @@
   <span class="n">unimap</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
   <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">prot</span><span class="p">:</span>
       <span class="n">unimap</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span><span class="nb">set</span><span class="p">()</span>
-    
+  
+
+
+
+  <span class="n">uni_key</span><span class="o">=</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;uni_key&#39;</span><span class="p">]</span>
+  <span class="n">annot_key</span><span class="o">=</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;annot_key&#39;</span><span class="p">]</span>  
+
   <span class="n">res</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">attributes</span><span class="o">=</span><span class="n">attr</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="n">filt</span><span class="p">)</span>
   <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
   <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()</span> <span class="p">:</span> 
     <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span>
     <span class="n">maxIt</span><span class="o">=</span><span class="mi">1000000</span>
     <span class="k">if</span> <span class="n">i</span><span class="o">&lt;=</span> <span class="n">maxIt</span><span class="p">:</span>
-
-        <span class="n">uni</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;UniProtKB Gene Name symbol&#39;</span><span class="p">])</span>
-        <span class="n">goterm</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;GO term accession&#39;</span><span class="p">])</span>
+        <span class="k">try</span><span class="p">:</span>
+          <span class="n">uni</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">uni_key</span><span class="p">])</span>
+          <span class="n">goterm</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">annot_key</span><span class="p">])</span>
+        <span class="k">except</span><span class="p">:</span>
+          <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error wrong/mission uni_key /annot_key in conf. missing row response key. row is  </span><span class="si">%s</span><span class="s2">, conf is </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">conf</span><span class="p">))</span>
           
+          <span class="k">return</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">uni</span> <span class="o">!=</span> <span class="s2">&quot;nan&quot;</span><span class="p">:</span>
 
            <span class="k">if</span> <span class="n">uni</span> <span class="ow">in</span> <span class="n">unimap</span><span class="p">:</span>
@@ -229,7 +286,32 @@
   <span class="k">return</span> <span class="n">unimap</span></div>
 
 
-<div class="viewcode-block" id="uniprot_annot"><a class="viewcode-back" href="../index.html#properties.uniprot_annot">[docs]</a><span class="k">def</span> <span class="nf">uniprot_annot</span><span class="p">(</span><span class="n">protein_list</span><span class="p">,</span><span class="n">conf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">chunck_size</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">__default_apî_conf</span><span class="p">():</span>
+     <span class="n">conf</span><span class="o">=</span><span class="p">{</span>
+       <span class="s1">&#39;server&#39;</span><span class="p">:</span><span class="s1">&#39;http://www.ensembl.org&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;mart&#39;</span><span class="p">:</span><span class="s1">&#39;ENSEMBL_MART_ENSEMBL&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;dataset&#39;</span><span class="p">:</span><span class="s1">&#39;hsapiens_gene_ensembl&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;attr&#39;</span><span class="p">:[</span>
+           <span class="s1">&#39;ensembl_gene_id&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;external_gene_name&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;uniprot_gn_symbol&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;go_id&#39;</span>
+          <span class="p">],</span>
+       <span class="s1">&#39;searchkey&#39;</span> <span class="p">:</span><span class="s1">&#39;uniprot_gn_symbol&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;uni_key&#39;</span> <span class="p">:</span> <span class="s1">&#39;UniProtKB Gene Name symbol&#39;</span><span class="p">,</span>    
+       <span class="s1">&#39;annot_key&#39;</span> <span class="p">:</span><span class="s1">&#39;GO term accession&#39;</span>
+      <span class="p">}</span>
+     <span class="k">return</span> <span class="n">conf</span>
+
+<span class="k">def</span> <span class="nf">__current_apî_conf</span><span class="p">(</span><span class="n">conf</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+   <span class="n">confg</span><span class="o">=</span><span class="n">__default_apî_conf</span><span class="p">()</span>
+   <span class="k">if</span> <span class="n">conf</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+          <span class="n">confg</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">conf</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>     
+   <span class="k">return</span> <span class="n">confg</span>
+   
+
+<div class="viewcode-block" id="uniprot_to_go"><a class="viewcode-back" href="../index.html#properties.uniprot_to_go">[docs]</a><span class="k">def</span> <span class="nf">uniprot_to_go</span><span class="p">(</span><span class="n">protein_list</span><span class="p">,</span><span class="n">conf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">chunck_size</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
 
    <span class="sd">&quot;&quot;&quot;Configure a mart for Uniprot to GO annotation &quot;&quot;:</span>
 
@@ -239,16 +321,32 @@
 <span class="sd">   :return:  a dictionary of annotations </span>
 <span class="sd">   :rtype: dict </span>
 <span class="sd">  </span>
-<span class="sd">   &quot;&quot;&quot;</span>    
-    
-   <span class="n">chunks</span> <span class="o">=</span> <span class="p">[</span><span class="n">protein_list</span><span class="p">[</span><span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">+</span><span class="n">chunck_size</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">protein_list</span><span class="p">),</span> <span class="n">chunck_size</span><span class="p">)]</span>
-   <span class="n">allM</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
-   <span class="k">for</span> <span class="n">prot</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">:</span>
-     <span class="c1">#print(prot)   </span>
-     <span class="n">unimap</span><span class="o">=</span><span class="n">uniprot_annot_impl</span><span class="p">(</span><span class="n">prot</span><span class="p">)</span>
-     <span class="n">allM</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">unimap</span><span class="p">)</span> 
-   <span class="k">return</span> <span class="n">allM</span></div>
+<span class="sd">   &quot;&quot;&quot;</span>   
+   <span class="k">if</span>  <span class="n">conf</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="n">conf</span><span class="o">=</span><span class="n">__default_apî_conf</span><span class="p">()</span>
+   
 
+   <span class="k">return</span> <span class="n">ensembl_api</span><span class="p">(</span><span class="n">protein_list</span><span class="p">,</span><span class="n">conf</span><span class="p">,</span><span class="n">chunck_size</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ensembl_api"><a class="viewcode-back" href="../index.html#properties.ensembl_api">[docs]</a><span class="k">def</span> <span class="nf">ensembl_api</span><span class="p">(</span><span class="n">in_list</span><span class="p">,</span><span class="n">conf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">chunck_size</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>    
+   <span class="sd">&quot;&quot;&quot;Configure a mart for any annotation &quot;&quot;:</span>
+
+<span class="sd">   :param in_list:  list of inputs identifiers</span>
+<span class="sd">   :param conf: the configuration dictionary</span>
+<span class="sd">   :param chunck_size: the size of each chunk of inputs to be submitted in one time</span>
+<span class="sd">   :return:  a dictionary of annotations </span>
+<span class="sd">   :rtype: dict </span>
+<span class="sd">  </span>
+<span class="sd">   &quot;&quot;&quot;</span> 
+   <span class="n">confg</span><span class="o">=</span><span class="n">__current_apî_conf</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>   
+ 
+   <span class="n">chunks</span> <span class="o">=</span> <span class="p">[</span><span class="n">in_list</span><span class="p">[</span><span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">+</span><span class="n">chunck_size</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">in_list</span><span class="p">),</span> <span class="n">chunck_size</span><span class="p">)]</span>
+   <span class="n">allM</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
+   <span class="k">for</span> <span class="n">inl</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">:</span>
+     <span class="c1">#print(prot)   </span>
+     <span class="n">annotmap</span><span class="o">=</span><span class="n">client_annot_impl</span><span class="p">(</span><span class="n">inl</span><span class="p">,</span><span class="n">confg</span><span class="p">)</span>
+     <span class="n">allM</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">annotmap</span><span class="p">)</span> 
+   <span class="k">return</span> <span class="n">allM</span></div>
 
  
 <div class="viewcode-block" id="is_unique"><a class="viewcode-back" href="../index.html#properties.is_unique">[docs]</a><span class="k">def</span> <span class="nf">is_unique</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">key_prop</span><span class="p">,</span> <span class="n">exclude_void</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -462,6 +560,210 @@
 
     <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">edge_properties</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">target_edge</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">source_edge</span><span class="p">]</span></div>
+
+
+
+
+<div class="viewcode-block" id="string_to_list_property"><a class="viewcode-back" href="../index.html#properties.string_to_list_property">[docs]</a><span class="k">def</span> <span class="nf">string_to_list_property</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">string_prop</span><span class="p">,</span><span class="n">new_property</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="s2">&quot;node&quot;</span><span class="p">):</span>
+
+  <span class="sd">&quot;&quot;&quot;Convert a string property to a property contains a list, for each node or edge:</span>
+
+<span class="sd">    :param g: a graph</span>
+<span class="sd">    :param string_prop: initial property</span>
+<span class="sd">    :param new_property: new property name, is None, the intial property is replaced</span>
+<span class="sd">    :param sep: string separator used in the string property</span>
+<span class="sd">    :param entity: define is the properties are related to nodes or edges</span>
+<span class="sd">    :return:  void</span>
+<span class="sd"> </span>
+<span class="sd">  &quot;&quot;&quot;</span> 
+  <span class="n">do_replace</span><span class="o">=</span><span class="kc">False</span>
+  <span class="k">if</span> <span class="n">new_property</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="n">do_replace</span><span class="o">=</span><span class="kc">True</span>
+
+  <span class="k">if</span> <span class="n">entity</span><span class="o">==</span><span class="s2">&quot;node&quot;</span><span class="p">:</span>
+    <span class="n">nprop</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">new_vertex_property</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+      <span class="n">st</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">string_prop</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
+      <span class="n">ln</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span>
+      <span class="n">nprop</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">ln</span>
+  
+    <span class="k">if</span> <span class="n">do_replace</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>         
+      <span class="k">del</span> <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">string_prop</span><span class="p">]</span>
+      <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">string_prop</span><span class="p">]</span> <span class="o">=</span> <span class="n">nprop</span> 
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">new_property</span><span class="p">]</span> <span class="o">=</span> <span class="n">nprop</span> 
+    
+  <span class="k">if</span> <span class="n">entity</span><span class="o">==</span><span class="s2">&quot;edge&quot;</span><span class="p">:</span>  
+    <span class="n">nprop</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">new_edge_property</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+      <span class="n">st</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">string_prop</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
+      <span class="n">ln</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span>
+      <span class="n">nprop</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">ln</span>
+  
+    <span class="k">if</span> <span class="n">do_replace</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>         
+      <span class="k">del</span> <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">string_prop</span><span class="p">]</span>
+      <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">string_prop</span><span class="p">]</span> <span class="o">=</span> <span class="n">nprop</span> 
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">new_property</span><span class="p">]</span> <span class="o">=</span> <span class="n">nprop</span> </div>
+    
+    
+    
+<div class="viewcode-block" id="list_to_string_property"><a class="viewcode-back" href="../index.html#properties.list_to_string_property">[docs]</a><span class="k">def</span> <span class="nf">list_to_string_property</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">string_prop</span><span class="p">,</span><span class="n">new_property</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="s2">&quot;node&quot;</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Convert a property contains a list  to a concatened string property, for each node or edge:</span>
+
+<span class="sd">    :param g: a graph</span>
+<span class="sd">    :param string_prop: initial property</span>
+<span class="sd">    :param new_property: new property name, is None, the intial property is replaced</span>
+<span class="sd">    :param sep: string separator used in the string property</span>
+<span class="sd">    :param entity: define is the properties are related to nodes or edges</span>
+<span class="sd">    :return:  void</span>
+<span class="sd"> </span>
+<span class="sd">  &quot;&quot;&quot;</span>   
+  <span class="n">do_replace</span><span class="o">=</span><span class="kc">False</span>
+  <span class="k">if</span> <span class="n">new_property</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="n">do_replace</span><span class="o">=</span><span class="kc">True</span>
+
+  <span class="k">if</span> <span class="n">entity</span><span class="o">==</span><span class="s2">&quot;node&quot;</span><span class="p">:</span> 
+    <span class="n">nprop</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">new_vertex_property</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+      <span class="n">ln</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">string_prop</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
+      <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ln</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">st</span><span class="o">=</span><span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ln</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">st</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+      <span class="n">nprop</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">st</span>
+    
+    <span class="k">if</span> <span class="n">do_replace</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>         
+      <span class="k">del</span> <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">string_prop</span><span class="p">]</span>
+      <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">string_prop</span><span class="p">]</span> <span class="o">=</span> <span class="n">nprop</span> 
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">new_property</span><span class="p">]</span> <span class="o">=</span> <span class="n">nprop</span> 
+    
+    
+  <span class="k">if</span> <span class="n">entity</span><span class="o">==</span><span class="s2">&quot;edge&quot;</span><span class="p">:</span> 
+    <span class="n">nprop</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">new_edge_property</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+      <span class="n">ln</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">string_prop</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
+      <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ln</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">st</span><span class="o">=</span><span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ln</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">st</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+      <span class="n">nprop</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">st</span>
+    
+    <span class="k">if</span> <span class="n">do_replace</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>         
+      <span class="k">del</span> <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">string_prop</span><span class="p">]</span>
+      <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">string_prop</span><span class="p">]</span> <span class="o">=</span> <span class="n">nprop</span> 
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">new_property</span><span class="p">]</span> <span class="o">=</span> <span class="n">nprop</span>     </div>
+    
+    
+
+
+
+                
+<div class="viewcode-block" id="change_property_type"><a class="viewcode-back" href="../index.html#properties.change_property_type">[docs]</a><span class="k">def</span> <span class="nf">change_property_type</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">property_name</span><span class="p">,</span> <span class="n">property_type</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="s2">&quot;node&quot;</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;change a node or edge property type  :</span>
+
+<span class="sd">    :param g: a graph</span>
+<span class="sd">    :param property_name: the name of the property to be affected</span>
+<span class="sd">    :param property_type: the new primitive property type (string,int,bool,float,double), is None, the intial property is replaced</span>
+<span class="sd">    :param entity: define is the properties are related to nodes or edges</span>
+<span class="sd">    :return:  void</span>
+<span class="sd"> </span>
+<span class="sd">  &quot;&quot;&quot;</span>  
+  <span class="n">prop</span><span class="o">=</span><span class="kc">None</span>
+  <span class="k">if</span> <span class="n">entity</span><span class="o">==</span><span class="s2">&quot;node&quot;</span><span class="p">:</span>
+       <span class="n">prop</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">property_name</span><span class="p">]</span>
+       <span class="n">nprop</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">new_vertex_property</span><span class="p">(</span><span class="n">property_type</span><span class="p">)</span>
+       <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+           <span class="n">nprop</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">__convertType</span><span class="p">(</span><span class="n">prop</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="n">property_type</span><span class="p">)</span>
+       <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">property_name</span><span class="p">]</span><span class="o">=</span><span class="n">nprop</span>  
+ 
+    
+  <span class="k">elif</span> <span class="n">entity</span><span class="o">==</span><span class="s2">&quot;edge&quot;</span><span class="p">:</span>        
+       <span class="n">prop</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">property_name</span><span class="p">]</span>  
+       <span class="n">nprop</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">new_edge_property</span><span class="p">(</span><span class="n">property_type</span><span class="p">)</span>
+       <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+           <span class="n">nprop</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">=</span><span class="n">utils</span><span class="o">.</span><span class="n">__convertType</span><span class="p">(</span><span class="n">prop</span><span class="p">[</span><span class="n">e</span><span class="p">],</span><span class="n">property_type</span><span class="p">)</span>  
+       <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">property_name</span><span class="p">]</span><span class="o">=</span><span class="n">nprop</span>    </div>
+ 
+    
+
+<div class="viewcode-block" id="create_property_from_map"><a class="viewcode-back" href="../index.html#properties.create_property_from_map">[docs]</a><span class="k">def</span> <span class="nf">create_property_from_map</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">annot_map</span><span class="p">,</span><span class="n">primary_key</span><span class="p">,</span> <span class="n">new_property</span><span class="p">,</span><span class="n">case_sensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    
+  <span class="sd">&quot;&quot;&quot;Create a new node property from a dictionary &quot;&quot;:</span>
+<span class="sd">   :param g:  a graph</span>
+<span class="sd">   :param annot_map:  a dictionary </span>
+<span class="sd">   :param primary_key: the primary key property (e.g. uri, uniprot...)</span>
+<span class="sd">   :param new_property: the new property name. The expected type  is &#39;object&#39;</span>
+<span class="sd">   :param case_sensitive: define if the primary key mapping is case sensitive or not</span>
+<span class="sd">   :return:  void  </span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">new_property</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">new_vertex_property</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span>
+ 
+  <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span> <span class="p">:</span>
+    <span class="n">pk</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">primary_key</span><span class="p">][</span><span class="n">node</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">pk</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">annot_map</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> 
+        <span class="k">if</span> <span class="n">case_sensitive</span><span class="o">==</span><span class="kc">False</span><span class="p">:</span>
+          <span class="n">rk</span><span class="o">=</span> <span class="n">pk</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>    
+          <span class="n">km</span><span class="o">=</span><span class="n">k</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="n">rk</span><span class="o">=</span> <span class="n">pk</span>
+          <span class="n">km</span><span class="o">=</span><span class="n">k</span>       
+        <span class="k">if</span> <span class="n">rk</span> <span class="o">==</span><span class="n">km</span><span class="p">:</span>
+           <span class="n">val</span><span class="o">=</span><span class="n">annot_map</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+           <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> 
+              <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">new_property</span><span class="p">][</span><span class="n">node</span><span class="p">]</span><span class="o">=</span><span class="n">val</span></div>
+              <span class="c1">#print(&quot;%s--&gt;%s&quot; %(pk,annot_map[k]))</span>
+
+
+<div class="viewcode-block" id="count_edges_by_values"><a class="viewcode-back" href="../index.html#properties.count_edges_by_values">[docs]</a><span class="k">def</span> <span class="nf">count_edges_by_values</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span><span class="n">att</span><span class="p">):</span>
+
+     <span class="sd">&quot;&quot;&quot;Count edges for each value of an input property:</span>
+<span class="sd">     :param gr: a graph</span>
+<span class="sd">     :param att: a  existing property name</span>
+<span class="sd">     :return: a dictionnary (property value/count)</span>
+<span class="sd">     :rtype: dict  </span>
+<span class="sd">     &quot;&quot;&quot;</span>        
+     <span class="n">avlist</span><span class="o">=</span><span class="n">edge_property_values</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span><span class="n">att</span><span class="p">)</span> 
+     <span class="nb">print</span><span class="p">(</span><span class="n">avlist</span><span class="p">)</span> 
+    
+     <span class="n">mc</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
+     <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">avlist</span><span class="p">:</span>
+         <span class="n">ct</span><span class="o">=</span><span class="mi">0</span>
+         <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">gr</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+           <span class="n">cval</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">att</span><span class="p">][</span><span class="n">e</span><span class="p">]</span>
+           
+           <span class="k">if</span> <span class="n">cval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cval</span><span class="o">==</span><span class="n">val</span><span class="p">:</span>
+             <span class="n">ct</span><span class="o">=</span><span class="n">ct</span><span class="o">+</span><span class="mi">1</span>
+         <span class="n">mc</span><span class="p">[</span><span class="n">val</span><span class="p">]</span><span class="o">=</span><span class="n">ct</span>  
+     <span class="k">return</span> <span class="n">mc</span></div>
+
+
+<div class="viewcode-block" id="count_nodes_by_values"><a class="viewcode-back" href="../index.html#properties.count_nodes_by_values">[docs]</a><span class="k">def</span> <span class="nf">count_nodes_by_values</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span><span class="n">att</span><span class="p">):</span>
+
+     <span class="sd">&quot;&quot;&quot;Count nodes for each value of an input property:</span>
+<span class="sd">     :param gr: a graph</span>
+<span class="sd">     :param att: a  existing property name</span>
+<span class="sd">     :return: a dictionnary (property value/count)</span>
+<span class="sd">     :rtype: dict  </span>
+<span class="sd">     &quot;&quot;&quot;</span>        
+     <span class="n">avlist</span><span class="o">=</span><span class="n">node_property_values</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span><span class="n">att</span><span class="p">)</span> 
+     <span class="nb">print</span><span class="p">(</span><span class="n">avlist</span><span class="p">)</span> 
+    
+     <span class="n">mc</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
+     <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">avlist</span><span class="p">:</span>
+         <span class="n">ct</span><span class="o">=</span><span class="mi">0</span>
+         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">gr</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+           <span class="n">cval</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">att</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
+           
+           <span class="k">if</span> <span class="n">cval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cval</span><span class="o">==</span><span class="n">val</span><span class="p">:</span>
+             <span class="n">ct</span><span class="o">=</span><span class="n">ct</span><span class="o">+</span><span class="mi">1</span>
+         <span class="n">mc</span><span class="p">[</span><span class="n">val</span><span class="p">]</span><span class="o">=</span><span class="n">ct</span>  
+     <span class="k">return</span> <span class="n">mc</span></div>
+
 
 
 

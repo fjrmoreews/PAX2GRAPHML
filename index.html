@@ -644,6 +644,45 @@
 </dd></dl>
 
 <dl class="py function">
+<dt id="properties.change_property_type">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">change_property_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">property_name</span></em>, <em class="sig-param"><span class="n">property_type</span></em>, <em class="sig-param"><span class="n">entity</span><span class="o">=</span><span class="default_value">'node'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#change_property_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.change_property_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>change a node or edge property type  :</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> -- a graph</p></li>
+<li><p><strong>property_name</strong> -- the name of the property to be affected</p></li>
+<li><p><strong>property_type</strong> -- the new primitive property type (string,int,bool,float,double), is None, the intial property is replaced</p></li>
+<li><p><strong>entity</strong> -- define is the properties are related to nodes or edges</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>void</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="properties.client_annot_impl">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">client_annot_impl</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prot</span></em>, <em class="sig-param"><span class="n">conf</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#client_annot_impl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.client_annot_impl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configure a mart for Uniprot to GO annotation &quot;&quot;:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prot</strong> -- list of Uniprot gene symbols</p></li>
+<li><p><strong>conf</strong> -- the configuration dictionary</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a dictionary of annotations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="properties.copy_edge_properties">
 <code class="sig-prename descclassname">properties.</code><code class="sig-name descname">copy_edge_properties</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">source_edge</span></em>, <em class="sig-param"><span class="n">target_edge</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#copy_edge_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.copy_edge_properties" title="Permalink to this definition">¶</a></dt>
 <dd><p>Copy all properties of a source edge to a target edge:</p>
@@ -677,6 +716,38 @@
 <dd class="field-even"><p>void</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="properties.count_edges_by_values">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">count_edges_by_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gr</span></em>, <em class="sig-param"><span class="n">att</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#count_edges_by_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.count_edges_by_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count edges for each value of an input property:
+:param gr: a graph
+:param att: a  existing property name
+:return: a dictionnary (property value/count)
+:rtype: dict</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="properties.count_nodes_by_values">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">count_nodes_by_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gr</span></em>, <em class="sig-param"><span class="n">att</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#count_nodes_by_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.count_nodes_by_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count nodes for each value of an input property:
+:param gr: a graph
+:param att: a  existing property name
+:return: a dictionnary (property value/count)
+:rtype: dict</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="properties.create_property_from_map">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">create_property_from_map</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">annot_map</span></em>, <em class="sig-param"><span class="n">primary_key</span></em>, <em class="sig-param"><span class="n">new_property</span></em>, <em class="sig-param"><span class="n">case_sensitive</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#create_property_from_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.create_property_from_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new node property from a dictionary &quot;&quot;:
+:param g:  a graph
+:param annot_map:  a dictionary 
+:param primary_key: the primary key property (e.g. uri, uniprot...)
+:param new_property: the new property name. The expected type  is 'object'
+:param case_sensitive: define if the primary key mapping is case sensitive or not
+:return:  void</p>
 </dd></dl>
 
 <dl class="py function">
@@ -742,6 +813,26 @@
 </dd></dl>
 
 <dl class="py function">
+<dt id="properties.describe_properties">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">describe_properties</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#describe_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.describe_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a description of node and edge properties with names and types:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> -- a graph</p></li>
+<li><p><strong>name</strong> -- property name (optional). If None, all properties are described</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a description of edge and node properties</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="properties.edge_property_values">
 <code class="sig-prename descclassname">properties.</code><code class="sig-name descname">edge_property_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">annot_key</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#edge_property_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.edge_property_values" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of unique values corresponding to an existing edge property:</p>
@@ -762,6 +853,27 @@
 </dd></dl>
 
 <dl class="py function">
+<dt id="properties.ensembl_api">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">ensembl_api</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_list</span></em>, <em class="sig-param"><span class="n">conf</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">chunck_size</span><span class="o">=</span><span class="default_value">50</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#ensembl_api"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.ensembl_api" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configure a mart for any annotation &quot;&quot;:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>in_list</strong> -- list of inputs identifiers</p></li>
+<li><p><strong>conf</strong> -- the configuration dictionary</p></li>
+<li><p><strong>chunck_size</strong> -- the size of each chunk of inputs to be submitted in one time</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a dictionary of annotations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="properties.is_unique">
 <code class="sig-prename descclassname">properties.</code><code class="sig-name descname">is_unique</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">key_prop</span></em>, <em class="sig-param"><span class="n">exclude_void</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#is_unique"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.is_unique" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate if a property contains one unique value for each node:</p>
@@ -775,6 +887,26 @@
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="properties.list_to_string_property">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">list_to_string_property</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">string_prop</span></em>, <em class="sig-param"><span class="n">new_property</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sep</span><span class="o">=</span><span class="default_value">';'</span></em>, <em class="sig-param"><span class="n">entity</span><span class="o">=</span><span class="default_value">'node'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#list_to_string_property"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.list_to_string_property" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a property contains a list  to a concatened string property, for each node or edge:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> -- a graph</p></li>
+<li><p><strong>string_prop</strong> -- initial property</p></li>
+<li><p><strong>new_property</strong> -- new property name, is None, the intial property is replaced</p></li>
+<li><p><strong>sep</strong> -- string separator used in the string property</p></li>
+<li><p><strong>entity</strong> -- define is the properties are related to nodes or edges</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>void</p>
 </dd>
 </dl>
 </dd></dl>
@@ -806,8 +938,28 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="properties.uniprot_annot">
-<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">uniprot_annot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">protein_list</span></em>, <em class="sig-param"><span class="n">conf</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">chunck_size</span><span class="o">=</span><span class="default_value">50</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#uniprot_annot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.uniprot_annot" title="Permalink to this definition">¶</a></dt>
+<dt id="properties.string_to_list_property">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">string_to_list_property</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em>, <em class="sig-param"><span class="n">string_prop</span></em>, <em class="sig-param"><span class="n">new_property</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sep</span><span class="o">=</span><span class="default_value">';'</span></em>, <em class="sig-param"><span class="n">entity</span><span class="o">=</span><span class="default_value">'node'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#string_to_list_property"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.string_to_list_property" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a string property to a property contains a list, for each node or edge:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> -- a graph</p></li>
+<li><p><strong>string_prop</strong> -- initial property</p></li>
+<li><p><strong>new_property</strong> -- new property name, is None, the intial property is replaced</p></li>
+<li><p><strong>sep</strong> -- string separator used in the string property</p></li>
+<li><p><strong>entity</strong> -- define is the properties are related to nodes or edges</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>void</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="properties.uniprot_to_go">
+<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">uniprot_to_go</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">protein_list</span></em>, <em class="sig-param"><span class="n">conf</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">chunck_size</span><span class="o">=</span><span class="default_value">50</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#uniprot_to_go"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.uniprot_to_go" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configure a mart for Uniprot to GO annotation &quot;&quot;:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -815,26 +967,6 @@
 <li><p><strong>prot</strong> -- list of Uniprot gene symbols</p></li>
 <li><p><strong>conf</strong> -- the configuration dictionary</p></li>
 <li><p><strong>chunck_size</strong> -- the size of each chunk of inputs to be submitted in one time</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a dictionary of annotations</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="properties.uniprot_annot_impl">
-<code class="sig-prename descclassname">properties.</code><code class="sig-name descname">uniprot_annot_impl</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prot</span></em>, <em class="sig-param"><span class="n">conf</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/properties.html#uniprot_annot_impl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#properties.uniprot_annot_impl" title="Permalink to this definition">¶</a></dt>
-<dd><p>Configure a mart for Uniprot to GO annotation &quot;&quot;:</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>prot</strong> -- list of Uniprot gene symbols</p></li>
-<li><p><strong>conf</strong> -- the configuration dictionary</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
