@@ -191,7 +191,7 @@
 
 <div class="viewcode-block" id="cc_by_node_count"><a class="viewcode-back" href="../index.html#utils.cc_by_node_count">[docs]</a><span class="k">def</span> <span class="nf">cc_by_node_count</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="nb">min</span><span class="p">,</span><span class="nb">max</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;select a sub graoh from a graph, using the minimum and maximum node number</span>
+        <span class="sd">&quot;&quot;&quot;select a sub graph from a graph, using the minimum and maximum node number</span>
 <span class="sd">           of each connected component as as a filter</span>
 
 <span class="sd">        :param g: a graph </span>
@@ -256,8 +256,12 @@
 <span class="sd">        :param graphml_file: a graphml file file folling the graph.tools generation rules</span>
 <span class="sd">      &quot;&quot;&quot;</span> 
      
-      <span class="n">f</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-      <span class="n">tmpf</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">name</span>
+      <span class="c1">#f = tempfile.NamedTemporaryFile(delete=False)</span>
+      <span class="c1">#tmpf=f.name</span>
+
+      <span class="n">tmpf</span><span class="o">=</span><span class="n">graphml_file</span><span class="o">+</span><span class="s2">&quot;.work.tmp&quot;</span>
+
+
       <span class="n">gns</span><span class="o">=</span><span class="s1">&#39;http://graphml.graphdrawing.org/xmlns&#39;</span>
       <span class="n">ns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">gns</span><span class="p">}</span>
          
