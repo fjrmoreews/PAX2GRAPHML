@@ -4,15 +4,14 @@
 <html lang="1.0">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>properties &#8212; pax2graphml 1. documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
    
@@ -40,6 +39,7 @@
 
 
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
@@ -53,6 +53,12 @@
 
 <span class="kn">from</span> <span class="nn">pax2graphml</span> <span class="kn">import</span> <span class="n">utils</span>
 <span class="kn">from</span> <span class="nn">pax2graphml</span> <span class="kn">import</span> <span class="n">extract</span>
+
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">NullHandler</span><span class="p">())</span>
+
 
 <div class="viewcode-block" id="property_values"><a class="viewcode-back" href="../index.html#properties.property_values">[docs]</a><span class="k">def</span> <span class="nf">property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">annot_key</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Alias of node_property_values&quot;&quot;&quot;</span>
@@ -478,7 +484,7 @@
     <span class="n">idx</span><span class="o">+=</span><span class="mi">1</span>
     <span class="k">if</span> <span class="n">map_key</span><span class="o">==</span><span class="s1">&#39;index&#39;</span><span class="p">:</span>
        <span class="n">key</span><span class="o">=</span><span class="n">idx</span>
-       <span class="c1">#key=g.vertex_index[node]</span>
+
     <span class="k">else</span><span class="p">:</span>
        <span class="n">key</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">map_key</span><span class="p">][</span><span class="n">node</span><span class="p">]</span>
 
@@ -546,6 +552,7 @@
     <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">vertex_properties</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">targetNode</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">sourceNode</span><span class="p">]</span></div>
 
+
  
 <div class="viewcode-block" id="copy_edge_properties"><a class="viewcode-back" href="../index.html#properties.copy_edge_properties">[docs]</a><span class="k">def</span> <span class="nf">copy_edge_properties</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">source_edge</span><span class="p">,</span> <span class="n">target_edge</span><span class="p">):</span>
 
@@ -560,6 +567,101 @@
 
     <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">edge_properties</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">target_edge</span><span class="p">]</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">source_edge</span><span class="p">]</span></div>
+
+
+
+
+<div class="viewcode-block" id="populate_shape"><a class="viewcode-back" href="../index.html#properties.populate_shape">[docs]</a><span class="k">def</span> <span class="nf">populate_shape</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">shapes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+  <span class="sd">&quot;&quot;&quot;define the node shapes:</span>
+
+<span class="sd">    :param g: a graph</span>
+<span class="sd">    :param color: the target property name</span>
+<span class="sd">    :param shapes: optional dictionnary of existing values  (dict keys) associated with the new values (dict values) </span>
+<span class="sd">    :return:  count of modified nodes</span>
+<span class="sd"> </span>
+<span class="sd">  &quot;&quot;&quot;</span> 
+
+  <span class="c1">#default shapes</span>
+  <span class="n">map_values</span><span class="o">=</span><span class="p">{</span>
+   <span class="s2">&quot;0&quot;</span><span class="p">:</span><span class="s2">&quot;Ellipse&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;1&quot;</span><span class="p">:</span><span class="s2">&quot;Rectangle&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;2&quot;</span><span class="p">:</span><span class="s2">&quot;Octagon&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;3&quot;</span><span class="p">:</span><span class="s2">&quot;Triangle&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;4&quot;</span><span class="p">:</span><span class="s2">&quot;Parallelogram&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;5&quot;</span><span class="p">:</span><span class="s2">&quot;Round Rectangle&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;6&quot;</span><span class="p">:</span> <span class="s2">&quot;Rectangle&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;7&quot;</span><span class="p">:</span> <span class="s2">&quot;Diamond&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;8&quot;</span><span class="p">:</span> <span class="s2">&quot;V&quot;</span>
+   <span class="p">}</span>
+
+  <span class="k">if</span> <span class="n">shapes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+     <span class="n">map_values</span><span class="o">=</span><span class="n">shapes</span>
+
+  <span class="n">replace_property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="s2">&quot;shape&quot;</span><span class="p">,</span> <span class="n">map_values</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="populate_color"><a class="viewcode-back" href="../index.html#properties.populate_color">[docs]</a><span class="k">def</span> <span class="nf">populate_color</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+  <span class="sd">&quot;&quot;&quot;define the node colors:</span>
+
+<span class="sd">    :param g: a graph</span>
+<span class="sd">    :param color: the target property name</span>
+<span class="sd">    :param colors: optional dictionnary of existing values  (dict keys) assopiated with the new values (dict values) </span>
+<span class="sd">    :return:  count of modified nodes</span>
+<span class="sd"> </span>
+<span class="sd">  &quot;&quot;&quot;</span> 
+
+
+
+  <span class="c1">#default colors</span>
+  <span class="n">map_values</span><span class="o">=</span><span class="p">{</span>
+   <span class="s2">&quot;0&quot;</span><span class="p">:</span><span class="s2">&quot;Red&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;1&quot;</span><span class="p">:</span><span class="s2">&quot;FireBrick&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;2&quot;</span><span class="p">:</span><span class="s2">&quot;LimeGreen&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;3&quot;</span><span class="p">:</span><span class="s2">&quot;LightGreen&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;4&quot;</span><span class="p">:</span><span class="s2">&quot;SpringGreen&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;5&quot;</span><span class="p">:</span><span class="s2">&quot;SeaGreen&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;6&quot;</span><span class="p">:</span><span class="s2">&quot;YellowGreen&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;7&quot;</span><span class="p">:</span><span class="s2">&quot;CornflowerBlue&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;8&quot;</span><span class="p">:</span><span class="s2">&quot;LightSalmon&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;9&quot;</span><span class="p">:</span><span class="s2">&quot;Coral&quot;</span>
+  <span class="p">}</span>
+ 
+  <span class="k">if</span> <span class="n">colors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+     <span class="n">map_values</span><span class="o">=</span><span class="n">colors</span>
+
+ 
+  <span class="k">return</span> <span class="n">replace_property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="s2">&quot;color&quot;</span><span class="p">,</span> <span class="n">map_values</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="replace_property_values"><a class="viewcode-back" href="../index.html#properties.replace_property_values">[docs]</a><span class="k">def</span> <span class="nf">replace_property_values</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">prop_name</span><span class="p">,</span> <span class="n">map_values</span><span class="p">,</span><span class="n">entity_type</span><span class="o">=</span><span class="s2">&quot;node&quot;</span><span class="p">):</span>
+
+  <span class="sd">&quot;&quot;&quot;Replace the values of a property by  the specified values:</span>
+
+<span class="sd">    :param g: a graph</span>
+<span class="sd">    :param prop_name: the target property name</span>
+<span class="sd">    :param map_values: dictionnary of existing values  (dict keys) assopiated with the new values (dict values) </span>
+<span class="sd">    :param entity_type:  related entity type, &quot;node&quot; for node, &quot;edge&quot; for edge</span>
+<span class="sd">    :return:  count of modified entities</span>
+<span class="sd"> </span>
+<span class="sd">  &quot;&quot;&quot;</span> 
+  <span class="n">ct</span><span class="o">=</span><span class="mi">0</span>
+  <span class="k">if</span> <span class="n">entity_type</span> <span class="o">==</span> <span class="s2">&quot;node&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">prop_name</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+      <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+        <span class="n">ov</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">prop_name</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">ov</span> <span class="ow">in</span> <span class="n">map_values</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+           <span class="n">g</span><span class="o">.</span><span class="n">vp</span><span class="p">[</span><span class="n">prop_name</span><span class="p">][</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">map_values</span><span class="p">[</span><span class="n">ov</span><span class="p">]</span>
+           <span class="n">ct</span><span class="o">=</span><span class="n">ct</span><span class="o">+</span><span class="mi">1</span>  
+  <span class="k">elif</span> <span class="n">entity_type</span> <span class="o">==</span> <span class="s2">&quot;edge&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">prop_name</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+      <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+        <span class="n">ov</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">prop_name</span><span class="p">][</span><span class="n">e</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">ov</span> <span class="ow">in</span> <span class="n">map_values</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+           <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="p">[</span><span class="n">prop_name</span><span class="p">][</span><span class="n">e</span><span class="p">]</span><span class="o">=</span><span class="n">map_values</span><span class="p">[</span><span class="n">ov</span><span class="p">]</span>
+           <span class="n">ct</span><span class="o">=</span><span class="n">ct</span><span class="o">+</span><span class="mi">1</span>
+  <span class="k">return</span> <span class="n">ct</span></div>
 
 
 
@@ -835,7 +937,7 @@
       &copy;2019-2020, Francois Moreews, Hugo Simon.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

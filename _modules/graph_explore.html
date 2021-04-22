@@ -4,15 +4,14 @@
 <html lang="1.0">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>graph_explore &#8212; pax2graphml 1. documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
    
@@ -39,6 +38,7 @@
 
 
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span>
 <span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;Agg&#39;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -48,7 +48,7 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span>
-<span class="kn">import</span> <span class="nn">logging</span>
+
 <span class="kn">import</span> <span class="nn">xml</span>
 <span class="kn">import</span> <span class="nn">tempfile</span><span class="o">,</span><span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">lxml.etree</span> <span class="k">as</span> <span class="nn">et</span>
@@ -57,7 +57,8 @@
 <span class="kn">from</span> <span class="nn">pax2graphml</span> <span class="kn">import</span> <span class="n">utils</span>
 <span class="kn">from</span> <span class="nn">pax2graphml</span> <span class="kn">import</span> <span class="n">properties</span>
 
-
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">NullHandler</span><span class="p">())</span>
 
  
 <div class="viewcode-block" id="load_graphml"><a class="viewcode-back" href="../index.html#graph_explore.load_graphml">[docs]</a><span class="k">def</span> <span class="nf">load_graphml</span><span class="p">(</span><span class="n">graphml_file</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -72,8 +73,14 @@
     <span class="n">g</span><span class="o">=</span><span class="n">gt</span><span class="o">.</span><span class="n">load_graph</span><span class="p">(</span><span class="n">graphml_file</span><span class="p">)</span>
     <span class="n">g</span><span class="o">.</span><span class="n">set_directed</span><span class="p">(</span><span class="n">directed</span><span class="p">)</span>
     <span class="n">g</span><span class="o">=</span><span class="n">gt</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;input graph order: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">())))</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;input graph size: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">())))</span>
+    <span class="k">if</span> <span class="n">g</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+       <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;warning graph is None&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+      <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;input graph order: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">())))</span>
+      <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;input graph size: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">())))</span>
+    <span class="k">except</span><span class="p">:</span>
+      <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;error, no vertices or edges in graph&quot;</span><span class="p">)</span>
+ 
     <span class="k">return</span> <span class="n">g</span></div>
 
 
@@ -88,7 +95,8 @@
 <span class="sd">    :rtype: string </span>
 <span class="sd">  </span>
 <span class="sd">    &quot;&quot;&quot;</span> 
-
+    <span class="k">if</span> <span class="n">g</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+       <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;warning graph is None&quot;</span><span class="p">)</span>
     <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;&quot;</span> 
     <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span> 
       <span class="n">desc</span><span class="o">+=</span><span class="s2">&quot;  vertex </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">v</span><span class="p">,</span>  <span class="n">utils</span><span class="o">.</span><span class="n">node_to_string</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="p">)</span>
@@ -110,6 +118,8 @@
 <span class="sd">    :rtype: string </span>
 <span class="sd">  </span>
 <span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="k">if</span> <span class="n">g</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+       <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;warning graph is None&quot;</span><span class="p">)</span>
     <span class="n">s</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
     <span class="k">if</span> <span class="n">g</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
       <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="o">+</span><span class="s2">&quot;nodes count: </span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span> <span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">())</span>  <span class="p">)</span>
@@ -122,7 +132,7 @@
 <div class="viewcode-block" id="graphml_xml_string"><a class="viewcode-back" href="../index.html#graph_explore.graphml_xml_string">[docs]</a><span class="k">def</span> <span class="nf">graphml_xml_string</span><span class="p">(</span><span class="n">graphml_file</span><span class="p">,</span><span class="n">ids</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">entity</span><span class="o">=</span><span class="s2">&quot;node&quot;</span> <span class="p">):</span>
 
 
-  <span class="sd">&quot;&quot;&quot;Return the XML content extract of the graohml file:</span>
+  <span class="sd">&quot;&quot;&quot;Return the XML content extract of the graphml file:</span>
 
 <span class="sd">  :param graphml_file: graphml file path</span>
 <span class="sd">  :param ids:  an intger or  list or integers that correspondn to the id attribute values of the selected entities</span>
@@ -158,6 +168,9 @@
 <span class="sd">  :rtype: DataFrame object</span>
 <span class="sd">  </span>
 <span class="sd">  &quot;&quot;&quot;</span> 
+  <span class="k">if</span> <span class="n">g</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+       <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;warning graph is None&quot;</span><span class="p">)</span>
+
   <span class="n">lCCFilt</span> <span class="o">=</span> <span class="n">gt</span><span class="o">.</span><span class="n">label_largest_component</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
   <span class="n">lCC</span> <span class="o">=</span> <span class="n">gt</span><span class="o">.</span><span class="n">GraphView</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">vfilt</span><span class="o">=</span><span class="n">lCCFilt</span><span class="p">)</span>
   <span class="n">lCC</span> <span class="o">=</span> <span class="n">gt</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">lCC</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -173,7 +186,9 @@
 <span class="sd">  :rtype: DataFrame object</span>
 <span class="sd">  </span>
 <span class="sd">  &quot;&quot;&quot;</span> 
- 
+  <span class="k">if</span> <span class="n">g</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+       <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;warning graph is None&quot;</span><span class="p">)</span>
+
   <span class="n">degreeMap</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">degree_property_map</span><span class="p">(</span><span class="s2">&quot;total&quot;</span><span class="p">)</span>
   <span class="n">dist</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">degreeMap</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;edge_count&quot;</span><span class="p">])</span>
   <span class="k">return</span> <span class="n">dist</span></div>
@@ -189,6 +204,8 @@
 <span class="sd">    :rtype: dict</span>
 <span class="sd">  </span>
 <span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="k">if</span> <span class="n">g</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+       <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;warning graph is None&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">centrality</span><span class="o">.</span><span class="n">betweenness</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>  </div>
 
 
@@ -202,6 +219,8 @@
 <span class="sd">    :rtype: dict</span>
 <span class="sd">  </span>
 <span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="k">if</span> <span class="n">g</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+       <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;warning graph is None&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">centrality</span><span class="o">.</span><span class="n">pagerank</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>  </div>
 
 <div class="viewcode-block" id="compute_closeness"><a class="viewcode-back" href="../index.html#graph_explore.compute_closeness">[docs]</a><span class="k">def</span> <span class="nf">compute_closeness</span><span class="p">(</span> <span class="n">g</span> <span class="p">):</span>
@@ -268,8 +287,8 @@
 <span class="k">def</span> <span class="nf">__saveOrPlot</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">output_graph</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_image</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
    <span class="sd">&quot;&quot;&quot;Save a graph instance as a graphml file or save a graph image (png)&quot;&quot;&quot;</span>
 
-   <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">output graph order: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">())))</span>
-   <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;output graph size: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">())))</span>
+   <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">output graph order: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">())))</span>
+   <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;output graph size: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">())))</span>
    <span class="k">if</span> <span class="p">(</span><span class="n">output_graph</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
          <span class="n">g</span><span class="o">=</span><span class="n">gt</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
          <span class="n">utils</span><span class="o">.</span><span class="n">__clean_rm</span><span class="p">(</span><span class="n">output_graph</span><span class="p">)</span>
@@ -370,6 +389,8 @@
 <span class="sd">    :rtype: None</span>
 <span class="sd">  </span>
 <span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="k">if</span> <span class="n">g</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+       <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;warning graph is None&quot;</span><span class="p">)</span>
     <span class="n">g</span><span class="o">.</span><span class="n">ep</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">new_edge_property</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">eColorMap</span><span class="p">(</span><span class="n">spaim</span><span class="p">):</span>
         <span class="n">switcher</span><span class="o">=</span><span class="p">{</span>
@@ -390,6 +411,16 @@
 
 
 
+<div class="viewcode-block" id="save_yed_graphml"><a class="viewcode-back" href="../index.html#graph_explore.save_yed_graphml">[docs]</a><span class="k">def</span> <span class="nf">save_yed_graphml</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">graphmlOutFile</span><span class="p">):</span>
+ 
+      <span class="sd">&quot;&quot;&quot;save graphml file enriched by graphics to be displayed by yEd editor</span>
+<span class="sd">        :param g :  a graph instance   </span>
+<span class="sd">        :param graphml_file: a graphml file</span>
+<span class="sd">        :return: void</span>
+<span class="sd">        :rtype: None </span>
+<span class="sd">      &quot;&quot;&quot;</span> 
+      <span class="n">save_graphml</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">graphmlOutFile</span><span class="p">,</span><span class="kc">True</span><span class="p">)</span>
+      <span class="n">utils</span><span class="o">.</span><span class="n">__format_graphml_yed</span><span class="p">(</span><span class="n">graphmlOutFile</span><span class="p">)</span></div>
 
 
 
@@ -450,7 +481,7 @@
       &copy;2019-2020, Francois Moreews, Hugo Simon.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

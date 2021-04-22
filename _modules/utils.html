@@ -4,15 +4,14 @@
 <html lang="1.0">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>utils &#8212; pax2graphml 1. documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
    
@@ -58,7 +57,12 @@
 <span class="kn">import</span> <span class="nn">tempfile</span><span class="o">,</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">lxml.etree</span> <span class="k">as</span> <span class="nn">et</span>
 
- 
+<span class="kn">from</span> <span class="nn">xml.sax.saxutils</span> <span class="kn">import</span> <span class="n">escape</span>
+<span class="kn">import</span> <span class="nn">colorsys</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">NullHandler</span><span class="p">())</span>
+
 
 <div class="viewcode-block" id="resource_path"><a class="viewcode-back" href="../index.html#utils.resource_path">[docs]</a><span class="k">def</span> <span class="nf">resource_path</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;return the resources  path</span>
@@ -70,6 +74,8 @@
 
 
     <span class="n">pa</span> <span class="o">=</span> <span class="n">__relPath</span><span class="p">(</span><span class="s1">&#39;resources&#39;</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;resource_path:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pa</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">pa</span></div>
 
 <div class="viewcode-block" id="data_path"><a class="viewcode-back" href="../index.html#utils.data_path">[docs]</a><span class="k">def</span> <span class="nf">data_path</span><span class="p">():</span>
@@ -80,6 +86,7 @@
 <span class="sd"> </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">pa</span> <span class="o">=</span> <span class="n">__relPath</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;data_path:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pa</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">pa</span></div>
 
 
@@ -156,6 +163,7 @@
     <span class="n">ep</span><span class="o">=</span><span class="n">edge_to_string</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
     <span class="n">sp</span><span class="o">=</span><span class="n">node_to_string</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="o">.</span><span class="n">source</span><span class="p">(),</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
     <span class="n">tp</span><span class="o">=</span><span class="n">node_to_string</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">e</span><span class="o">.</span><span class="n">target</span><span class="p">(),</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>   
+    
     <span class="k">return</span> <span class="s2">&quot;edge:</span><span class="si">%s</span><span class="s2"> </span><span class="se">\n\t</span><span class="s2">source: </span><span class="si">%s</span><span class="s2">  </span><span class="se">\n\t</span><span class="s2">target: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">ep</span><span class="p">,</span><span class="n">sp</span><span class="p">,</span><span class="n">tp</span><span class="p">)</span></div>
 
                         
@@ -240,6 +248,7 @@
           <span class="n">u</span><span class="o">=</span><span class="n">gt</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
           <span class="k">return</span> <span class="n">u</span>
         <span class="k">else</span><span class="p">:</span>
+          <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;cc_by_node_count returns None&quot;</span> <span class="p">)</span>
           <span class="k">return</span> <span class="kc">None</span> </div>
 
 
@@ -249,17 +258,19 @@
 
 
 
-<div class="viewcode-block" id="friendly_format_graphml"><a class="viewcode-back" href="../index.html#utils.friendly_format_graphml">[docs]</a><span class="k">def</span> <span class="nf">friendly_format_graphml</span><span class="p">(</span><span class="n">graphml_file</span><span class="p">):</span>
+<div class="viewcode-block" id="friendly_format_graphml"><a class="viewcode-back" href="../index.html#utils.friendly_format_graphml">[docs]</a><span class="k">def</span> <span class="nf">friendly_format_graphml</span><span class="p">(</span><span class="n">graphml_file</span><span class="p">,</span><span class="n">usetemp</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
       <span class="sd">&quot;&quot;&quot;modify in place a graphml_file to have more human readable properties data key</span>
 
 <span class="sd">        :param graphml_file: a graphml file file folling the graph.tools generation rules</span>
 <span class="sd">      &quot;&quot;&quot;</span> 
-     
-      <span class="c1">#f = tempfile.NamedTemporaryFile(delete=False)</span>
-      <span class="c1">#tmpf=f.name</span>
-
-      <span class="n">tmpf</span><span class="o">=</span><span class="n">graphml_file</span><span class="o">+</span><span class="s2">&quot;.work.tmp&quot;</span>
+       
+      <span class="k">if</span> <span class="n">usetemp</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span> 
+        <span class="n">f</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">tmpf</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">name</span>
+        <span class="c1">#warning: issue with cross devide link</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">tmpf</span><span class="o">=</span><span class="n">graphml_file</span><span class="o">+</span><span class="s2">&quot;.work.tmp&quot;</span>
 
 
       <span class="n">gns</span><span class="o">=</span><span class="s1">&#39;http://graphml.graphdrawing.org/xmlns&#39;</span>
@@ -294,7 +305,16 @@
                <span class="n">k</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">@</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span><span class="n">kv</span><span class="p">)</span>
                <span class="n">v</span><span class="o">=</span><span class="n">keymap</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
                <span class="n">el</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ktag</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-            
+ 
+
+      <span class="n">idv</span><span class="o">=</span><span class="mi">0</span>
+      <span class="n">lst</span><span class="o">=</span><span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;./x:graph/x:edge&quot;</span>   <span class="p">,</span> <span class="n">namespaces</span><span class="o">=</span><span class="n">ns</span><span class="p">)</span>
+      <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span> 
+          <span class="n">idv</span><span class="o">=</span><span class="n">idv</span><span class="o">+</span><span class="mi">1</span>
+          <span class="n">el</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="o">+</span><span class="n">idv</span><span class="p">))</span>
+
+
+           
       <span class="n">root</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">tmpf</span><span class="p">,</span>
                  <span class="n">pretty_print</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xml_declaration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span>
@@ -433,6 +453,298 @@
 
 
 
+
+
+    
+    
+<span class="k">def</span> <span class="nf">__yed_edge_graphics</span><span class="p">(</span><span class="n">label</span><span class="p">,</span><span class="n">color</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;edge graphics for yEd</span>
+<span class="sd">        :param  label:  node text label</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">nstr1</span><span class="o">=</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">            &lt;data key=&quot;d27&quot;   xmlns:y=&quot;http://www.yworks.com/xml/graphml&quot; &gt;</span>
+<span class="s1">        &lt;y:PolyLineEdge&gt;</span>
+<span class="s1">          &lt;y:Path sx=&quot;0.0&quot; sy=&quot;0.0&quot; tx=&quot;0.0&quot; ty=&quot;0.0&quot;/&gt;</span>
+<span class="s1">          &lt;y:LineStyle </span>
+<span class="s1">    &#39;&#39;&#39;</span>
+   
+    <span class="n">nstr11</span><span class="o">=</span><span class="s1">&#39;&#39;&#39;  </span>
+<span class="s1">      type=&quot;line&quot; width=&quot;1.0&quot;/&gt;</span>
+<span class="s1">          &lt;y:Arrows source=&quot;none&quot; target=&quot;white_delta&quot;/&gt;</span>
+<span class="s1">          &lt;y:EdgeLabel alignment=&quot;center&quot; configuration=&quot;AutoFlippingLabel&quot; distance=&quot;2.0&quot; </span>
+<span class="s1">          fontFamily=&quot;Dialog&quot; fontSize=&quot;12&quot; fontStyle=&quot;plain&quot; hasBackgroundColor=&quot;false&quot; </span>
+<span class="s1">           hasLineColor=&quot;false&quot; height=&quot;17.96875&quot; modelName=&quot;custom&quot; </span>
+<span class="s1">            preferredPlacement=&quot;anywhere&quot; ratio=&quot;0.5&quot; textColor=&quot;#000000&quot; </span>
+<span class="s1">             visible=&quot;true&quot; width=&quot;53.32421875&quot; x=&quot;-71.4431481625477&quot; </span>
+<span class="s1">              y=&quot;-16.37365500299495&quot;&gt;</span>
+<span class="s1"> </span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">nstr2</span><span class="o">=</span><span class="s1">&#39;&#39;&#39; &lt;y:LabelModel&gt;</span>
+<span class="s1">              &lt;y:SmartEdgeLabelModel autoRotationEnabled=&quot;false&quot; defaultAngle=&quot;0.0&quot;</span>
+<span class="s1">              defaultDistance=&quot;10.0&quot;/&gt;</span>
+<span class="s1">            &lt;/y:LabelModel&gt;</span>
+<span class="s1">            &lt;y:ModelParameter&gt;</span>
+<span class="s1">              &lt;y:SmartEdgeLabelModelParameter angle=&quot;0.0&quot; distance=&quot;30.0&quot; </span>
+<span class="s1">              distanceToCenter=&quot;true&quot; position=&quot;right&quot; ratio=&quot;0.5&quot; segment=&quot;0&quot;/&gt;</span>
+<span class="s1">            &lt;/y:ModelParameter&gt;</span>
+<span class="s1">            &lt;y:PreferredPlacementDescriptor angle=&quot;0.0&quot; </span>
+<span class="s1">            angleOffsetOnRightSide=&quot;0&quot; angleReference=&quot;absolute&quot; </span>
+<span class="s1">            angleRotationOnRightSide=&quot;co&quot; distance=&quot;-1.0&quot; frozen=&quot;true&quot; </span>
+<span class="s1">            placement=&quot;anywhere&quot; side=&quot;anywhere&quot; sideReference=&quot;relative_to_edge_flow&quot;/&gt;</span>
+<span class="s1">          &lt;/y:EdgeLabel&gt;</span>
+<span class="s1">          &lt;y:BendStyle smoothed=&quot;false&quot;/&gt;</span>
+<span class="s1">        &lt;/y:PolyLineEdge&gt;</span>
+<span class="s1">      &lt;/data&gt;</span>
+<span class="s1">    </span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">nscolor</span><span class="o">=</span><span class="s2">&quot; color=</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="o">+</span><span class="n">color</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">  &quot;</span>
+    <span class="n">st</span><span class="o">=</span> <span class="n">nstr1</span><span class="o">+</span><span class="n">nscolor</span><span class="o">+</span><span class="n">nstr11</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="n">nstr2</span>
+    <span class="k">return</span> <span class="n">st</span>
+
+    
+    
+<span class="k">def</span> <span class="nf">__yed_node_graphics</span><span class="p">(</span><span class="n">label</span><span class="p">,</span><span class="n">color</span><span class="p">,</span><span class="n">shape</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;node graphics for yEd</span>
+<span class="sd">        :param  label:  node text label</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">nstr1</span><span class="o">=</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">      &lt;data key=&quot;d21&quot;   xmlns:y=&quot;http://www.yworks.com/xml/graphml&quot; &gt;</span>
+<span class="s1">        &lt;y:ShapeNode&gt;</span>
+<span class="s1">          &lt;y:Geometry height=&quot;30.0&quot; width=&quot;30.0&quot; x=&quot;621.3832419501406&quot; y=&quot;131.52884981905322&quot;/&gt;</span>
+<span class="s1">          &lt;y:Fill </span>
+<span class="s1">    &#39;&#39;&#39;</span>
+   
+    <span class="n">nstr11</span><span class="o">=</span><span class="s1">&#39;&#39;&#39; transparent=&quot;false&quot;/&gt;</span>
+<span class="s1">          &lt;y:BorderStyle color=&quot;#000000&quot; type=&quot;line&quot; width=&quot;1.0&quot;/&gt;</span>
+<span class="s1">          &lt;y:NodeLabel alignment=&quot;center&quot; autoSizePolicy=&quot;content&quot; fontFamily=&quot;Dialog&quot;</span>
+<span class="s1">           fontSize=&quot;12&quot; fontStyle=&quot;plain&quot; hasBackgroundColor=&quot;false&quot; </span>
+<span class="s1">             hasLineColor=&quot;false&quot; height=&quot;17.96875&quot; modelName=&quot;custom&quot; </span>
+<span class="s1">             textColor=&quot;#000000&quot; visible=&quot;true&quot; width=&quot;32.998046875&quot; </span>
+<span class="s1">             x=&quot;-1.4990234375&quot; y=&quot;6.015625&quot;&gt;</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">nstr2</span><span class="o">=</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">             &lt;y:LabelModel&gt;</span>
+<span class="s1">              &lt;y:SmartNodeLabelModel distance=&quot;4.0&quot;/&gt;</span>
+<span class="s1">            &lt;/y:LabelModel&gt;</span>
+<span class="s1">            &lt;y:ModelParameter&gt;</span>
+<span class="s1">              &lt;y:SmartNodeLabelModelParameter labelRatioX=&quot;0.0&quot; labelRatioY=&quot;0.0&quot;</span>
+<span class="s1">              nodeRatioX=&quot;0.0&quot; nodeRatioY=&quot;0.0&quot; offsetX=&quot;0.0&quot; offsetY=&quot;0.0&quot; upX=&quot;0.0&quot; upY=&quot;-1.0&quot;/&gt;</span>
+<span class="s1">            &lt;/y:ModelParameter&gt;</span>
+<span class="s1">          &lt;/y:NodeLabel&gt;</span>
+<span class="s1">          &lt;y:Shape </span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    
+    <span class="n">nstr3</span><span class="o">=</span><span class="s1">&#39;&#39;&#39;    &lt;/y:ShapeNode&gt;</span>
+<span class="s1">      &lt;/data&gt;</span>
+<span class="s1">    </span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">nscolor</span><span class="o">=</span><span class="s2">&quot; color=</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="o">+</span><span class="n">color</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">  &quot;</span>
+    <span class="n">nsshape</span><span class="o">=</span><span class="s2">&quot;type=</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="o">+</span><span class="n">shape</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">/&gt;&quot;</span>
+    <span class="n">st</span><span class="o">=</span> <span class="n">nstr1</span><span class="o">+</span><span class="n">nscolor</span><span class="o">+</span><span class="n">nstr11</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="n">nstr2</span><span class="o">+</span><span class="n">nsshape</span><span class="o">+</span><span class="n">nstr3</span>
+    <span class="k">return</span> <span class="n">st</span>
+<div class="viewcode-block" id="spaim_edge_label"><a class="viewcode-back" href="../index.html#utils.spaim_edge_label">[docs]</a><span class="k">def</span> <span class="nf">spaim_edge_label</span><span class="p">(</span><span class="n">code</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;convert spaim code as defined in spaim edge property to human readable labels </span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">map_values</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;s&quot;</span><span class="p">:</span><span class="s2">&quot;is_substrat_of&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;p&quot;</span><span class="p">:</span><span class="s2">&quot;as_product&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;a&quot;</span><span class="p">:</span><span class="s2">&quot;is_activator_of&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;i&quot;</span><span class="p">:</span><span class="s2">&quot;is_inhibitor_of&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;m&quot;</span><span class="p">:</span><span class="s2">&quot;is_modulator_of&quot;</span><span class="p">,</span>
+        
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">map_values</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">map_values</span><span class="p">[</span><span class="n">code</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
+
+<span class="k">def</span> <span class="nf">__node_shape_yed</span><span class="p">(</span><span class="n">code</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;convert biopax type numeric code  as defined in shape node property to yEd compatible shape name</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">map_values</span><span class="o">=</span><span class="p">{</span>
+   <span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="s2">&quot;ellipse&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="s2">&quot;rectangle&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="s2">&quot;octagon&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;3&quot;</span><span class="p">:</span> <span class="s2">&quot;triangle&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;4&quot;</span><span class="p">:</span> <span class="s2">&quot;parallelogram&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;5&quot;</span><span class="p">:</span> <span class="s2">&quot;hexagon&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;6&quot;</span><span class="p">:</span> <span class="s2">&quot;rectangle&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;7&quot;</span><span class="p">:</span> <span class="s2">&quot;diamond&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;8&quot;</span><span class="p">:</span> <span class="s2">&quot;trapezoid&quot;</span>
+   <span class="p">}</span>
+    <span class="k">if</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">map_values</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">map_values</span><span class="p">[</span><span class="n">code</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;trapezoid&quot;</span>
+
+<div class="viewcode-block" id="color_range_hexa"><a class="viewcode-back" href="../index.html#utils.color_range_hexa">[docs]</a><span class="k">def</span> <span class="nf">color_range_hexa</span><span class="p">(</span><span class="n">color_number</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+
+    <span class="n">hsv</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">color_number</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">color_number</span><span class="p">)]</span>
+    <span class="n">hexout</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">color</span> <span class="ow">in</span> <span class="n">hsv</span><span class="p">:</span>
+        <span class="n">rgb</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mi">255</span><span class="p">),</span> <span class="n">colorsys</span><span class="o">.</span><span class="n">hsv_to_rgb</span><span class="p">(</span><span class="o">*</span><span class="n">color</span><span class="p">))</span>
+        <span class="n">hexout</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;#</span><span class="si">%02x%02x%02x</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">rgb</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">hexout</span></div>
+
+<span class="k">def</span> <span class="nf">__color_range</span><span class="p">():</span>
+    <span class="n">map_values</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;3&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;4&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;5&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;6&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;7&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;8&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+    <span class="p">}</span>
+    <span class="n">sz</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">map_values</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">colors</span><span class="o">=</span><span class="n">color_range_hexa</span><span class="p">(</span><span class="n">sz</span><span class="p">)</span>
+    
+    <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">map_values</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">map_values</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+    <span class="c1">#print(map_values)  </span>
+    <span class="k">return</span> <span class="n">map_values</span>
+
+    
+<div class="viewcode-block" id="node_shape_to_color"><a class="viewcode-back" href="../index.html#utils.node_shape_to_color">[docs]</a><span class="k">def</span> <span class="nf">node_shape_to_color</span><span class="p">(</span><span class="n">code</span><span class="p">,</span><span class="n">colors</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;convert biopax type numeric code  as defined in shape node property to yEd compatible shape name</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    
+    <span class="k">if</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">colors</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">colors</span><span class="p">[</span><span class="n">code</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;#FFFFFF&quot;</span></div>
+   
+
+    
+<span class="k">def</span> <span class="nf">__format_graphml_yed</span><span class="p">(</span><span class="n">graphml_file</span><span class="p">,</span><span class="n">usetemp</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+      <span class="sd">&quot;&quot;&quot;modify in place a graphml_file to have basic compatibility with yEd editor</span>
+
+<span class="sd">        :param graphml_file: a graphml file </span>
+<span class="sd">      &quot;&quot;&quot;</span> 
+       
+ 
+      <span class="k">if</span> <span class="n">usetemp</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span> 
+        <span class="n">f</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">tmpf</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">name</span>
+        <span class="c1">#warning: issue with cross devide link</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">tmpf</span><span class="o">=</span><span class="n">graphml_file</span><span class="o">+</span><span class="s2">&quot;.work.tmp&quot;</span>
+        
+      <span class="n">tmpf0</span><span class="o">=</span><span class="n">tmpf</span><span class="o">+</span><span class="s2">&quot;0&quot;</span>
+
+      <span class="n">gns</span><span class="o">=</span><span class="s1">&#39;http://graphml.graphdrawing.org/xmlns&#39;</span>
+      <span class="n">ns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">gns</span><span class="p">}</span>
+      
+     
+      <span class="n">reptag</span><span class="o">=</span><span class="s2">&quot;yxzzzzxwcvakwwwyyyyxz&quot;</span>
+      <span class="n">yns</span><span class="o">=</span><span class="s2">&quot;http://www.yworks.com/xml/graphml&quot;</span>  
+      <span class="n">root</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">graphml_file</span><span class="p">)</span>
+      <span class="n">rootel</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+      <span class="n">rootel</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;xmlns&quot;</span><span class="o">+</span><span class="n">reptag</span><span class="o">+</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">yns</span><span class="p">)</span>  
+
+       
+      
+      <span class="n">child</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="s2">&quot;&lt;key for=</span><span class="se">\&quot;</span><span class="s2">node</span><span class="se">\&quot;</span><span class="s2"> id=</span><span class="se">\&quot;</span><span class="s2">d21</span><span class="se">\&quot;</span><span class="s2"> yfiles.type=</span><span class="se">\&quot;</span><span class="s2">nodegraphics</span><span class="se">\&quot;</span><span class="s2">/&gt;&quot;</span><span class="p">)</span>
+      <span class="n">rootel</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>  
+        
+      <span class="n">child</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="s2">&quot;&lt;key for=</span><span class="se">\&quot;</span><span class="s2">edge</span><span class="se">\&quot;</span><span class="s2"> id=</span><span class="se">\&quot;</span><span class="s2">d27</span><span class="se">\&quot;</span><span class="s2"> yfiles.type=</span><span class="se">\&quot;</span><span class="s2">edgegraphics</span><span class="se">\&quot;</span><span class="s2">/&gt;&quot;</span><span class="p">)</span>
+      <span class="n">rootel</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>  
+         
+         
+       
+              
+      <span class="n">root</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">tmpf0</span><span class="p">,</span>
+                 <span class="n">pretty_print</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xml_declaration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span>
+      <span class="n">f1</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpf0</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+      <span class="n">ofi</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpf</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+      <span class="n">fd</span><span class="o">=</span><span class="mi">0</span>        
+      <span class="k">while</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+          <span class="n">line</span> <span class="o">=</span> <span class="n">f1</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span> 
+          <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="p">:</span>
+              <span class="k">break</span>
+ 
+          <span class="n">li</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+          <span class="k">if</span> <span class="n">fd</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">reptag</span> <span class="ow">in</span> <span class="n">li</span><span class="p">:</span>
+                <span class="n">li</span><span class="o">=</span><span class="n">li</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">reptag</span><span class="p">,</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+                <span class="n">fd</span><span class="o">=</span><span class="mi">1</span>
+          <span class="n">ofi</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">li</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+      <span class="n">ofi</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> 
+    
+       
+      <span class="n">root</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">tmpf</span><span class="p">)</span>
+      
+      <span class="n">colors</span><span class="o">=</span><span class="n">__color_range</span><span class="p">()</span>
+        
+      <span class="n">ns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">gns</span><span class="p">}</span>
+      <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;node&quot;</span><span class="p">]:</span>    
+        <span class="n">lst</span><span class="o">=</span><span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;./x:graph/x:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span> <span class="p">,</span> <span class="n">namespaces</span><span class="o">=</span><span class="n">ns</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">lst</span> <span class="p">:</span>
+          <span class="n">labeln</span><span class="o">=</span><span class="s2">&quot;&quot;</span> 
+          <span class="n">ccode</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
+          <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">elm</span><span class="p">:</span> 
+            
+           <span class="k">if</span> <span class="n">el</span><span class="o">.</span><span class="n">tag</span><span class="o">==</span><span class="s1">&#39;{</span><span class="si">%s</span><span class="s1">}data&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">gns</span><span class="p">):</span>
+            
+               <span class="n">ktag</span><span class="o">=</span><span class="s2">&quot;key&quot;</span>
+               <span class="n">kv</span><span class="o">=</span><span class="n">el</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ktag</span><span class="p">)</span>
+               <span class="k">if</span> <span class="n">kv</span><span class="o">==</span><span class="s2">&quot;name&quot;</span><span class="p">:</span>
+                    
+                  <span class="n">labeln</span><span class="o">=</span><span class="n">escape</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+               <span class="k">if</span> <span class="n">kv</span><span class="o">==</span><span class="s2">&quot;color&quot;</span><span class="p">:</span>
+                  <span class="n">ccode</span><span class="o">=</span><span class="n">el</span><span class="o">.</span><span class="n">text</span>
+               <span class="k">if</span> <span class="n">kv</span><span class="o">==</span><span class="s2">&quot;shape&quot;</span><span class="p">:</span>
+                  <span class="n">scode</span><span class="o">=</span><span class="n">el</span><span class="o">.</span><span class="n">text</span>     
+                    
+          <span class="n">ncolor</span><span class="o">=</span><span class="n">node_shape_to_color</span><span class="p">(</span><span class="n">ccode</span><span class="p">,</span><span class="n">colors</span><span class="p">)</span>
+          <span class="c1">#print(&quot;%s %s&quot; %(ccode, ncolor))</span>
+          <span class="n">nshape</span><span class="o">=</span><span class="n">__node_shape_yed</span><span class="p">(</span><span class="n">scode</span><span class="p">)</span>
+          <span class="n">childn</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">__yed_node_graphics</span><span class="p">(</span><span class="n">labeln</span><span class="p">,</span><span class="n">ncolor</span><span class="p">,</span><span class="n">nshape</span><span class="p">))</span>
+
+          <span class="n">elm</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">childn</span><span class="p">)</span>       
+                
+      <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;edge&quot;</span><span class="p">]:</span>    
+        <span class="n">lst</span><span class="o">=</span><span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;./x:graph/x:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span> <span class="p">,</span> <span class="n">namespaces</span><span class="o">=</span><span class="n">ns</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">lst</span> <span class="p">:</span>
+          <span class="n">labele</span><span class="o">=</span><span class="s2">&quot;&quot;</span>   
+          <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">elm</span><span class="p">:</span> 
+            
+           <span class="k">if</span> <span class="n">el</span><span class="o">.</span><span class="n">tag</span><span class="o">==</span><span class="s1">&#39;{</span><span class="si">%s</span><span class="s1">}data&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">gns</span><span class="p">):</span>
+            
+               <span class="n">ktag</span><span class="o">=</span><span class="s2">&quot;key&quot;</span>
+               <span class="n">kv</span><span class="o">=</span><span class="n">el</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ktag</span><span class="p">)</span>
+               <span class="k">if</span> <span class="n">kv</span><span class="o">==</span><span class="s2">&quot;spaim&quot;</span><span class="p">:</span>
+                    
+                  <span class="n">labele</span><span class="o">=</span><span class="n">escape</span><span class="p">(</span><span class="n">spaim_edge_label</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>            
+         
+        
+          
+          <span class="n">childe</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">__yed_edge_graphics</span><span class="p">(</span><span class="n">labele</span><span class="p">,</span><span class="s2">&quot;#563768&quot;</span><span class="p">))</span>
+
+          <span class="n">elm</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">childe</span><span class="p">)</span>   
+          
+            
+      <span class="n">root</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">tmpf</span><span class="p">,</span>
+                 <span class="n">pretty_print</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xml_declaration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span>
+    
+      <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tmpf0</span><span class="p">)</span>
+      <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">tmpf</span><span class="p">,</span> <span class="n">graphml_file</span><span class="p">)</span>  
+
+
+
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;no main defined&quot;</span><span class="p">)</span>
 
@@ -497,7 +809,7 @@
       &copy;2019-2020, Francois Moreews, Hugo Simon.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
