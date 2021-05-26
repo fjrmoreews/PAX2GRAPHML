@@ -326,8 +326,12 @@
  
 <span class="n">__P2GJAR</span><span class="o">=</span><span class="s2">&quot;biopax2spaimgen.jar&quot;</span>
 <span class="n">__P2GTEMPLATE</span><span class="o">=</span><span class="s2">&quot;graphml.vm&quot;</span>
-<span class="n">__P2GJMEM</span><span class="o">=</span><span class="s2">&quot; -Xmx48g  -XX:+UseConcMarkSweepGC  &quot;</span>
+<span class="n">__P2GJMEM_XMX</span><span class="o">=</span><span class="s2">&quot;48g&quot;</span>
+<span class="n">__P2GJMEM</span><span class="o">=</span><span class="s2">&quot; -Xmx&quot;</span><span class="o">+</span><span class="n">__P2GJMEM_XMX</span><span class="o">+</span><span class="s2">&quot;  -XX:+UseConcMarkSweepGC  &quot;</span>
 <span class="n">__P2GJVM</span><span class="o">=</span><span class="s2">&quot;java&quot;</span> 
+
+
+
 
 <span class="k">def</span> <span class="nf">__gdirEnv</span><span class="p">():</span>
    <span class="sd">&quot;&quot;&quot; return the value of an optional evironment variable for alternate resources directory definition&quot;&quot;&quot;</span> 
@@ -742,6 +746,17 @@
     
       <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tmpf0</span><span class="p">)</span>
       <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">tmpf</span><span class="p">,</span> <span class="n">graphml_file</span><span class="p">)</span>  
+
+
+
+
+<div class="viewcode-block" id="defineXmx"><a class="viewcode-back" href="../index.html#utils.defineXmx">[docs]</a><span class="k">def</span> <span class="nf">defineXmx</span><span class="p">(</span><span class="n">xmx</span><span class="p">):</span>
+   <span class="sd">&quot;&quot;&quot; redefine xmx java parameter for lareg BIOPAX file processing&quot;&quot;&quot;</span> 
+   <span class="k">global</span> <span class="n">__P2GJMEM_XMX</span>
+   <span class="n">__P2GJMEM_XMX</span><span class="o">=</span><span class="n">xmx</span>
+   <span class="k">global</span> <span class="n">__P2GJMEM</span>
+   <span class="n">__P2GJMEM</span><span class="o">=</span><span class="s2">&quot; -Xmx&quot;</span><span class="o">+</span><span class="n">__P2GJMEM_XMX</span><span class="o">+</span><span class="s2">&quot;  -XX:+UseConcMarkSweepGC  &quot;</span></div>
+
 
 
 
